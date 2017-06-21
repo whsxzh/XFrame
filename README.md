@@ -1,4 +1,18 @@
 # XFrame
+ 
+XFrame 是一个面向数据编程的、非常容易学习的php框架，特点如下
+1.容易学习上手
+2.功能强大
+3.面向对象
+4.特别擅长mysql的处理
+5.视图和业务逻辑彻底分离
+6.自带渲染模版引擎
+7.自带数据缓存引擎，需要本地安装memcache环境
+8.便于扩展，你可以根据需要改造成任何适用自己的框架
+9.模版引擎和数据引擎分离，你可以任意组装，单独使用或者根据自己的需要改造
+
+作者：Gordon Xi 
+Email:zuoruanjian@qq.com 欢迎随时和我交流，我愿意支持你免费使用这个框架
 
 Instructions for use: 
 api directory： A return to json format api interface
