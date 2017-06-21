@@ -1,4 +1,17 @@
 # XFrame
+
+XFrame is a data-oriented programming, very easy to learn php framework, features as follows
+1. easy to learn to get started 
+2. powerful 
+3. object-oriented
+4. particularly good at mysql processing 
+5. view and business logic completely separate 
+6. own rendering Template engine 
+7. own data cache engine, you need to install the local memcache environment 
+8. easy to expand, you can be transformed into any applicable to their own framework 
+9. template engine and data engine separation, you can arbitrarily assembled, used alone or according to their own The need for transformation
+
+Author: Gordon Xi Email: zuoruanjian@qq.com please feel free to communicate with me, I am willing to support you free access to this framework
  
 XFrame 是一个面向数据编程的、非常容易学习的php框架，特点如下
 1.容易学习上手
