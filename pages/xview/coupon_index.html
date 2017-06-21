@@ -1,0 +1,327 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+	#tent-tab1_filter label {
+		display: none !important;
+	}
+	
+	.order-input1,
+	.order-input2 {
+		width: 40%;
+		border: none;
+		border: 1px solid #d2d6de;
+		padding: 0 10px;
+		line-height: 30px;
+	}
+	
+	.order-input2 {
+		margin-left: 5px;
+	}
+	
+	.daterangepicker {
+		width: 32%;
+	}
+	
+	#spec-tab1_paginate {
+		text-align: right;
+	}
+	
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		color: white;
+		cursor: pointer;
+	}
+	
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	
+	.control-label {
+		color: #000000;
+	}
+</style>
+<!--商户管理-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">优惠券管理</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">运营管理</a>
+			</li>
+			<li class="active">优惠券管理</li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="col-md-12 order-header block-no">
+					<div class="box-header col-md-12 block-no" style="padding-left: 0;">
+						<div class="col-xs-3 col-md-2">
+							<div class="input-group">
+								<!-- /btn-group -->
+								<div class="input-group-btn">
+									<select id="select_name" class="btn dropdown-toggle form-select" style="height:30px;" name="customer_group_id">
+										<option value="1" {_IF get.select_name=1}selected{ENDIF}>价格</option>
+									</select>
+
+								</div>
+								<div class="input-group-btn">
+									<select id="select_bijiao" class="btn dropdown-toggle form-select" data-toggle="dropdown" style="height:30px;" aria-expanded="false" name="customer_group_id">
+										<option value="1" {_IF select_bijiao=1}selected{ENDIF}>></option>
+										<option value="2" {_IF select_bijiao=2}selected{ENDIF}>
+											<</option>
+												<option value="3" {_IF select_bijiao=3}selected{ENDIF}>=</option>
+									</select>
+								</div>
+								<input id="num" type="text" value="{_num}" class="form-control form-input" placeholder="0" />
+							</div>
+						</div>
+
+						<div class="col-xs-3 col-md-2">
+							<select class="form-control form-select" id="select_coupon_type">
+								<option value="0">全部优惠券</option>
+								<option value="1" {_IF type=1} selected {ENDIF}>全部商品</option>
+								<option value="2" {_IF type=2} selected {ENDIF}>部分商品</option>
+								<option value="3" {_IF type=3} selected {ENDIF}>部分分类</option>
+								<option value="4" {_IF type=4} selected {ENDIF}>部分品牌</option>
+							</select>
+						</div>
+						<div class="col-xs-2  col-md-2">
+							<input id="search_name" type="text" value="{_search_name}" class="form-control form-input" name='lastname' placeholder="请输入优惠券名称">
+						</div>
+
+						<div class="col-xs-4 col-md-2">
+							<button type="submit" class="btn btn-main btn-sm search_coupon">搜索</button>
+						</div>
+
+						<div class="col-xs-2  col-md-4 text-right">
+							<a class="btn btn-main btn-sm" href="{_addUrl}">新增优惠券</a>
+						</div>
+					</div>
+				</div>
+			
+				<div class="box-body">
+					<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+						<table id="invitecode-tab" class="table table-bordered table-striped">
+							<thead>
+								<tr>
+								<th>优惠券名称</th>
+								<th>优惠券类别</th>
+								<th>客户类别</th>
+								<th>内容</th>
+								<th>创建时间</th>
+								<th>有效期</th>
+								<th>发行总数</th>
+								<th>领用数量</th>
+								<th>领取地址</th>
+								<th>使用数量</th>
+								<th>过期</th>
+								<th>短信信息</th>
+								<th>兑换码</th>
+								<th class="block-no">操作</th>
+							</tr>
+							</thead>
+							<tbody>
+							{_FOREACH coupons}
+								<tr>
+									<td>{_name}</td>
+									<td>
+										{_IF type=1}全部商品{ENDIF} {_IF type=2}部分商品{ENDIF} {_IF type=3}部分分类{ENDIF} {_IF type=4}部分品牌{ENDIF}
+									</td>
+									<td>
+										{_IF send_type=0}全部用户{ENDIF} {_IF send_type=1}会员用户{ENDIF} {_IF send_type=2}非会员用户{ENDIF} {_IF send_type=3}渠道用户{ENDIF} {_IF send_type=4}指定用户{ENDIF}
+									</td>
+									<td>{_discount_desn}
+										<br/>
+										<font style='color:red'>满{_min_limit_amount}元减{_discount}元</font>
+									</td>
+		
+									<td>{_date_added}</td>
+									<td>{_date_start}-{_date_end}</td>
+									<td>{_release_total}</td>
+									<td>{_get_total}</td>
+									<td>{_url}</td>
+									<td>{_use_total}</td>
+									<td>{_IF status=3} 是 {ELSE} 否 {ENDIF} </td>
+									<td>{_msg}</td>
+									<td>{_IF has_code=1}
+										<a title="{_code}">详情</a> {ELSE} 暂无兑换码 {ENDIF}</td>
+									<td class="tent-btn block-no">
+										<a class="btn btn-main btn-xs" href="xindex.php?m=coupon&act=edit&coupon_id={_coupon_id}">编辑</a>
+										<a class="btn btn-main btn-xs" href="xindex.php?m=coupon&act=releaseCoupon&coupon_id={_coupon_id}">发放</a>
+										{_IF is_delete=0} {_IF status=1} {_IF is_common_done=0}
+										<a class="btn btn-main btn-xs cancel-coupon" data-toggle="modal" onclick="javascript:return cancelCoupon({_coupon_id})">作废</a>
+										{ENDIF} {ELSE} {_IF is_common_done=0}
+										<a class="btn btn-main btn-xs delete-coupon" data-toggle="modal" data-name="{_name}" id="delete_coupon" onclick="javascript:return undelCoupon({_coupon_id})">启用 {ENDIF}
+											<a class="btn btn-main btn-xs delete-coupon" data-toggle="modal" data-name="{_name}" id="delete_coupon" onclick="javascript:return delCoupon({_coupon_id})">删除 {ENDIF} {ENDIF}
+									</td>
+								</tr>
+								{ENDFOR}
+							</tbody>
+						</table>
+					<!--分页-->
+					<div class="col-md-12" style="margin-top: 15px;">
+						<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+							<ul class="pagination">
+								<li class="paginate_button previous" id="consumer-tab1_previous">
+									<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="首页">|
+										<</a>
+								</li>
+								<li class="paginate_button previous" id="consumer-tab1_previous">
+									{_IF curpage=1}
+									<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页">
+										<</a>
+											{ELSE}
+											<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页">
+												<</a>
+													{ENDIF}
+								</li>
+								{_FOREACH pages}
+								<li class="paginate_button {_IF active}active {ENDIF}">
+									<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+								</li>
+								{ENDFOR}
+								<li class="paginate_button next" id="consumer-tab1_next">
+									{_IF lastPage=1}
+									<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+									{ELSE}
+									<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+									{ENDIF}
+								</li>
+								<li class="paginate_button previous" id="consumer-tab1_previous">
+									<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="尾页">>|</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+			
+		
+		</div>
+	</section>
+
+</div>
+
+<!--作废-->
+<div class="modal fade" id="cancel-coupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content" style="text-align: center;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">提示</h4>
+			</div>
+
+			<div class="modal-body">
+				<sapn>确定作废xxx优惠券吗？</span>
+			</div>
+			<div class="modal-footer">
+				<a data-id="" class="btn btn-primary">确定</a>
+				<a class="btn btn-default" data-dismiss="modal">取消</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--删除-->
+<div class="modal fade" id="delete-coupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content" style="text-align: center;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">提示</h4>
+			</div>
+
+			<div class="modal-body">
+				<span>确定删除xxx优惠券吗？</span>
+			</div>
+			<div class="modal-footer">
+				<a data-id="" class="btn btn-primary">确定</a>
+				<a class="btn btn-default" data-dismiss="modal">取消</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+<script type="text/javascript">
+	//截取地址
+	function getUrlParam(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg); //匹配目标参数
+		if(r != null) return unescape(r[2]);
+		return null; //返回参数值
+	}
+
+	$(function() {
+		$(".search_coupon").click(function() {
+			var type = $("#select_coupon_type").val();
+			var search_name = $('#search_name').val();
+			var select_bijiao = $("#select_bijiao").val();
+			var num = $("#num").val();
+			window.location = "{_indexUrl}&type=" + type + "&search_name=" + search_name + "&select_bijiao=" + select_bijiao + "&num=" + num;
+		})
+	})
+
+	// 删除
+	function delCoupon(coupon_id) {
+		var page = getUrlParam('page');
+		if(page == null) {
+			page = 1;
+		}
+		if(confirm("您真的确定要删除吗？\n\n请确认！") == true) {
+			window.location = "{_delUrl}&coupon_id=" + coupon_id + "&page=" + page;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// 启用
+	function undelCoupon(coupon_id) {
+		var page = getUrlParam('page');
+		if(page == null) {
+			page = 1;
+		}
+		if(confirm("您真的确定要启用吗？\n\n请确认！") == true) {
+			window.location = "{_unDelUrl}&coupon_id=" + coupon_id + "&page=" + page;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// 作废
+	function cancelCoupon(coupon_id) {
+		var page = getUrlParam('page');
+		if(page == null) {
+			page = 1;
+		}
+		if(confirm("您真的确定要作废吗？\n\n请确认！") == true) {
+			window.location = "{_cancelUrl}&coupon_id=" + coupon_id + "&page=" + page;
+			return true;
+		} else {
+			return false;
+		}
+	}
+</script>

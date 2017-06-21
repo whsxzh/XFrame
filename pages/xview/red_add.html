@@ -1,0 +1,144 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+  .box-footer{background: none;border: none;}
+  .index-img1 img{height: 200px}
+ </style>
+<!--发行优惠券-->
+<div class="content-wrapper">
+  <section class="content-header">
+    <span style="font-size: 25px;">{_title}</span>
+    <ol class="breadcrumb">
+      <li>
+        <a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+      </li>
+      <li class="">
+        <a href="#">{_title}</a>
+      </li>
+    </ol>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="box">
+        <div class="box-body box-auto">
+          <form class="form-horizontal" method="post" action="{_packetList}" enctype="multipart/form-data" onsubmit="return check()">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="inputEmail3" class="col-md-1 control-label">标题</label>
+                <div class="col-md-7">
+                  <input type="text" value="{_data.name}" name="name" class="form-control form-input" placeholder="" id="name">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputEmail3" class="col-md-1 control-label">描述</label>
+                <div class="col-md-7">
+                  <input type="text" value="{_data.redpacket_desn}" name="redpacket_desn" class="form-control form-input" placeholder="" id="red_desc">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputEmail3" class="col-md-1 control-label">红包总额</label>
+                <div class="col-md-7">
+                  <input type="text" value="{_data.relase_total}" name="relase_total" id="release_total" class="form-control form-input" placeholder="">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputEmail3" class="col-md-1 control-label">开始时间</label>
+                <div class="col-md-3">
+                  <input type="text" value="{_data.date_start}" name="date_start" class="form-control form-input" id="date_start" placeholder="2017-01-01 00:00:00">
+                </div>
+                <label for="inputEmail3" class="col-md-1 control-label">结束时间</label>
+                <div class="col-md-3">
+                  <input type="text" value="{_data.date_end}" name="date_end" class="form-control form-input" id="date_end" placeholder="2017-01-01 00:00:00">
+                </div>
+              </div>
+               <div class="form-group">
+                <label for="inputEmail3" class="col-md-1 control-label">红包份数</label>
+                <div class="col-md-7">
+                  <input type="text" value="{_data.relase_times}" name="relase_times" id="relase_times" class="form-control form-input" placeholder="">
+                </div>
+              </div>
+                <input type='hidden' name='redpacket_id' value='{_id}'>                 
+             <div class="form-group">
+              <label for="inputEmail3" class="col-md-1 control-label">选择图片</label>
+               <div class="col-md-3 index-img1">
+                    <div id="click" ><img src="{_data.image}" alt="请先添加图片" style="height: 200px"></div>
+                    <a href="javascript:;" class="file">选择图片
+                      <input type="file" id="photo" name="headurl">
+                    </a>
+              </div>
+            </div>
+
+            <div class="box-footer">
+              <div style="float:right;">
+                <button type="submit" class="btn btn-main btn-xs coupon-save">保存</button>
+                <a class="btn btn-main btn-xs coupon-cancel" href="{_packetList}" style="margin-left:15px;">取消</a>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+</body>
+
+<script type="text/javascript">
+
+function check() {
+      //获取到页面中的信息
+      var name = $('#name').val();
+      var date_start = $("#date_start").val();
+      var date_end = $("#date_end").val();
+      var relase_times = $("#relase_times").val();
+      var release_total=$('#release_total').val();
+      if(name==""){
+        alert('请填写红包名称!');
+        return false;
+      }else if(date_start==""){
+        alert('请填写活动开始时间!');
+        return false;
+      }else if(date_end==""){
+        alert('请填写活动结束时间!');
+        return false;
+      }else if(relase_times==""){
+        alert('请填写红包份数！');
+        return false;
+      }else if(release_total==""){
+        alert('请填写红包金额！');
+        return false;
+      }
+    }
+
+</script>
+</html>
+
+<!--图片上传-->
+  <script>
+    document.getElementById('photo').addEventListener('change',function(e){
+    
+    var files = this.files;
+    var img = new Image();
+    var reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onload = function(e){
+      var mb = (e.total/1024)/1024;
+      if(mb>= 2){
+        alert('文件大小大于2M');
+        return;
+      }
+      img.src = this.result;
+      img.style.width ="80%";
+      document.getElementById('click').style.width="100%";
+      document.getElementById('click').style.height="";
+      document.getElementById('click').innerHTML = '';
+      document.getElementById('click').appendChild(img);
+    }
+  });
+
+  </script>
+

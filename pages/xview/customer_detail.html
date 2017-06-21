@@ -1,0 +1,201 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+ 	.box-footer{background: none;border: none;}
+ </style>
+<!--普通用户管理-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">用户管理</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">用户管理</a>
+			</li>
+			<li class="">
+				<a href="{_getList_url}">普通用户</a>
+			</li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="row">
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">用户明细</h3>
+				</div>
+				<div class="box-body box-auto">
+					<form class="form-horizontal" method="post" action="xindex.php?m=customer&act=saveCustomerInfo" enctype="multipart/form-data" onsubmit="return check()">
+						<input type="hidden" name="customer_id" value="{_customer_id}">
+						<input type="hidden" name="page" value="{_page}">
+						<div class="box-body">
+							<div class="form-group">
+								<label for="inputEmail3" class="col-md-1 control-label">账号</label>
+		
+								<div class="col-md-11">
+									<input type="text" value="{_telephone}" name="telephone" class="form-control form-input" id="inputEmail3" placeholder="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-md-1 control-label">用户类型</label>
+		
+								<div class="col-md-11">
+									<select class="form-control form-select" name="customer_group_id" id="testSelect">
+										<!-- <option value="0">全部</option> -->
+										{_IF merchant_ids=1}
+											{_IF proxy_status=0}
+												<option value="1" >普通用户</option>
+												<option value="2" selected>会员用户</option>
+												<option value="3" >企业用户</option>
+											{ELSE}
+												<option value="1" >普通用户</option>
+												<option value="2" >会员用户</option>
+												<option value="3" selected >企业用户</option>
+											{ENDIF}
+										{ELSE}
+											<option value="1" selected >普通用户</option>
+											<option value="2" >会员用户</option>
+											<option value="3" >企业用户</option>
+										{ENDIF}
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group" id="yqm">
+								<label for="inputEmail3" class="col-md-1 control-label">邀请码</label>
+		
+								<div class="col-md-11">
+									<input type="text" value="{_invitecode}" name="invitecode" class="form-control form-input" id="invitecode" onblur="checkinv()">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="inputEmail3" class="col-md-1 control-label">昵称</label>
+		
+								<div class="col-md-11">
+									<input type="text" value="{_firstname}" name="firstname" class="form-control form-input" id="inputEmail3">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-md-1 control-label">姓名</label>
+		
+								<div class="col-md-11">
+									<input type="text" value="{_lastname}" name="lastname" class="form-control form-input" id="inputEmail3">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-md-1 control-label">身份证号</label>
+		
+								<div class="col-md-11">
+									<input type="text" value="{_card}" name="card" class="form-control form-input" id="inputEmail3">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-md-1 control-label">注册时间</label>
+		
+								<div class="col-md-11">
+									<label for="inputEmail3" class="form-control form-input">{_date_added}</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-md-1 control-label">登陆IP</label>
+		
+								<div class="col-md-11">
+									<label for="inputEmail3" class="form-control form-input">{_ip}</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-md-1 control-label">头像</label>
+								<div class="col-md-11" style="position: relative;">
+									<span id="img-responsive" style="color: white;"><img class="img-responsive" src="{_headurl}" alt="图片" style="width: 100px;height: 80px;"></span>
+									<input type="file" id="img" name="headurl" accept="image/*" style="position: absolute;top: 0;left: 15px;width: 100px;height:80px;opacity: 0;cursor: pointer;">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-md-1 control-label">备注</label>
+		
+								<div class="col-md-11">
+									<textarea class="form-control form-input" name="remark" rows="3">{_remark}</textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<!-- <div class="checkbox">
+				                      <label>
+				                        <input type="checkbox" name="status" value="1">是否禁用
+				                      </label>
+				                    </div> -->
+								</div>
+							</div>
+						</div>
+		
+						<div class="box-footer">
+							<div style="float:right">
+								<button type="submit" class="btn btn-main btn-xs pull-left" id='sub'>保存</button>
+								<button type="button" class="btn btn-default btn-xs pull-left" style="margin-left:30px;" onclick="history.back();">返回</button>
+							</div>
+						</div>
+						<input type='hidden' value='{_page}'></input>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+</body>
+
+</html>
+<script type="text/javascript">
+	function check() {
+		var tel = $('input[name="telephone"]').val();
+
+		if(tel == '') {
+			alert("账号不能为空！");
+			return false;
+		}
+	}
+
+	function checkinv(){
+		var invitecode=$('#invitecode').val();
+		var testSelect=$('#testSelect').val();
+		if(testSelect==2 || testSelect==3){
+			//进行验证码验证
+			$.post("{_check_url}",{'invitecode':invitecode},function(msg){
+				if(msg==2){
+					alert("邀请码错误，请重新输入"); 
+					
+				}
+			})
+		}
+	}
+	$(function(){
+		$('#img').change(function() {
+			var file = this.files[0]; //选择上传的文件
+			var r = new FileReader();
+			r.readAsDataURL(file); //Base64
+			$(r).load(function() {
+				$('#img-responsive').html('<img src="' + this.result + '" alt="图片" style="width:100px;border: 1px solid #CCCCCC;"/>');
+			});
+		});
+
+		var vals=$('#testSelect option:selected').val();
+		if(vals==1){
+			$('#yqm').hide();
+		}
+		$('#testSelect').change(function(){
+			var vals=$('#testSelect option:selected').val();
+			if(vals!=1){
+				$('#yqm').show();
+			}else{
+				$('#yqm').hide();
+			}
+		});
+
+	});
+</script>
+

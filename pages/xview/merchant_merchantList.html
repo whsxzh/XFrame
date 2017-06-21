@@ -1,0 +1,187 @@
+ {_INCLUDE header.html}
+<!--商户管理-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">企业用户</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="{_qiye_url}">用户管理</a>
+			</li>
+			<li class="active">企业用户</li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="row">
+			<div class="box">
+				<div class="row block-no">
+					<div class="col-md-12 order-header" style="margin: 0 15px; padding: 8px;" id="box-body">
+						<!--搜索-->
+						<form action="xindex.php?m=merchant&act=merchantList" method="get">
+							<input type="hidden" name="m" value="merchant">
+							<input type="hidden" name="act" value="merchantList">
+							<div class="col-xs-2 col-md-2">
+								<select class="form-control form-select" name="sale_total" id="sort">
+									<option value="0">排序</option>
+									<option value="1">销售额升序</option>
+									<option value="2">销售额降序</option>
+								</select>
+							</div>
+							<div class="col-xs-2  col-md-2">
+								<input type="text" class="form-control form-input" name='merchant_name' value="{_mer_name}" placeholder="请输入企业名称">
+							</div>
+							<div class="col-xs-2  col-md-2">
+								<input type="text" class="form-control form-input" name='username' value="{_username}" placeholder="请输入企业账号">
+							</div>
+							<div class="col-xs-2  col-md-2">
+								<button type="submit" class="btn btn-main btn-sm" id="tent-delect">搜索</button>
+							</div>
+						</form>
+						<!--搜索 end-->
+					</div>
+					<sapn class="btn btn-main btn-sm" id="add" style="position: absolute;right:20px;top: 8px;">新增企业用户</span>
+				</div>
+
+				<!-- 内容 -->
+				<div class="box-body">
+						<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+							<table id="tent-tab1" class="table table-bordered table-striped">
+								<tr>
+									<th class="block-no">企业ID</th>
+									<th>企业名称</th>
+									<th>企业账号</th>
+									<th>销售额</th>
+									<th>备注</th>
+									<th class="block-no">操作</th>
+								</tr>
+								{_FOREACH data}
+								<tr>
+									<td class="block-no">{_merchant_id}</td>
+									<td>{_merchant_name}</td>
+									<td>{_username}</td>
+									<td style="color: #e4dc71;">{_sale_total}</td>
+									<td>{_mer_remark}</td>
+									<td class="tent-btn block-no">
+										<a href="{_goodsList_url}" class="btn btn-main btn-xs">商品列表</a>
+										<a href="{_info_url}" data-toggle="modal" class="btn btn-main btn-xs">企业信息</a>
+										<a href="{_invitecode_url}" data-toggle="modal" class="btn btn-main btn-xs">邀请码管理</a>
+										<a href="javascript:;" onclick="stop({_user_id})" class="s_{_user_id} btn btn-main btn-xs" item="{_status}">{_status_type}</a>
+									</td>
+								</tr>
+								{ENDFOR}
+
+								<!--</tbody>-->
+							</table>
+
+							<!--分页-->
+							<div class="col-md-12" style="margin-top: 20px;">
+								<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+									<ul class="pagination">
+										<li class="paginate_button previous disabled" id="consumer-tab1_previous">
+											<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+										</li>
+
+										{_FOREACH pages}
+										<li class="paginate_button {_IF active}active {ENDIF}">
+											<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+										</li>
+										{ENDFOR}
+
+										<li class="paginate_button next" id="consumer-tab1_next">
+											<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+										</li>
+
+									</ul>
+								</div>
+							</div>
+							<!--分页-->
+						</div>
+						<!-- /. -->
+					</div>
+
+			</div>
+		</div>
+	</section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+<!--商户信息弹框-->
+<div class="modal fade" id="tenant-infor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">商户信息</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">真实姓名</label>
+						<input type="text" class="form-control" id="">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">昵称:</label>
+						<input type="text" class="form-control" id="">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">联系方式:</label>
+						<input type="text" class="form-control" id="">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">账号:</label>
+						<input type="text" class="form-control" id="">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$('#add').click(function() {
+		window.location.href = "{_addMer_url}";
+	})
+</script>
+<!--**********是否禁用************-->
+<script type="text/javascript">
+	function stop(cid) {
+		var type = $('.s_' + cid).attr('item');
+		var url = "{_forbidden_url}";
+		$.ajax({
+			type: "post",
+			url: url,
+			data: {
+				type: type,
+				userid: cid,
+			},
+			// dataType:"json",
+			success: function(msg) {
+				if(msg == 1) {
+					if(type == 1) {
+						$('.s_' + cid).attr('item', 0);
+						$('.s_' + cid).html('启用');
+					} else {
+						$('.s_' + cid).attr('item', 1);
+						$('.s_' + cid).html('禁用');
+					}
+				} else {
+					layer.msg('修改失败', { offset: 't', time: 2000, anim: 6 });
+				}
+			}
+		})
+	}
+</script>
+<!--**********是否禁用************-->
+<script type="text/javascript">
+	var sort = "{_sale_total}";
+	$('#sort').val(sort);
+</script>

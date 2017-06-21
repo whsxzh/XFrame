@@ -1,0 +1,123 @@
+ {_INCLUDE header.html}
+
+			<!--内容-->
+			<div class="content-wrapper">
+				<section class="content-header">
+					<h1>位置管理</h1>
+					<ol class="breadcrumb">
+						<li>
+							<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+						</li>
+						<li>
+							<a href="#">用户管理</a>
+						</li>
+						<li class="active">销管管理</li>
+					</ol>
+				</section>
+				<section class="content">
+					<div class="row">
+
+						<div class="col-xs-12">
+							<div class="box box-primary">
+								<!--中心内容-->
+								<div class="row">
+									<div class="col-md-3"><img src="img/phone.png"></div>
+
+									<div class="col-md-9">
+										<div class="nav-tabs-custom" style="margin-top: 20px;">
+											<a class="btn btn-primary right" style="margin-right: 20px;">新增位置</a>
+											<ul class="nav nav-tabs">
+												<li >
+													<a href="xindex.php?m=common&act=guanggao">广告管理</a>
+												</li>
+												<li class="active">
+													<a href="xindex.php?m=common&act=weizhi">位置管理</a>
+												</li>
+											</ul>
+											<div class="tab-content">
+												<div class="active tab-pane" id="pt_management">
+													<div class="col-md-12" class="index-tab2">
+														<div class="index-tab" style="padding-top: 20px;margin-left: -30px;">
+															<div class="box-body">
+																<table id="index-tab2" class="table table-bordered table-striped">
+																	<thead>
+																		<tr>
+																			<th>位置ID</th>
+																			<th>位置名称</th>
+																			<th>状态</th>
+																			<th>操作</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr>
+																			<td>1</td>
+																			<td>我是标题我是标题</td>
+																			<td>开启</td>
+																			<td class="sale-btn">
+																				<a href="#" data-toggle="modal" data-target="#pd-edit" class="btn btn-primary btn-xs">编辑</a>
+																				<a href="#" class="btn btn-primary btn-xs">禁用</a>
+																			</td>
+																		</tr>
+
+																	</tbody>
+																</table>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				</section>
+				</div>
+
+				<!--广告位置编辑-->
+			<div class="modal fade" id="pd-edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="exampleModalLabel">位置管理编辑</h4>
+			      </div>
+			      <div class="modal-body">
+			        <form>
+			          <div class="form-group">
+			            <label for="pd-id" class="control-label">位置ID：</label>
+			            <input type="text" class="form-control" id="pd-id">
+			          </div>
+			          <div class="form-group">
+			            <label for="pd-name" class="control-label">位置名称：</label>
+			            <input type="text" class="form-control" id="pa-name">
+			          </div>
+			        </form>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			        <button type="button" class="btn btn-primary">保存</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+				<!--底部-->
+				    {_INCLUDE footer.html}
+
+			</div>
+
+			<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+			<script src="bootstrap/js/bootstrap.min.js"></script>
+			<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+			<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+			<script src="dist/js/app.min.js"></script>
+			<script src="dist/js/demo.js"></script>
+			<script>
+				$(function() {
+					$("#index-tab1").DataTable();
+					$("#index-tab2").DataTable();
+				})
+			</script>
+	</body>
+
+</html>

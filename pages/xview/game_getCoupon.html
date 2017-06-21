@@ -1,0 +1,257 @@
+   {_INCLUDE header.html}
+  <style type="text/css">
+   	.order-header{background: rgba(0,0,0,0.1);padding: 8px 0;margin-bottom: 10px;}
+   	tbody tr td{text-align: left !important;}
+   	.row{margin-right: 0;}
+   </style>
+  <!--我的商品库-->
+  <div class="content-wrapper">
+  	
+    <section class="content-header">
+     <span style="font-size: 25px;">选择优惠券</span>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">大转盘&翻牌子管理</a></li>
+        <li class="active">选择优惠券</li>
+      </ol>
+    </section>
+    
+    <section class="content">
+      <div class="row">
+          <div class="box box-primary">
+          	<!--头部-->
+           <div class="col-md-12 col-xs-12 order-header block-no">
+				<!--search new -->
+					<div class="col-md-2 col-xs-6">
+						<!-- <input type="text" class="form-control form-input"  name='lastname'  id="couponName" placeholder="请输入优惠券名称" >-->
+							<select name="type" id="coupon_type" class="form-control form-select">
+								<option value="">全部优惠券</option>
+								<option value="1" {_IF searchType=1} selected="selected" {ENDIF} >全部商品</option>
+								<option value="2" {_IF searchType=2} selected="selected" {ENDIF} >部分商品</option>
+								<option value="3" {_IF searchType=3} selected="selected" {ENDIF} >部分分类</option>
+								<option value="4" {_IF searchType=4} selected="selected" {ENDIF} >部分品牌</option>
+							</select>
+					</div>
+					<div class="col-md-2 col-xs-2">
+						<button type="button" class="btn btn-main btn-sm search_order" id="search">搜索</button>
+					</div>
+					<div class="col-md-8 col-xs-2 text-right"> <button type="submit" class="btn btn-main btn-sm" id="save_goods">保存</button></div>
+			</div>
+
+            <div class="order-tab">
+	            <div class="box-body">
+	            	<div class="box-auto">
+	               <table id="mygood-tab2" class="table table-bordered table-striped">
+	                <thead>
+	                <tr>
+						<td></td>
+						<!--<th>优惠券ID</th>-->
+	                	<th>优惠券名称</th>
+	                    <th>优惠券类别</th>
+                        <th>内容</th>
+                    	<th>有效期</th>
+	                </tr>
+	                </thead>
+	                <tbody>
+					{_FOREACH dt}
+		               <tr><!--{_image}?x-oss-process=image/resize,w_80,limit_0-->
+							<td><input type="checkbox" name="goods-tb2" value="{_coupon_id}" data-value="{_name}" class="order-check"  id="coupon_{_coupon_id}"><span class="order-number">{_coupon_id} <img src="{_image}?x-oss-process=image/resize,w_80,limit_0" width="80" > </span></td>
+							<!--<td>{_coupon_id}</td>-->
+							<td>{_name}</td>
+						   <td>{_typeName}</td>
+						   <td>{_discount_desn}</td>
+						   <td>{_date_start} -- {_date_end}</td>
+						</tr>
+					{ENDFOR}
+	               </tbody>
+	              </table>
+	              
+	                <div class="row">
+		                <div class="col-sm-5">
+		                  <div class="dataTables_info" id="consumer-tab1_info" role="status" aria-live="polite">共5页</div>
+		                </div>
+		                <!--分页-->
+		                <div class="col-sm-7 text-right">
+		                  <div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+		                    <ul class="pagination">
+		                     <li class="paginate_button next" id="consumer-tab1_first">
+								<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">首页</a>
+							</li>
+							{_IF firstPage=1}
+							<li class="paginate_button previous" id="consumer-tab1_previous">
+								<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+							</li>
+							{ENDIF}
+							{_FOREACH pages}
+							<li class="paginate_button {_IF active}active {ENDIF}">
+								<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+							</li>
+							{ENDFOR}
+							{_IF is_end_page=1}
+								<li class="paginate_button next" id="consumer-tab1_next">
+									<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+								</li>
+							{ENDIF}
+
+							<li class="paginate_button next" id="consumer-tab1_end">
+								<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">尾页</a>
+							</li>
+		                    </ul>
+		                  </div>
+		                </div>
+		              </div>
+              
+	             </div>
+	           
+	              
+	            </div>
+	            <!-- /.2-->
+	            <!--<div class="row">
+	            	  <div class="col-md-4 col-xs-12 order-btn">
+			            	<div><input type="checkbox" value="" id="" class="goods-check2">全选</div>
+			           </div>
+	            </div>-->
+
+
+            </div>
+         
+        </div>
+      </div>
+  
+    </section>
+  </div>
+
+{_INCLUDE footer.html}
+
+<!-- 商品搜索 -->
+<script type="text/javascript">
+	$('#search').click(function(msg){
+		var lastname=$('#couponName').val();
+        var coupon_type=$('#coupon_type').val();
+		var url="{_getGoodsList}";
+		location.href=url+"&type="+coupon_type;
+	});
+
+    $(function () {
+        $(".order-check").click(function () {
+            var that = this;
+            $("input[name='goods-tb2']").each(function () {
+                this.checked = false;
+            });
+            that.checked = true;
+            // alert(that.value);
+        });
+
+        $('#save_goods').click(function (msg) {
+            var obj = document.getElementsByName('goods-tb2');
+            var s = '';
+            for (var i = 0; i < obj.length; i++) {
+                if (obj[i].checked) {
+                    s += obj[i].value + ','; //如果选中，将value添加到变量s中
+                }
+            }
+            ss = s.split(",");
+            if (ss.length - 1 > 1) {
+                alert("只能选择一个商品");
+                return;
+            }
+            if (ss.length - 1 == 0) {
+                alert("请先选择一个商品");
+                return;
+            }
+            //s.replace(',', '')
+            var url = "{_getGoodsList}";
+            //location.href = url + "&shangpin=" + s;
+            var productName = $('#coupon_'+s.replace(',', '')).attr('data-value');
+            $.post(
+                url,
+                {opType:'getCoupon', couponId:s.replace(',', ''), couponName:productName},
+                function (json) {
+                    if(0 == json.retcode){
+                        location.href = '{_backAddPrizeUrl}&from=getCoupon&luckDrawId='+json['data']['luckdraw_description_id'];
+                    }else{
+                        alert(json.msg);
+                    }
+                },
+                'json'
+            );
+
+        });
+    });
+</script>
+
+<!-- 商品保存跳转 -->
+<script type="text/javascript">
+		/*$('#save_goods').click(function(msg){
+			var obj=document.getElementsByName('goods-tb2');
+			var s='';
+			for(var i=0; i<obj.length; i++){
+				if(obj[i].checked){
+					s+=obj[i].value+','; //如果选中，将value添加到变量s中
+				}
+			} 
+			ss=s.split(",");
+			if(ss.length-1>1){
+				alert("只能选择一个商品");return;
+			}
+
+			if(ss.length-1==0){
+				alert("请先选择一个商品");return;
+			}
+			if({_banner_image_id}>0){
+				var url="{_updateAd}"
+			}else{
+				var url="{_addAd}";
+			}
+
+			location.href=url+"&shangpin="+s+"&banner_image_id="+{_banner_image_id}+"&banner_id="+{_banner_id};
+			
+		});*/
+</script>
+
+<script>
+	/*$(function() {
+		$(".goods-check1").click(function() {
+			if(this.checked) {
+				$("input[name='goods-tb1']").each(function() {
+					
+	        $(this).prop("checked", true);
+	        $(this).attr("checked", true);
+	        
+				});
+			
+			} else {
+				$("input[name='goods-tb1']").each(function() {
+			
+		     $(this).removeAttr("checked",false);  
+		     
+				});
+				
+			}
+		});
+	})
+
+	$(function() {
+		$(".goods-check2").click(function() {
+			if(this.checked) {
+				$("input[name='goods-tb2']").each(function() {
+					
+	        $(this).prop("checked", true);
+	        $(this).attr("checked", true);
+	        
+				});
+			
+			} else {
+				$("input[name='goods-tb2']").each(function() {
+			
+		     $(this).removeAttr("checked",false);  
+		     
+				});
+				
+			}
+		});
+	})*/
+	
+
+	
+</script>

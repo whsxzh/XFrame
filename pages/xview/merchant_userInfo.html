@@ -1,0 +1,124 @@
+   {_INCLUDE header.html}
+  <div class="content-wrapper">
+    <section class="content-header">
+       <span style="font-size: 25px;">企业用户信息</span>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">企业用户</a></li>
+        <li class="active">企业信息</li>
+      </ol>
+    </section>
+   
+    <section class="content">
+      <div class="row">
+          <div class="box box-primary">
+              <div class="box-body"> 
+                <form action="{_form_url}" method="post" id="form01" onsubmit="return ckform()">
+                <div class="form-group">
+                    <label class="control-label">账号：</label>
+                    <input type="text" name="username" value="{_username}" class="colo-md-1 form-control form-input" id="username">
+                    <input type="hidden" name="merchant_id" value="{_mid}" id="mid">
+                    <input type="hidden" name="user_id" value="{_user_id}">
+                    <input type="hidden" name="re_page" value="{_re_page}">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">账号类型</label>
+                    <select class="form-control form-input" name="user_group_id" id="user_gid">
+                      {_FOREACH grouplist}
+                    <option value="{_user_group_id}">{_name}</option>
+                      {ENDFOR}
+                  </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">密码</label>
+                    <input type="password" name="password" id="password" class="form-control form-input" placeholder="请输入密码">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">企业名称：</label>
+                    <input type="text" name="merchant_name" id="merchant_name" value="{_mer_name}" class="form-control form-input">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">联系电话：</label>
+                    <input type="text" name="mer_phone" id="mer_phone" value="{_mer_phone}" class="form-control form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label class="control-label">地址：</label>
+                    <input type="text" name="mer_address" id="mer_address" value="{_mer_address}" class="form-control form-input">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">商户类型：</label>
+                    <select class="form-control form-input" name="merchant_type" id="user_gid">
+                    <option value="0" slected >请选择商户类型</option>
+                    <option value="1">企业（组织，集团，机构，单位，慈善等）</option>
+                    <option value="2">个人（网红，知名主播，自媒体，大V等）</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">备注：</label>
+                    <input type="text" name="mer_remark" id="mer_remark" value="{_mer_remark}" class="form-control form-input">
+                </div>
+                
+              </div>
+              
+              <div class="row">
+              	<div class="col-md-12">
+              		<span class="btn btn-default btn-xs number-save clearfix" onclick="javascript:history.go(-1)">返回</span>
+              		<!-- <button class="btn btn-primary btn-sm number-save clearfix">保存</button> -->
+                  <input type="submit" value="保存" class="btn btn-main btn-xs number-save clearfix">
+              	</div>
+              </form>
+              </div>
+
+          </div>
+        </div> 
+    </section>
+    
+  </div>
+
+  <!--底部-->
+  {_INCLUDE footer.html}
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+function ckform(){
+  var mid = $('#mid').val();
+  var merchant_name = $('#merchant_name').val();
+  var password = $('#password').val();
+  var username = $('#username').val();
+  var user_group_id = $('#user_gid').val();
+
+  if(username == ''){
+    layer.msg('账号不能为空', {offset: 't',time:2000,anim: 6});
+    return false;
+  }
+  if(user_group_id == null){
+    layer.msg('请选择账号类型', {offset: 't',time:2000,anim: 6});
+    return false;
+  }
+  if(mid !=''){
+    if(password.length>0 && password.length <6){
+      layer.msg('密码长度不能小于6位', {offset: 't',time:2000,anim: 6});
+      return false;
+    }
+  }else{
+    if(password.length <6){
+      layer.msg('密码长度不能小于6位', {offset: 't',time:2000,anim: 6});
+      return false;
+    }
+  }
+  
+  if(merchant_name == ''){
+    layer.msg('企业名称不能为空', {offset: 't',time:2000,anim: 6});
+    return false;
+  } 
+}
+//显示自身角色
+$(document).ready(function(){
+  var user_group_id = "{_user_group_id}";
+  $('#user_gid').val(user_group_id);
+})
+</script>
+

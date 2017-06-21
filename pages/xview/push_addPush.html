@@ -1,0 +1,246 @@
+ {_INCLUDE header.html}
+<style>
+	input:focus {
+		outline: none;
+	}
+	
+	
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding-top: 8px;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		cursor: pointer;
+		color: white;
+	}
+	
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	.order-state a{color: white;}
+	table tr td:nth-child(2){text-align: left;}
+	.form-input1{height: 30px;width:15%;padding:0 5px;}
+	.group{margin-right: 30px;}
+</style>
+<!--我的商品库-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">推送编辑</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">系统管理管理</a>
+			</li>
+			<li class="active">推送编辑</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box box-primary">
+					<div class="col-md-12 order-header">
+						<div class="col-md-6 col-xs-12 order-box" style="padding-bottom: 10px;">
+							<ul class="clearfix">
+								<a href="{_add_url}"><li class="col-md-2 col-xs-6 active" data-id="1">推送编辑</li></a>
+								<a href="{_list_url}"><li class="col-md-2 col-xs-6" data-id="2">推送列表</li></a>
+							</ul>
+						</div>
+					</div>
+
+					<div class="tab-content">
+						<div class="active tab-pane" id="activity">
+							<table id="mygood-tab1" class="table table-bordered table-striped">
+								<tr>
+									<td>推送标题</td>
+									<td><input type="text" id="title" name="title" class="form-input"  style="width:380px"/></td>
+								</tr>
+								<tr>
+									<td>推送内容</td>
+									<td>
+										<div style="color: white;">注：标题字数尽量控制在14字以内，内容数字控制在60字以内。</div>
+										<textarea name="content" id="content" style="resize:none" rows="3" cols="" class="col-md-6 form-input" ></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td  rowspan="4" style="line-height: 150px;">链接</td>
+									<td>
+										<input type="radio" name="ts-radio"  checked="checked" value="1"/>
+										<select name="cat_id" id="cat_id" class="form-select form-input1" style="width:362px">
+											{_FOREACH catelist}
+											<option value="{_category_id}">{_name}</option>
+											{ENDFOR}
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: left;">
+										<input type="radio" name="ts-radio" value="2"/>
+										<input type="text" class="form-input form-input1" name="pro_id" id="pro_id" placeholder="商品ID" style="width:362px" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: left;">
+										<input type="radio"  name="ts-radio" value="3"/>
+										<input type="text" class="form-input form-input1" name="out_link" id="out_link" placeholder="外部链接（h5） " style="width:362px" />
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: left;">
+										<input type="radio" name="ts-radio" id="index" value="4"/>
+										<label for="index">首页</label>
+									</td>
+								</tr>
+								<tr>
+									<td>推送人群</td>
+									<td class="clearfix">
+										<div class="left group">
+											<input type="radio" value="1" name="renqun" checked="checked" id="all"/>
+											<label for="all">全部用户</label>
+										</div>
+										<div class="left group">
+											<input type="radio" value="2" name="renqun" id="number"/>
+											<label for="number">会员用户</label>
+										</div>
+										<div class="left group">
+											<input type="radio" value="3" name="renqun" id="nonumber"/>
+											<label for="nonumber">非会员用户</label>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>推送时间</td>
+									<td>
+										<div class="left group">
+											<input type="radio" name="status" value="1" checked="checked" class="liji"/>
+											<label for="liji">立即推送</label>
+										</div>
+										<div class="left group">
+											<input type="radio" name="status" value="2" id="times" class="dingshi"/>
+											<label for="times">定时推送</label>
+										</div>
+										<input type="text" name="sendtime" class="form-input form-input1" id="datepicker" style="display: none;"
+										 />
+									</td>
+								</tr>
+								
+							</table>
+							<div class="row">
+								<div class="col-md-12 text-right" style="margin-bottom: 10px;">
+									<button class="btn btn-main btn-sm" id="save" onFocus="this.blur()">保存</button>
+								</div>
+							</div>
+						</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+ {_INCLUDE footer.html}
+
+<script type="text/javascript">
+	$(function(){
+		//选项卡
+		$('.order-box ul li').on('click',function(){
+			$(this).addClass('active').siblings().removeClass('active');
+		});
+		//定时推送
+		// $('#times').on('click',function(){
+		// 	if ($('#times').is(':checked')) {
+		// 	   $('#datepicker').show();
+		// 	}
+		// });
+		// $('#liji').on('click',function(){
+		// 	if ($('#liji').is(':checked')) {
+		// 	   $('#datepicker').hide();
+		// 	}
+		// });
+		 $('#datepicker').datepicker({
+		      autoclose: true
+		   });
+		$('.liji').click(function(){
+			$('#datepicker').hide();
+		})
+		//定时推送
+		$('.dingshi').click(function(){
+			$('#datepicker').show();
+		})
+	});
+</script>
+<script>
+    $(function(){
+        $("#save").click(function(){
+            var id = '';
+            var link = '';
+            var time = '';
+            var title = $("#title").val();
+            var content = $("#content").val();
+            var type = $("input[name='ts-radio']:checked").val();
+            if(type == 1){
+                var id = $("#cat_id").find("option:selected").val();
+            }else if(type == 2){
+                var id = $("#pro_id").val();
+                if(id == ''){
+                    layer.msg('商品id不能为空',{offset:'t',time:2000,anim:6});
+                    return false;
+                }
+            }else if(type == 3){
+                var link = $("#out_link").val();
+                if(link == ''){
+                	layer.msg('H5链接不能为空',{offset:'t',time:2000,anim:6});
+                    return false;
+                }
+                
+            }
+
+            var object = $("input[name='renqun']:checked").val();
+
+            var send_status = $("input[name='status']:checked").val();
+
+            if(send_status == 2){
+                time = $("#datepicker").val();
+            }
+
+            if(title == ''){
+                layer.msg('推送标题不能为空',{offset:'t',time:2000,anim:6});
+               	return false;
+            }
+            if(content == ''){
+                layer.msg('推送内容不能为空',{offset:'t',time:2000,anim:6});
+                return false;
+            }
+            var url = "{_add_url}";
+
+            $.ajax({
+                url:url,
+                dataType:'json',
+                type:'post',
+                data:{title:title,content:content,id:id,link:link,time:time,type:type,object:object,send_status:send_status},
+                success:function (msg){
+                	console.log(msg);
+                	return false;
+                    // if(msg['retcode'] != 0){
+                    //     alert('操作失败')
+                    // }else{
+                    //     alert('操作成功');
+                    //     window.location.reload();
+                    // }
+                }
+            })
+        })
+    })
+</script>

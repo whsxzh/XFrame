@@ -1,0 +1,199 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+ 	.phone-box img{width: 100%;}
+ 	.order-header {background: rgba(0, 0, 0, 0.1);padding: 0; padding-top: 8px;margin-bottom: 10px;}
+ 	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+ 	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		cursor: pointer;
+		color: white;
+	}
+ </style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">我的板块</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">我的板块</a>
+			</li>
+			<li class="active">板块首页</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<!--中心内容-->
+				<div class="row">
+					<div class="col-md-3 phone-box block-no"><img src="img/phone.png"></div>
+					<div class="col-md-9 col-xs-12">
+						<div style="margin-top: 20px;background: rgba(0,0,0,0.1);">
+							<div class="col-md-12 order-header">
+								<div class="col-md-10 col-xs-8 order-box" style="padding-bottom: 10px;">
+									<ul class="clearfix">
+										<li class="col-md-2 col-xs-6 active" data-id="1">我的板块</li>
+									</ul>
+								</div>
+								<div class="col-md-2 col-xs-4 text-right block-no">
+									<a href="{_meAddUrl}" class="btn btn-main btn-ms">申请我的板块</a>
+								</div>
+							</div>
+							
+								<div class="box-body">
+									<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+									<table id="mygood-tab1" class="table table-bordered table-striped">
+												<tr>
+													<th>板块图片</th>
+													<th>活动名称</th>
+													<th>商品链接类型</th>
+													<th>商家类型</th>
+													<th>开启状态</th>
+													<th>审核状态</th>
+													<th>申请日期</th>
+													<th class="block-no">操作</th>
+												</tr>
+												{_FOREACH plate}
+												<tr>
+													<td><img src="{_plate_img}" alt="图片" title="图片" style="width: 100px;height: 50px;"></td>
+													<td title="{_plate_name}">{_plate_name}</td>
+													<td title="{_prdlink_type}">{_prdlink_type}</td>
+													<td title="{_merchant_type}">{_merchant_type}</td>
+													<td title="{_IF is_opened=1} 开启 {ELSE} 禁用 {ENDIF}">{_IF is_opened=1} 开启 {ELSE} 禁用 {ENDIF}</td>
+													<td title="{_IF is_checked=0} 待审核 {ENDIF} {_IF is_checked=1} 审核通过 {ENDIF} {_IF is_checked=-1} 审核不通过:{_check_reason} {ENDIF}
+													">{_IF is_checked=0} 待审核 {ENDIF} {_IF is_checked=1} 审核通过 {ENDIF}  {_IF is_checked=-1}审核不通过<span style="color: #e4dc71;cursor: pointer;" data-toggle="modal" data-target="#express-number">?</span>{ENDIF}			
+													</td>
+													<td>{_date_created}</td>
+													<td class="sale-btn block-no">
+														{_IF is_opened=1}
+														<a href="xindex.php?m=me&act=editProduct&plate_id={_plate_id}" class="btn btn-main btn-xs">编辑板块商品</a>
+														<a href="xindex.php?m=me&act=edit&plate_id={_plate_id}" class="btn btn-main btn-xs">编辑</a>
+														<a href="xindex.php?m=me&act=del&plate_id={_plate_id}" class="btn btn-main btn-xs">删除</a>
+														{ENDIF}
+														{_IF is_opened=1}<a class="btn btn-main btn-xs" id="forbidden-me" onclick="javascript:return forbidden({_plate_id})">禁用</a>{ENDIF}
+														{_IF is_opened=0}<a class="btn btn-main btn-xs" id="unforbidden-me" onclick="javascript:return unForbidden({_plate_id})">开启</a>{ENDIF}
+													</td>
+												</tr>
+												{ENDFOR}
+										</table>
+									<div class="col-md-12" style="margin-bottom: 10px;">
+											<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+												<ul class="pagination">
+													<li class="paginate_button previous" id="consumer-tab1_previous">
+													<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="首页">|<</a>
+												</li>
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													{_IF curpage=1}
+													<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+													{ELSE}
+													<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+													{ENDIF}
+												</li>
+												{_FOREACH pages}
+												<li class="paginate_button {_IF active}active {ENDIF}">
+													<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+												</li>
+												{ENDFOR}
+												<li class="paginate_button next" id="consumer-tab1_next">
+													{_IF lastPage=1}
+													<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+													{ELSE}
+													<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+													{ENDIF}										
+												</li>
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="尾页">>|</a>
+												</li>
+												</ul>
+											</div>
+										</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	</div>
+	
+	<!-- 编辑快递单号-modal -->
+	<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="express-number">
+	  <div class="modal-dialog modal-sm" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="">审核不通过</h4>
+	      </div>
+	      
+	      <div class="modal-body">
+	       	  你上传的商品不符合我们的要求！
+	      </div>
+	      
+	       <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">知道了</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	
+	<!--底部-->
+	{_INCLUDE footer.html}
+</div>
+</body>
+<script type="text/javascript">
+// 禁用
+function forbidden(plate_id){
+	var forbiddenUrl = "{_meForbiddenUrl}";
+ 	if (confirm("您真的确定要禁用吗？\n\n请确认！")==true){
+ 		$.ajax({
+	        url: forbiddenUrl,
+	        type: 'post',
+	        data: {plate_id:plate_id},
+	        dataType: 'json',
+	        success: function (data){
+	        	window.location = data.data;
+	        },
+	        error:function(){
+	            alert("请求失败");
+	        }
+    	});
+    	return true;
+ 	}else{
+  		return false;
+ 	} 
+}
+
+// 开启
+function unForbidden(plate_id){
+	var unForbiddenUrl = "{_meUnforbiddenUrl}";
+ 	if (confirm("您真的确定要开启吗？\n\n请确认！")==true){
+ 		$.ajax({
+	        url: unForbiddenUrl,
+	        type: 'post',
+	        data: {plate_id:plate_id},
+	        dataType: 'json',
+	        success: function (data){
+	        	alert(data.msg);
+	        	window.location = data.data;
+	        },
+	        error:function(){
+	            alert("请求失败");
+	        }
+    	}); 
+    	return true;
+ 	}else{
+  		return false;
+ 	} 
+}
+</script>
+</html>

@@ -1,0 +1,239 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+.order-header{background: rgba(0,0,0,0.1);padding: 8px 0;margin-bottom: 10px;}
+.order-header ul{padding: 0; margin: 0;}
+.order-header ul li{float: left;text-align: center;background: rgba(0,0,0,0.1);padding: 8px 0;color: white;cursor: pointer;}
+.order-header ul li.active{background: rgba(0,0,0,0.2);}
+.order-btn{margin-top: 10px;}
+ </style>
+<!--内容-->
+<div class="content-wrapper" style="padding:0 15px;">
+	<section class="content-header">
+		<span style="font-size: 25px;">广告管理</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">CMS管理</a>
+			</li>
+			<li class="active">广告管理</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+				<div class="box box-primary">
+					<!--中心内容-->
+					<div class="row">
+						<div class="col-md-3 col-xs-12 block-no"><img src="{_banner_image}" style="width: 100%;"></div>
+						<div class="col-md-9 col-xs-12"style="display: none;">
+							<div class="nav-tabs-custom" style="margin-top: 20px;border: 1px solid red;">
+								<a href="{_addAd}" class="btn btn-primary right" style="margin-right: 20px;">新增广告</a>
+								<a href="{_getListSite}" class="btn btn-primary right" style="margin-right: 20px;">返回</a>
+								<ul class="nav nav-tabs">
+									
+									<li>
+										<a href={_getListSite}>位置管理</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="active tab-pane" id="cd_management">
+										<div class="col-md-12" class="index-tab1">
+											<div class="index-tab" style="padding-top: 20px;margin-left: -30px;">
+												<div class="box-body">
+													<table id="consumer-tab" class="table table-bordered table-striped">
+														<thead>
+															<tr>
+																<th>图片</th>
+																<th>位置</th>
+																<th>广告标题</th>
+																<th>链接</th>
+																<th>详情</th>
+																<th>排序</th>
+																<th>状态</th>
+																<th>操作</th>
+															</tr>
+														</thead>
+														<tbody>
+															{_IF category} {_FOREACH category}
+															<td><img src="{_image}" style="width: 80px;height: 50px;"></td>
+															<td>{_banner_name}</td>
+															<td>{_title}</td>
+															<td>"11"</td>
+															<td>{_xiangqing}</td>
+															<td>{_sort_order}
+															<span data-value="{_banner_image_id}" class="add_sort"> <a href="#">↑</a></span>&nbsp;&nbsp; {_IF sort_order=0}
+																<span><a href="#">—</a></span>&nbsp;&nbsp; {ELSE}
+																<span data-value="{_banner_image_id}" class="reduce_sort"> <a href="#">↓</a></span>&nbsp;&nbsp; {ENDIF}
+															</td>
+
+															<td class='status' data-id="{_banner_id}">{_IF status=1} 开启{ELSE} 禁用{ENDIF}</td>
+															<td class="sale-btn">
+																<a href="xindex.php?m=common&act=updateAd&banner_image_id={_banner_image_id}&banner_id={_banner_id}" class="btn btn-primary btn-xs">编辑</a>
+																{_IF status=1}
+																<a href="#" class="btn btn-primary btn-xs oprate" data-value="{_banner_image_id}">禁用</a>
+																{ELSE}
+																<a href="#" class="btn btn-primary btn-xs oprate" data-value="{_banner_image_id}">启用</a>
+																{ENDIF}
+															</td>
+															</tr>
+															{ENDFOR}
+															{ELSE}
+															<tr><td colspan="11" >没有数据</td></tr>
+															{ENDIF}
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-9 col-xs-12">
+							<div class="col-md-12 order-header">
+								<div class="col-md-8 col-xs-8">
+									<ul class="clearfix">
+										<li class="col-md-2 col-xs-6 active">{_name}</li>
+									</ul>
+								</div>
+								<!--header new end-->
+
+								<!--search new -->
+								<div class="col-md-2 col-xs-4 col-md-offset-2" style="text-align: right;">
+									<a href="{_addAd}" class="btn btn-main btn-sm search_order block-no">新增广告</a>
+									<a href="{_getListSite}" class="btn btn-main btn-sm search_order block-no">返回</a>
+								</div>
+							</div>
+							<div class="box-body">
+				 		<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+									<table id="order-tab1" class="table table-bordered table-striped">
+										<tr>
+											<th>图片</th>
+											<th>位置</th>
+											<th>广告标题</th>
+											<th>链接</th>
+											<th>详情</th>
+											<th class="block-no">排序</th>
+											<th>状态</th>
+											<th class="block-no">操作</th>
+										</tr>
+										<!--</thead>
+							                <tbody>-->
+							                <tr>
+												{_IF category} {_FOREACH category}
+												<td><img src="{_image}" style="width: 80px;height: 50px;"></td>
+												<td>{_banner_name}</td>
+												<td>{_title}</td>
+												<td>{_lianjie}</td>
+												<td>{_xiangqing}</td>
+												<td class="block-no">{_sort_order}&nbsp;&nbsp;
+													<span data-value="{_banner_image_id}" class="add_sort"> <a href="#">↑</a></span>&nbsp;&nbsp; {_IF sort_order=0}
+													<span><a href="#">—</a></span>&nbsp;&nbsp; {ELSE}
+													<span data-value="{_banner_image_id}" class="reduce_sort"> <a href="#">↓</a></span>&nbsp;&nbsp; {ENDIF}
+	
+												</td>
+
+												<td class='status' data-id="{_banner_id}">{_IF status=1} 开启{ELSE} 禁用{ENDIF}</td>
+												<td class="sale-btn block-no">
+													<a href="xindex.php?m=common&act=updateAd&banner_image_id={_banner_image_id}&banner_id={_banner_id}" class="btn btn-main btn-xs">编辑</a>
+													{_IF status=1}
+													<a href="#" class="btn btn-main btn-xs oprate" data-value="{_banner_image_id}">禁用</a>
+													{ELSE}
+													<a href="#" class="btn btn-main btn-xs oprate" data-value="{_banner_image_id}">启用</a>
+													{ENDIF}
+												</td>
+											</tr>
+											{ENDFOR}
+											{ELSE}
+												<tr><td colspan="11" >没有数据</td></tr>
+											{ENDIF}
+										<!--</tbody>-->
+									</table>
+
+									<div class="row">
+										<!--分页-->
+										<div class="col-md-12" style="margin-top: 15px;">
+											<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+												<ul class="pagination">
+													<li class="paginate_button previous " id="consumer-tab1_previous">
+														<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+													</li>
+
+													{_FOREACH pages}
+													<li class="paginate_button {_IF active}active {ENDIF}">
+														<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+													</li>
+													{ENDFOR}
+
+													<li class="paginate_button next" id="consumer-tab1_next">
+														<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+													</li>
+
+												</ul>
+											</div>
+										</div>
+
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+		</div>
+	</section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+<!-- 点击禁用按钮，发送ajax请求更改状态 -->
+<script type="text/javascript">
+	$(".oprate").click(function() {
+		var banner_image_id = $(this).attr("data-value");
+		var url = "{_updateAdStatus}";
+		var url1 = "{_homepage}";
+		$.post(url, { banner_image_id: banner_image_id }, function(msg) {
+			if(msg == "disable") {
+				msg = "禁用";
+			} else if(msg == 'enable') {
+				msg = "启用"
+			}
+			alert("状态已经" + msg + " ！");
+			location.href = url1+"&banner_id="+{_banner_id};
+		});
+	})
+</script>
+
+<!-- 点击上升，排序上升 -->
+<script type="text/javascript">
+	$(".add_sort").click(function() {
+		var banner_image_id = $(this).attr("data-value");
+		var data = { banner_image_id: banner_image_id, type: "add" }
+		var url = "{_updateAdSort}";
+		var url1 = "{_homepage}";
+		$.post(url, data, function(msg) {
+			
+			location.href = url1+"&banner_id="+{_banner_id};
+		});
+
+	});
+</script>
+
+<!-- 点击下降，排序下降 -->
+<script type="text/javascript">
+	$(".reduce_sort").click(function() {
+		var banner_image_id = $(this).attr("data-value");
+		var data = { banner_image_id: banner_image_id, type: "reduce" }
+		var url = "{_updateAdSort}";
+		var url1 = "{_homepage}";
+		$.post(url, data, function(msg) {
+			location.href = url1+"&banner_id="+{_banner_id};
+		});
+
+	});
+</script>

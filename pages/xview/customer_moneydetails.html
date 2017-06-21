@@ -1,0 +1,138 @@
+ {_INCLUDE header.html}
+<style>
+	/*订单管理*/
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		margin-bottom: 10px;
+	}
+</style>
+<!--资金明细-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">资金明细</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{_home_url}"><i class="fa fa-dashboard"></i> 用户管理</a>
+			</li>
+			<li>
+				<a href="{_memberList_url}">会员管理</a>
+			</li>
+			<li class="active">资金明细</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<!--header new-->
+				<div class="col-md-12 order-header text-right" style="padding-right: 10px;">
+						<form action="" method="get">
+							<div class="col-md-2 col-xs-6">
+								<input type="hidden" name="m" value="customer" />
+								<input type="hidden" name="act" value="moneyDetails" />
+								<input type="hidden" name="cid" value="{_cid}" />
+								<input type="hidden" name="re_page" value="{_re_page}">
+								<input type="text" name="oid" value="{_oid}" class="form-control form-input" placeholder="请输入订单号" />
+							</div>
+							<div class="col-md-2 col-xs-2 text-left">
+								<button type="submit" class="btn btn-main btn-sm">搜索</button>
+							</div>
+						</form>
+						<div class="capital-back">
+							<span type="" class="btn btn-main btn-sm" id="goback" style="position: absolute;right:20px;top: 10px;">返回</span>
+						</div>
+				</div>
+				
+
+				<!--search new end-->
+
+				<div class="order-tab">
+					<!-- /.全部订单 -->
+					<div class="box-body">
+						<table id="order-tab1" class="table table-bordered table-striped">
+							<!--<thead>-->
+							<tr>
+								<th>状态</th>
+								<th>金额</th>
+								<th>账户余额</th>
+								<th>订单号</th>
+								<th>商品编号</th>
+								<th>商品名称</th>
+								<th>会员价</th>
+								<th>支付价</th>
+								<th>时间</th>
+							</tr>
+							<!--</thead>
+                <tbody>-->
+							{_FOREACH capital_list val}
+							<tr>
+								<td>{_status_description}</td>
+								<td>{_amount}</td>
+								<td>{_balance_change}</td>
+								<td>{_order_id}</td>
+								<td>{_model}</td>
+								<td>{_name}</td>
+								<td>{_proxyprice}</td>
+								<td>{_price}</td>
+								<td>{_date_added}</td>
+							</tr>
+							{ENDFOR}
+							<!--</tbody>-->
+						</table>
+
+						<div class="row">
+							<!--分页-->
+							<div class="col-md-12" style="margin-top: 15px;">
+								<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+									<ul class="pagination">
+										<li class="paginate_button next" id="consumer-tab1_first">
+											<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">首页</a>
+										</li>
+										{_IF firstPage=1}
+										<li class="paginate_button previous" id="consumer-tab1_previous">
+											<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+										</li>
+										{ENDIF}
+										{_FOREACH pages}
+										<li class="paginate_button {_IF active}active {ENDIF}">
+											<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+										</li>
+										{ENDFOR}
+										{_IF is_end_page=1}
+											<li class="paginate_button next" id="consumer-tab1_next">
+												<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+											</li>
+										{ENDIF}
+
+										<li class="paginate_button next" id="consumer-tab1_end">
+											<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">尾页</a>
+										</li>
+
+									</ul>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+
+	<!--底部-->
+	{_INCLUDE footer.html}
+	</body>
+
+	</html>
+
+	<!--资金明细-->
+	<script>
+	$('#goback').click(function() {
+		window.location.href = "{_back_url}";
+	})
+	</script>

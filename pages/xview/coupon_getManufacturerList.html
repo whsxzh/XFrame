@@ -1,0 +1,135 @@
+  {_INCLUDE header.html}
+  <style type="text/css">
+#spec-tab1_paginate{text-align: right;}
+.order-header{background: rgba(0,0,0,0.1);padding: 8px 0;margin-bottom: 10px;}
+.order-header ul{padding: 0; margin: 0;}
+.order-header ul li{float: left;text-align: center;background: rgba(0,0,0,0.1);padding: 8px 0;color: white;cursor: pointer;}
+.order-header ul li.active{background: rgba(0,0,0,0.2);}
+  </style>
+  <div class="content-wrapper">
+    <!--头部str-->
+    <section class="content-header">
+      <span style="font-size: 25px;">选择优惠券品牌信息</span>
+    </section>
+    <!--头部end-->
+    
+    <!--中心内容str-->
+    <section class="content">
+      <div class="row">
+	        <div class="box box-primary index-box">
+	          	<div class="col-md-12 order-header block-no">
+					<div class="col-md-2">
+						<input type="checkbox" value="" id="chkall" class="goods-check1">
+						<label for="chkall" style="margin-left: 15px;color: white;" class="btn btn-main block-no">全选</label>
+						<label for="comfirm" style="margin-left: 15px;color: white;cursor:pointer;" id="manufacturer_comfirm" class="btn btn-main block-no">确认</label>
+						<label for="cancel" style="margin-left: 15px;color: white;cursor:pointer;" id="manufacturer_cancel" class="btn btn-main block-no">取消</label>
+					</div>
+				</div>
+			           
+            <table id="brand-tab1" class="table table-bordered table-striped">
+              <!--<thead>-->
+                <tr>
+                  <th style="width:5%;">选择</th>
+                  <th>品牌ID</th>
+                  <th>品牌名</th>
+                </tr>
+              <!--</thead>
+              <tbody>-->
+                {_IF man} {_FOREACH man}
+	                <tr>       
+	                  <td><input style="display:inline-block;" type="checkbox" name="manufacturer" value="{_id}" class="checkbox" {_IF checked}checked {ENDIF}></td>
+	                  <td>{_id}</td>
+	                  <td class="brand-name">{_name}</td>
+	                </tr>
+                {ENDFOR}
+                {ELSE}
+					<tr><td colspan="11" >没有数据</td></tr>
+				{ENDIF}
+              <!--</tbody>-->
+            </table>
+ 						<!--分页-->
+						<div class="col-md-12" style="margin-top: 15px;">
+							<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+								<ul class="pagination">
+								  <li class="paginate_button previous" id="consumer-tab1_previous">
+		                            <a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="首页">|<</a>
+		                          </li>
+		                          <li class="paginate_button previous" id="consumer-tab1_previous">
+		                            {_IF curpage=1}
+		                            <a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+		                            {ELSE}
+		                            <a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+		                            {ENDIF}
+		                          </li>
+		                          {_FOREACH pages}
+		                          <li class="paginate_button {_IF active}active {ENDIF}">
+		                            <a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+		                          </li>
+		                          {ENDFOR}
+		                          <li class="paginate_button next" id="consumer-tab1_next">
+		                            {_IF lastPage=1}
+		                            <a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+		                            {ELSE}
+		                            <a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+		                            {ENDIF}                 
+		                          </li>
+		                          <li class="paginate_button previous" id="consumer-tab1_previous">
+		                            <a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="尾页">>|</a>
+		                          </li>
+								</ul>
+							</div>
+						</div>
+	        </div>
+	    </div>  
+    </section> 
+    <!--/中心内容str-->
+    
+  </div>
+
+  <!--底部-->
+ {_INCLUDE footer.html}
+ <script type="text/javascript">
+	$(function() {
+		//全选
+		$('#chkall').on('click', function() {
+			if(this.checked) {
+				$("input[name='manufacturer']:checkbox").prop("checked", true);
+			} else {
+				$("input[name='manufacturer']:checkbox").prop("checked", false);
+			}
+		});
+
+		// 确定所选品牌
+		$("#manufacturer_comfirm").click(function(){
+			var manufacturer_id_array = [];
+			$("input[name='manufacturer']:checked").each(function() {
+				manufacturer_id_array.push($(this).val());
+			});
+			var manufacturers_str = manufacturer_id_array.join(',');
+			var types="{_types}";
+			console.log(manufacturers_str);
+			if(manufacturer_id_array.length < 1){
+				alert("请选择商品分类！");
+				location.reload();
+			}else{
+				if(types == 'edit'){
+					var coupon_id="{_coupon_id}";
+					window.location = "{_couponEditUrl}&ids_str="+manufacturers_str+"&counts="+manufacturer_id_array.length+"&type=4&coupon_id="+coupon_id;
+				}else{
+					window.location = "{_couponAddUrl}&ids_str="+manufacturers_str+"&counts="+manufacturer_id_array.length+"&type=4";
+				}
+			}
+		})
+
+		// 取消
+		$("#manufacturer_cancel").click(function(){
+			$("#chkall").prop("checked", false);
+			$("input[name='manufacturer']:checkbox").prop("checked", false);
+			history.back();// 返回上一页			
+		})
+	});
+
+
+	
+</script>
+ 

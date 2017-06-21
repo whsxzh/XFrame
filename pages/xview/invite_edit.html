@@ -1,0 +1,85 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+ 	label{color: white;}
+ </style>
+  <div class="content-wrapper">
+  	<!--头部str-->
+    <section class="content-header">
+      {_IF data.invitecode_id>0}
+    	   <span style="font-size: 25px;">邀请码-编辑</span>
+      {ELSE}
+       <span style="font-size: 25px;">邀请码-新增</span>
+      {ENDIF}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">邀请码</a></li>
+        {_IF data.invitecode_id>0}
+          <li class="active">邀请码-编辑</li>
+        {ELSE}
+          <li class="active">邀请码-新增</li>
+        {ENDIF}
+      </ol>
+    </section>
+    <!--头部end-->
+    
+    <!--中心内容str-->
+    <section class="content">
+      <div class="row">
+          <div class="box box-primary">
+              <form  method="post" action="xindex.php?m=invite&act=getList" onsubmit="return check()">
+              <div class="box-body"> 
+                <div class="form-group">
+                    <label>邀请码</label>
+                    <input type="text" id='name' class="colo-md-1 form-control form-input" name="invitecode" value="{_data.invitecode}">
+                    <input type="hidden" name="invitecode_id" value="{_data.invitecode_id}">
+                </div>
+                <div class="form-group">
+                    <label>电话</label>
+                    <input type="text" class="form-control form-input" name="telephone" value="{_data.telephone}">
+                </div>
+                <div class="form-group">
+                    <label>弹出网址</label>
+                    <input type="text" class="form-control form-input" name="url" value="{_data.url}">
+                </div>
+                <div class="form-group">
+                    <label>有效期</label>
+                    <input type="date" class="form-control form-input" name="end_date" value="{_data.end_date}">
+                </div>
+                 <div class="form-group">
+                    <label>邀请码类型</label><br/>
+                      <select class="form-control form-select" name="type" style="width: 100%;">
+                      <option value=0 {_IF data.type=0} selected="selected" {ENDIF} >普通邀请码</option>
+                      <option value=1  {_IF data.type=1} selected="selected" {ENDIF} >掌门人邀请码</option>
+                    </select>
+                </div>
+              </div>
+              
+              <div class="row">
+              	<div class="col-md-12">
+              		<button class="btn btn-primary btn-sm number-save clearfix">保存</button>
+              	</div>
+              </div>
+            </form>  
+          </div>
+      </div>   
+    </section>
+     <!--中心内容end-->
+    
+  </div>
+
+  <!--底部-->
+ {_INCLUDE footer.html}
+
+<script>
+$(function(){
+	$("#number-tab2").DataTable();
+})
+
+//检查邀请码的一些字段
+function check(){
+  var name=$("#name").val()
+  if(name==''){
+    alert('邀请码不能为空');return false;
+  }
+}
+</script>

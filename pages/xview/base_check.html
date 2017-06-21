@@ -1,0 +1,18 @@
+<ul class="sidebar-menu" >
+  {_FOREACH parent}
+  <li class="treeview">
+    <a href="#">
+       <i class="fa {_image}"></i> 
+       <span>{_name}</span>
+	      <span class="pull-right-container">
+	        <i class="fa fa-angle-left pull-right"></i>
+	      </span>
+    </a>
+    <ul class="treeview-menu"style="background: rgba(255,255,255,0.1);">
+    {_FOREACH son} 
+        <li class="lower_view"><a href="{_controller}"><i class="fa fa-circle-o"></i>{_name}</a></li>
+    {ENDFOR}
+    </ul>
+  </li>
+  {ENDFOR}
+</ul>

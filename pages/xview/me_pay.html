@@ -1,0 +1,105 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+ 	.phone-box img{width: 100%;}
+ 	.yyzz-box img{height: 200px;width: 100%;}
+ 	#photo{position: absolute; top: 0;width: 100%;height: 100%;opacity: 0;}
+ 	#photo{position: absolute; top: 0;width: 100%;height: 100%;opacity: 0;}
+	.order-header {background: rgba(0, 0, 0, 0.1);padding: 8px 0;margin-bottom: 10px;}
+	.order-header ul {padding: 0;margin: 0;}
+	.order-header ul li {float: left;text-align: center;background: rgba(0, 0, 0, 0.1);padding: 8px 0;color: white;cursor: pointer;}
+	.order-header ul li.active {background: rgba(0, 0, 0, 0.2);}
+	.order-btn {margin-top: 10px;}
+ </style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">支付保证金</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">我的板块</a>
+			</li>
+			<li class="active">支付保证金</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box" style="border: none;">
+				<!--中心内容-->
+				<div class="row">
+					<!-- <form class="form-horizontal" method="post"> -->
+						<div class="col-md-12">
+							<div class="col-md-12 order-header">
+								<div class="col-md-10 col-xs-10 order-box">
+									<ul class="clearfix">
+										<li class="col-md-2 col-xs-6 active">商户</li>
+										<li class="col-md-2 col-xs-6">个人</li>
+									</ul>
+								</div>
+								<div class="col-md-2 col-xs-2 text-right">
+									<input type="hidden" name="total" value="0.01" id="total" />
+									<button type="button" class="btn btn-main btn-sm" onclick="history.go(-1)">返回</button>
+								</div>
+							</div>
+							
+						
+							<div class="tab-content box-auto" style="margin-top: 15px;">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group col-md-2 col-sx-6">
+											<input type="radio" id="alipay" name="payment" checked="checked" value="alipay">
+											<label for="zfb"><img src="./view/stylesheet/img/zfb.png"/></label>
+										</div>
+										<!-- <div class="form-group col-md-3 col-sx-6">
+											<input type="radio" id="wxpay" name="payment" value="wxpay">
+											<label for="wx"><img src="./view/stylesheet/img/wx.png" style="width: 95%;"/></label>
+										</div> -->
+									</div>
+								</div>
+								<div class="box-footer" style="border: none;background: none;">
+									<input type="submit" class="btn btn-main" id="next-step" style="margin-left: 40px;" value="下一步">
+								</div>
+							</div>
+						</div>
+					<!-- </form> -->
+				</div>
+			</div>
+		</div>
+	</section>
+	</div>
+
+	<!--底部-->
+	{_INCLUDE footer.html}
+</div>
+</body>
+<script type="text/javascript">
+$(function(){
+	$("#next-step").click(function(){
+		var url = "{_payUrl}";
+		var total = $("#total").val();
+		var payment = '';
+		var alipayObj = document.getElementById("alipay");
+		if(alipayObj.checked){
+			payment = 'alipay';
+		}else{
+			payment = 'wxpay';
+		}
+
+		$.ajax({
+	        url: url,
+	        type: 'post',
+	        data: {payment:payment, total: total},
+	        dataType: 'json',
+	        success: function (data) {
+				window.location = data.url;
+	        },
+	        error:function(){
+	            alert("请求失败");
+	        }
+	    });
+	});	
+});
+</script>
+</html>

@@ -1,0 +1,69 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+ 	label{color: white;}
+ </style>
+  <div class="content-wrapper">
+  	<!--头部str-->
+    <section class="content-header">
+      <span style="font-size: 25px;">后台用户-编辑</span>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">后台用户</a></li>
+        <li class="active">后台用户-编辑</li>
+      </ol>
+    </section>
+    <!--头部end-->
+    
+    <!--中心内容str-->
+    <section class="content">
+      <div class="row">
+          <div class="box box-primary">
+              <form  method="post" action="xindex.php?m=permission&act=userList">
+              <div class="box-body"> 
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" class="colo-md-1 form-control form-input" name="username" value="{_data.username}">
+                    <input type="hidden" name="user_id" value="{_data.user_id}">
+                </div>
+                <div class="form-group">
+                    <label>姓名</label>
+                    <input type="text" class="form-control form-input" name="firstname" value="{_data.firstname}">
+                </div>
+                <div class="form-group">
+                    <label>用户角色</label>
+                  <select class="form-control form-select" name="user_group_id">
+                    {_FOREACH role data.user_group_id}
+                    <option value="{_user_group_id}" {_IF selected} selected {ENDIF} >
+                      {_name}
+                    </option>
+                    {ENDFOR}
+                  </select>                    
+                    
+                
+              </div>
+              <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" class="form-control form-input" name="password" value="">
+                </div>
+
+                <div class="form-group">
+                    <label>确认密码</label>
+                    <input type="password" class="form-control form-input" name="passworda" value="">
+                </div>
+              
+              <div class="row">
+              	<div class="col-md-12">
+              		<button type="submit" class="btn btn-main btn-sm number-save clearfix">保存</button>
+              	</div>
+              </div>
+            </form>  
+          </div>
+      </div>   
+    </section>
+     <!--中心内容end-->
+    
+  </div>
+
+  <!--底部-->
+ {_INCLUDE footer.html}
+

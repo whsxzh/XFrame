@@ -1,0 +1,234 @@
+ {_INCLUDE header.html}
+<style>
+	input:focus {
+		outline: none;
+	}
+	
+	table {
+		color: white;
+	}
+	
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding-top: 8px;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		cursor: pointer;
+	}
+	.order-header ul li a{
+		color: white;
+	}
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	.order-state a{color: white;}
+</style>
+<!--我的商品库-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">商户板块审核</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">商品库管理</a>
+			</li>
+			<li class="active">我的商品库</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="col-md-12 order-header">
+					<div class="order-box" style="padding-bottom: 10px;">
+						<ul class="clearfix">
+							<li class="col-md-1 col-xs-3 {_IF is_checked=-2} active {ENDIF}" data-id="1"><a href="xindex.php?m=review&act=checkPlateList" class="color-write">所有商户</a></li>
+							<li class="col-md-1 col-xs-3 {_IF is_checked=0} active {ENDIF}" data-id="2"><a href="xindex.php?m=review&act=checkPlateList&is_checked=0" class="color-write">待审核</a></li>
+							<li class="col-md-1 col-xs-3 {_IF is_checked=-1} active {ENDIF}" data-id="3"><a href="xindex.php?m=review&act=checkPlateList&is_checked=-1" class="color-write">审核不通过</a></li>
+							<li class="col-md-1 col-xs-3 {_IF is_checked=1} active {ENDIF}" data-id="4"><a href="xindex.php?m=review&act=checkPlateList&is_checked=1" class="color-write">审核通过</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="active tab-pane box-auto" id="activity">
+					<table id="mygood-tab1" class="table table-bordered table-striped">
+						<tr>
+							<th>活动图片</th>
+							<th>活动商品类型</th>
+							<th>商户账号</th>
+							<th>商户名称</th>
+							<th>商户操作</th>
+							<th>当前状态</th>
+							<th>审核情况</th>
+							<th>认证类型</th>
+							<th>操作</th>
+						</tr>
+						{_FOREACH plates}
+						<tr>
+							<td><img src="{_plate_img}" alt=""  style="width: 80px;height: 60px;"/></td>
+							<td>{_prdlink_type}</td>
+							<td>{_admin_name}</td>
+							<td>{_merchant_name}</td>
+							<td>申请商户入驻</td>
+							<td>{_IF is_opened=1}开启{ENDIF}
+								{_IF is_opened=0}禁用{ENDIF}</td>
+							<td {_IF is_checked=-1} title="审核失败：{_check_resson}" {ENDIF} >
+								{_IF is_checked=1}审核通过{ENDIF}
+								{_IF is_checked=0}待审核{ENDIF}
+								{_IF is_checked=-1}审核不通过{ENDIF}</td>
+							<td>
+								{_IF merchant_attr=1}<a href="xindex.php?m=review&act=merchantCertificate&merchant_id={_merchant_id}">
+								{_IF is_certificated=1}<i title="企业认证已通过" class="fa fa-check-square" ></i>{ENDIF} 
+								{_IF is_certificated=-1}<i title="企业认证未通过" class="fa fa-times" ></i>{ENDIF} 
+								企业认证 </a>{ENDIF}
+
+								{_IF merchant_attr=2}<a href="xindex.php?m=review&act=personalCertificate&merchant_id={_merchant_id}">
+								{_IF is_certificated=1}<i title="个人认证已通过" class="fa fa-check-square"></i>{ENDIF} 
+								{_IF is_certificated=-1}<i title="个人认证未通过" class="fa fa-times" ></i>{ENDIF}
+								个人认证 </a>{ENDIF}
+							</td>
+							<td>
+								<a class="btn btn-main btn-xs" href="xindex.php?m=review&act=checkPlateProductList&plate_id={_plate_id}&merchant_id={_merchant_id}">商品列表</a>
+								{_IF is_checked=-1}<a class="btn btn-main btn-xs deal-certificate" data-toggle="modal" data-id="{_plate_id}" data-target="#express-number">板块审核</a>{ENDIF}
+								{_IF is_checked=0}<a class="btn btn-main btn-xs deal-certificate" data-toggle="modal" data-id="{_plate_id}" data-target="#express-number">板块审核</a>{ENDIF}
+							</td>
+						</tr>
+						{ENDFOR}
+					</table>
+					<div class="row">
+						<div class="col-md-12" style="margin-bottom: 10px;">
+							<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+								<ul class="pagination">
+									<li class="paginate_button previous" id="consumer-tab1_previous">
+										<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="首页">|<</a>
+									</li>
+									<li class="paginate_button previous" id="consumer-tab1_previous">
+										{_IF curpage=1}
+										<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+										{ELSE}
+										<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+										{ENDIF}
+									</li>
+									{_FOREACH pages}
+									<li class="paginate_button {_IF active}active {ENDIF}">
+										<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+									</li>
+									{ENDFOR}
+									<li class="paginate_button next" id="consumer-tab1_next">
+										{_IF lastPage=1}
+										<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+										{ELSE}
+										<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+										{ENDIF}										
+									</li>
+									<li class="paginate_button previous" id="consumer-tab1_previous">
+										<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="尾页">>|</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+			</div>
+
+		</div>
+		</div>
+	</section>
+</div>
+
+<!--处理-->
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="express-number">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="">商户申请板块处理</h4>
+			</div>
+
+			<div class="modal-body">
+				<form action="#" method="post" id="show_checked_reason">
+					<textarea name="" rows="5" cols="" class="form-control deal-certificate" style="resize:none;" placeholder="同意或者拒绝申请的原因"></textarea>
+				</form>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-deny" data-dismiss="modal">拒绝</button>
+				<button type="button" class="btn btn-agree" id="express-save">同意</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+ {_INCLUDE footer.html}
+
+<script type="text/javascript">
+	$(function(){
+		$('.order-box ul li').on('click',function(){
+			$(this).addClass('active').siblings().removeClass('active');
+		});
+
+		// 获取商户板块认证信息
+		$(".deal-certificate").click(function(){
+			var url = "{_getCheckMerchantPlateUrl}";
+			var plate_id = $(this).attr("data-id");
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				data: { 'plate_id': plate_id },
+				success: function(data) {
+					var html = '<textarea id="checked_reason" name="" rows="5" cols="" class="form-control deal-certificate" style="resize:none;">'+data.data.check_reason+'</textarea>'+'<input type="hidden" id="plate_id" value="'+data.data.plate_id+'">';
+					$("#show_checked_reason").html(html);
+				}
+			})
+		})
+
+		// 同意处理商户板块申请
+		$(".btn-agree").click(function(){
+			var url = "{_checkMerchantPlateUrl}";
+			var plate_id = $("#plate_id").val();
+			var checked_reason = $("#checked_reason").val();
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				data: { 'plate_id': plate_id, 'checked_reason': checked_reason, 'is_checked': 1 },
+				success: function(data) {
+					$("#express-number").modal('hide');
+					location.reload();
+				}
+			})
+		})
+
+		// 拒绝处理商户板块申请
+		$(".btn-deny").click(function(){
+			var url = "{_checkMerchantPlateUrl}";
+			var plate_id = $("#plate_id").val();
+			var checked_reason = $("#checked_reason").val();
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				data: { 'plate_id': plate_id, 'checked_reason': checked_reason, 'is_checked': -1 },
+				success: function(data) {
+					$("#express-number").modal('hide');
+					location.reload();
+				}
+			})
+		})
+
+	});
+
+
+</script>

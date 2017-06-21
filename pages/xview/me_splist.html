@@ -1,0 +1,98 @@
+ {_INCLUDE header.html}
+<!--商户管理-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">商品列表</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="{_qiye_url}">我的板块</a>
+			</li>
+			<li class="active">商品列表</li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="row">
+			<div class="box">
+				<div class="row block-no">
+					<div class="col-md-12" style="margin: 0 15px; padding: 8px;" id="box-body">
+						<!--搜索-->
+						<form action="#" method="get">
+							<div class="col-xs-2  col-md-2">
+								<input type="text" class="form-control form-input" name='merchant_name' value="" placeholder="请输入商品名称">
+							</div>
+							<div class="col-xs-2  col-md-2">
+								<button type="submit" class="btn btn-primary btn-sm" id="tent-delect">搜索</button>
+							</div>
+						</form>
+						<!--搜索 end-->
+					</div>
+					<sapn class="btn btn-primary btn-sm" id="add" style="position: absolute;right:20px;top: 8px;" onclick="history.go(-1);">返回</span>
+				</div>
+
+				<!-- 内容 -->
+				<div class="box-body">
+						<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+							<table id="tent-tab1" class="table table-bordered table-striped">
+								<tr>
+									<th>图片</th>
+									<th>商品名称</th>
+									<th>编号</th>
+									<th>库存</th>
+									<th>销量</th>
+									<th>价格</th>
+									<th>会员价格</th>
+									<th>商品状态</th>
+									<th>操作</th>
+								</tr>
+								<tr>
+									<td>阿什顿飞</td>
+									<td>阿什顿飞</td>
+									<td>阿什顿飞</td>
+									<td>阿什顿飞</td>
+									<td>阿什顿飞</td>
+									<td>阿什顿飞</td>
+									<td>阿什顿飞</td>
+									<td>阿什顿飞</td>
+									<td class="tent-btn block-no">
+										<button class="btn btn-main btn-xs">禁用</button>
+									</td>
+								</tr>
+							</table>
+
+							<!--分页-->
+							<div class="col-md-12" style="margin-top: 20px;">
+								<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+									<ul class="pagination">
+										<li class="paginate_button previous disabled" id="consumer-tab1_previous">
+											<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+										</li>
+
+										<li class="paginate_button {_IF active}active {ENDIF}">
+											<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">1</a>
+										</li>
+
+										<li class="paginate_button next" id="consumer-tab1_next">
+											<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+										</li>
+
+									</ul>
+								</div>
+							</div>
+							<!--分页-->
+						</div>
+						<!-- /. -->
+					</div>
+
+			</div>
+		</div>
+	</section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+

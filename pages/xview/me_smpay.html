@@ -1,0 +1,69 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+ 	.phone-box img{width: 100%;}
+ 	.yyzz-box img{height: 200px;width: 100%;}
+ 	#photo{position: absolute; top: 0;width: 100%;height: 100%;opacity: 0;}
+ 	.order-header {background: rgba(0, 0, 0, 0.1);padding: 8px 0;margin-bottom: 10px;}
+	.order-header ul {padding: 0;margin: 0;}
+	.order-header ul li {float: left;text-align: center;background: rgba(0, 0, 0, 0.1);padding: 8px 0;color: white;cursor: pointer;}
+	.order-header ul li.active {background: rgba(0, 0, 0, 0.2);}
+ </style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">扫码支付</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">我的板块</a>
+			</li>
+			<li class="active">扫码支付</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+
+			<div class="col-xs-12">
+				<div class="box" style="border: none;">
+					<!--中心内容-->
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-12 order-header">
+									<div class="col-md-11 col-xs-12 order-box">
+										<ul class="clearfix">
+											<li class="col-md-2 col-xs-6 active">商户</li>
+											<li class="col-md-2 col-xs-6">个人</li>
+										</ul>
+									</div>
+									<div class="col-md-1 col-xs-12" style="padding-left: 0">
+										<button type="button" class="btn btn-main btn-sm" onclick="history.go(-1)">返回</button>
+									</div>
+								</div>
+								<div class="tab-content" style="margin-top: 15px;">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="col-md-4 col-sm-6 col-sx-6" style="text-align: right;">
+												<img src="./view/stylesheet/img/sj.png" alt="" style="width: 90%;"/>
+											</div>
+											<div class="col-md-4 col-sm-6 col-sx-6" style="text-align: center;padding-top: 20px;">
+												<img src="./view/stylesheet/img/ewm.png" style="width: 40%;"/>
+												<div style="margin-top: 30px;font-size: 24px;">使用支付宝扫码支付</div>
+											</div>
+										</div>
+									</div>
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</section>
+	</div>
+
+	<!--底部-->
+	{_INCLUDE footer.html}
+</div>
+</body>
+
+</html>

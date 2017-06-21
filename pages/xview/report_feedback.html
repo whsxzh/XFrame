@@ -1,0 +1,135 @@
+ {_INCLUDE header.html}
+<style>
+.form-inline .form-control{background: none;color: white;}
+.dataTables_filter label{color: white;}
+.img{width:50px;height: 50px;}
+</style>
+<!--提现管理-->
+<div class="content-wrapper" style="padding:0 15px;">
+	<section class="content-header">
+		<span style="font-size: 25px;">用户反馈</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">用户管理</a>
+			</li>
+			<li class="active">用户反馈</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="box-body">
+				 	<div class="dataTables_wrapper form-inline dt-bootstrap">
+						<form action="{_alipay_trade}" method="post" target="_blank" id="form_sub">
+							<table id="cash-tab4" class="table table-bordered table-striped">
+								<input type="hidden" name="WIDbatch_num" id="count" value="" />
+								<input type="hidden" name="WIDbatch_fee" id="free" value="" />
+								<input type="hidden" name="WIDdetail_data" id="detail" value="" />
+								<input type="hidden" name="order_num" id="order_num" value="" />
+								<thead>
+								<tr>
+									<th>反馈时间</th>
+									<th>昵称</th>
+									<th>真实姓名</th>
+									<th>反馈内容</th>
+									<th>反馈图片</th>
+									<th>状态</th>
+									<th>处理时间</th>
+									<th>操作</th>
+								</tr>
+								</thead>
+								<tbody>
+								{_FOREACH feedback}
+								<tr>
+									<td>{_add_time}</td>
+									<td>{_username}</td>
+									<td>{_lastname}</td>
+									<td style="max-width:200px;word-wrap: break-word;">{_content}</td>
+									<td><img src="" alt="" class="img"/></td>
+									<td>{_IF deal_status=0} 未处理 {ENDIF}
+									{_IF deal_status=1} 已处理 {ENDIF}
+									{_IF deal_status=2} 处理中 {ENDIF}</td>
+									<td>{_deal_time}</td>
+									<td>
+										<a class="btn btn-main btn-xs" href="xindex.php?m=report&act=feedDetail&id={_id}" >查看详情</a>
+										<a class="btn btn-main btn-xs" href="xindex.php?m=report&act=feckback&id={_id}" >回复</a>
+									</td>
+								</tr>
+								{ENDFOR}
+								</tbody>
+							</table>
+
+						</form>
+						
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</section>
+</div>
+
+<!-- 底部 -->
+{_INCLUDE footer.html}
+
+<!--提现管理-->
+<script>
+	$(function() {
+		$("#pl-delect").click(function() {
+			$("#form_sub").submit();
+		});
+
+		$('.order-check').on('click', function() {
+			//jquery获取复选框值 
+			var spCodesTemp = "";
+			$(".order-check").each(function() {
+				if($(this).is(':checked')) {
+					spCodesTemp += $(this).val() + ",";
+				}
+			});
+			spCodesTemp = spCodesTemp.substring(0, spCodesTemp.length - 1);
+			send(spCodesTemp);
+		});
+
+		
+
+					$("#cash-tab4").DataTable();
+
+		$("#cash-header li").click(function() {
+			var index = $(this).index();
+			$("#cash-header li").eq(index).addClass("order-ul").siblings().removeClass("order-ul");
+			$(".cash-tab .box-body").eq(index).show();
+			$(".cash-tab .box-body").eq(index).siblings().hide();
+		})
+
+		//表格全选
+		$(function() {
+			$(".sale-all").click(function() {
+				if(this.checked) {
+					$(".order-check").each(function() {
+						$(this).prop("checked", true);
+						$(this).attr("checked", true);
+					});
+					var spCodesTemp = "";
+					$(".order-check").each(function() {
+						if($(this).is(':checked')) {
+							spCodesTemp += $(this).val() + ",";
+						}
+					});
+					spCodesTemp = spCodesTemp.substring(0, spCodesTemp.length - 1);
+					send(spCodesTemp);
+				} else {
+					$(".order-check").each(function() {
+						$(this).removeAttr("checked", false);
+					});
+				}
+			});
+		})
+
+	})
+</script>

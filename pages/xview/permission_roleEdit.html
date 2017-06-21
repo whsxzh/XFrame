@@ -1,0 +1,143 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+.order-header {background: rgba(0, 0, 0, 0.1);padding: 8px 0;margin-bottom: 10px;}
+.order-header ul {padding: 0;margin: 0;}
+.order-header ul li {float: left;text-align: center;background: rgba(0, 0, 0, 0.1);padding: 8px 0;color: white;cursor: pointer;}
+.order-header ul li.active {background: rgba(0, 0, 0, 0.2);}
+.order-btn {margin-top: 10px;}
+</style>
+<div class="content-wrapper">
+	<!--头部str-->
+	<section class="content-header">
+		<span style="font-size: 25px;">设置权限</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">后台账号管理</a>
+			</li>
+			<li class="active">角色管理</li>
+		</ol>
+	</section>
+	<!--头部end-->
+
+	<!--中心管理str-->
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+
+				<form method="post" action="xindex.php?m=permission&act=roleEdit&id={_user_group_id}" class="form-horizontal">
+					<div class="col-md-12 order-header">
+						<div class="col-md-3 col-xs-12 order-box">
+							<div class="col-md-9" style="padding: 0;">
+								<input type="text" class="form-control form-input" value="{_name}" id="groupname" placeholder="请输入角色名称" name="name">
+								<input type="hidden" name="user_group_id" value="{_user_group_id}" placeholder="">
+							</div>
+						</div>							
+					</div>
+
+					<!--header-str-->
+					<!--<form  method="post" action="xindex.php?m=permission&act=roleEdit&id={_user_group_id}" class="form-horizontal">
+			            <div class="form-group col-sm-12" style="margin-bottom: 30px;margin-top: -15px;">
+				              <label for="inputEmail3" class="col-sm-1 control-label" style="text-align: left;">角色名称:</label>
+				              <div class="col-sm-3" style="padding: 0;">
+				                <input type="text" class="form-control" value="{_name}" id="groupname" placeholder="请输入角色名称" name="name" >
+				           		<input type="hidden" name="user_group_id" value="{_user_group_id}" placeholder="">
+				              </div>
+			            </div>-->
+					<!--header-end-->
+
+					<!--tbody-str-->
+
+					<div class="box-body">
+						<table id="premission-tab1" class="table table-bordered table-striped">
+							<tr>
+								<th style="width: 5%;">编码</th>
+								<th>模块权限</th>
+								<th>子权限</th>
+
+							</tr>
+							{_FOREACH dt}
+							<tr>
+								<td>{_permission_id}</td>
+								<td class="col-md-2">
+									<div class="checkbox text-left">
+										<label><input type="checkbox" name="sale-tab_{_parent_id}[]" value="{_permission_id}" class="checkbox" {_IF checked}checked {ENDIF}>&nbsp;&nbsp;&nbsp;{_name}</label>
+									</div>
+								</td>
+
+								<td>
+									{_FOREACH son}
+									<div class="col-md-2 checkbox text-left">
+										<label><input type="checkbox" name="sale-tab_{_parent_id}[]" value="{_permission_id}" class="checkbox" {_IF checked}checked {ENDIF}>&nbsp;&nbsp;&nbsp;{_name}</label>
+									{_FOREACH son}
+										<label><input type="checkbox" name="sale-tab_{_parent_id}[]" value="{_permission_id}" class="checkbox" {_IF checked}checked {ENDIF}>&nbsp;&nbsp;&nbsp;{_name}</label>
+									{ENDFOR}
+
+									</div>
+									{ENDFOR}
+								</td>
+							</tr>
+							{ENDFOR}
+
+						</table>
+
+						<div class="row"style="margin: 20px 0 10px 0;">
+							<div class="col-md-1" >
+								<input type="checkbox" class="role-all" id="chkall" />
+								<label for="chkall" style="color: white;">全选</label>
+							</div>
+							<div class="col-md-1" >
+								<input type="checkbox" class="role-all" id="chkfan" />
+								<label for="chkfan" style="color: white;">反选</label>
+							</div>
+							<div class="col-md-10 col-xs-12 text-right">
+								<button type="submit" class="btn btn-main btn-sm" id="pl-delect">保存</button>
+							</div>
+						</div>
+
+					</div>
+				</form>
+				<!--tbody-end-->
+
+			</div>
+		</div>
+	</section>
+	<!--中心管理str-->
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+<script>
+	$(function() {
+		//表格全选
+		$("#chkall").click(function() {
+			if(this.checked) {
+				$("input[class='checkbox']").each(function() {
+					$(this).prop("checked", true);
+					$(this).attr("checked", true);
+				});
+				 if($('#chkall').is(':checked')){
+	        	 	$('#chkfan').removeAttr("checked", false);
+	        	 }
+			} else {
+				$("input[class='checkbox']").each(function() {
+					$(this).removeAttr("checked", false);
+				});
+			}
+		});
+		//反选
+		$('#chkfan').on('click',function(){
+			$("input[class='checkbox']").each(function () {  
+            	this.checked = !this.checked;  
+        	 });  
+        	 
+        	 if($('#chkall').is(':checked')){
+        	 	$('#chkall').removeAttr("checked", false);
+        	 }
+		});
+  
+	})
+</script>

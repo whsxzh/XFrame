@@ -1,0 +1,159 @@
+ {_INCLUDE header.html}
+<style>
+.form-inline .form-control{background: none;color: white;}
+.dataTables_filter label{color: white;}
+.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		margin-bottom: 10px;
+	}
+	#box-body{margin: 0}
+	.control-label{color: #000;}
+	.save-modal-body{width: 200px;text-align: center;font-size: 14px;height: 80px;background: #FFFFFF;z-index: 11111;position: absolute;top: 30%;left: 50%;
+line-height: 80px;}
+	.save-modal-content{position: fixed;top: 0;right: 0;bottom: 0;left: 0;z-index: 1050;overflow: hidden; -webkit-overflow-scrolling: touch;outline: 0;
+background: rgba(0,0,0,0.3);display: none;}  
+
+</style>
+<!--提现管理-->
+<div class="content-wrapper" style="padding:0 15px;">
+	<section class="content-header">
+		<span style="font-size: 25px;">消息管理</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">系统管理</a>
+			</li>
+			<li class="active">消息管理</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+			<div class="box-body block-no" id="box-body">
+				<div class="col-xs-2  col-md-2">
+					<button type="button" data-toggle="modal" data-target="#Modal-classify4" class="btn btn-main btn-sm">添加消息</button>
+				</div>
+			</form>
+		</div>
+				<div class="box-body">
+				 	<div class="dataTables_wrapper form-inline dt-bootstrap">
+						<table id="cash-tab4" class="table table-bordered table-striped">
+							<thead>
+							<tr>
+								<th>标题</th>
+								<th>内容</th>
+								<th>添加时间</th>
+								<th>类型</th>
+							</tr>
+							</thead>
+							<tbody>
+							{_FOREACH data}
+							<tr>
+								<td>{_title}</td>
+								<td>{_content}</td>
+								<td>{_date_added}</td>
+								<td>{_IF type_info=21} 版本更新 {ENDIF}
+								{_IF type_info=22} 新上线功能、模块(版本未更新) {ENDIF}
+								{_IF type_info=23} 反馈APP消息回复 {ENDIF}</td>
+							</tr>
+							{ENDFOR}
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+</div>
+<!--消息添加-->
+<div class="modal fade" id="Modal-classify4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">消息添加</h4>
+      </div>
+      <div class="modal-body">
+           <div class="form-group">
+            <label for="recipient-name" class="control-label">消息类型:</label>
+           <select class="form-control select2 msg_type" name="msg_type" id="msg_type" style="width: 100%;">
+              <option value="1">版本更新</option>
+			  <option value="2">新上线功能、模块(版本未更新)</option>
+            </select>
+            
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="control-label">标题</label>
+            <input type="text" class="form-control" id="title">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="control-label">内容</label>
+            <textarea class="form-control" id="content" ></textarea>
+          </div>
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" data-id="" class="btn btn-primary ok_confirm">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 保存提示 modal -->
+<div class="save-modal-content">
+	<div class="save-modal-body" style="text-align: center;"></div> 
+</div>
+
+<!-- 底部 -->
+{_INCLUDE footer.html}
+
+<!--提现管理-->
+<script>
+	$(function() {
+		$(".ok_confirm").click(function(){
+			var title=$("#title").val();
+			var content=$("#content").val();
+			var type=$("#msg_type").val();
+			var url="xindex.php?m=report&act=addMsg";
+			$.ajax({
+		        url: url,
+		        type: 'post',
+		        data: {title: title,content:content,type:type},
+		        dataType: 'json',
+		        success: function (data) {
+		          displaynone(4);
+		          $(".save-modal-body").html(data.msg);
+		          timeout();
+		        },
+		        error:function(){
+		          displaynone(4);
+		          $(".save-modal-body").html("请求失败");
+		          timeout();
+		        }
+		    });
+
+		});
+		function displaynone($num){
+			$(".save-modal-content").show();
+          	$("#modal-backdrop").hide();
+          	$("#Modal-classify"+$num+"").hide();
+		}
+		//隐藏提示
+		function timeout(){
+			 setTimeout(function(){
+	            $('.save-modal-content').hide();
+	            $(".fade").hide();
+	            location.reload();
+	          },2000);
+		}
+
+		$("#cash-tab4").DataTable();
+
+	})
+</script>

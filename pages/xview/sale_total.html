@@ -1,0 +1,154 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+	#search_begindate{padding: 0 10px;width: 30%;height: 30px;background: none;border: none;border: 1px solid rgba(255,255,255,0.2);border-radius: 3px;color: white;}
+</style>
+  <div class="content-wrapper">
+    <section class="content-header">
+      <span style="font-size: 25px;">销售统计</span>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">用户管理</a></li>
+        <li class="active">销管统计</li>
+      </ol>
+    </section>
+    
+    <!--中心内容str-->
+    <section class="content">
+
+    <div class="row">
+          <div class="box box-primary">
+            <div class=" col-md-6 box-header">
+               <form method="POST" action="{_total_url}&id={_customer_id}"> 
+	                <input type="text" id="search_begindate" name="date" value="{_date1}"  class="sale-time" />
+	                <button type="submit" class="btn btn-primary btn-sm" id="sale-check" />查询</button>
+	                <a href="{_index_url}" class="btn btn-primary btn-sm">返回</a>
+               </form>         
+           </div>
+            
+            <div class="box-body">
+              <div id="hi"></div>
+            </div>
+          
+          </div>
+    </div>
+
+    </section>
+     <!--中心内容end-->
+  </div>
+
+  <!--底部-->
+ {_INCLUDE footer.html}
+ 
+<script src="view/assets/AdminLTE/js/hightchar_code.js"></script>
+<script src="view/assets/AdminLTE/js/SimpleCanleder.js"></script>
+<script src="view/assets/AdminLTE/js/index.js"></script>
+
+<script type="text/javascript">
+  $(function(){
+    $("#sale-check").click(function(){
+     var inp = $('.sale-time').val();
+     inp=inp.replace("-","");
+       if(!isNaN(inp) && inp>0){
+
+       }
+       else{
+         alert('请输入正确的日期');
+          var nowtime = new Date();
+          var year = nowtime.getFullYear();
+          var month = nowtime.getMonth()+"1";
+         $("#search_begindate").val(year + "-" + month);
+         location.href = "{_total_url}&id={_customer_id}";
+       }
+    })
+  })
+</script>
+
+
+<script>
+//销售统计
+    $(function () {
+         $("#search_begindate").simpleCanleder();
+           $("#search_begindate").click(function(){
+                 
+           });
+        
+        $('#hi').highcharts({
+
+            chart: {
+                zoomType: 'xy'
+            },
+            title: {
+                text: ''
+            },
+            subtitle: {
+                text: ''
+            },
+            	xAxis:{
+            		title:{
+            			text:'销售统计'
+            		},
+            		categories: [{_date}]
+            	},
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    format: '￥{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                title: {
+                    text: '订单金额',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                }
+            }, { // Secondary yAxis
+                title: {
+                    text: '订单个数',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                opposite: true
+            }],
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                x: 120,
+                verticalAlign: 'top',
+                y: 0,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || 'none'
+            },
+            series: [{
+                name: '订单个数',
+                type: 'areaspline',
+                yAxis: 1,
+                data: [{_quantity}],
+                tooltip: {
+                    valueSuffix: ''
+                }
+            }, {
+                name: '订单金额',
+                type: 'spline',
+                data: [{_price}],
+
+                tooltip: {
+                    valueSuffix: ''
+                }
+            }]
+        });
+    });
+
+</script>
+   
+

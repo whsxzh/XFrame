@@ -1,0 +1,113 @@
+ {_INCLUDE header.html}
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">日志管理</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">系统管理</a>
+			</li>
+			<li class="active">日志管理</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="box-body">
+					<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+						<table id="example1" class="table table-bordered table-striped">
+							<thead>
+							<tr>
+								<th class="block-no"></th>
+								<th>账号</th>
+								<th>操作内容</th>
+								<th>操作IP</th>
+								<th class="block-no">操作时间</th>
+							</tr>
+							</thead>
+							<tbody>
+							{_FOREACH userlog}
+							<tr>
+								<td class="block-no"><input type="checkbox" name="sale-tab" value="" class="order-check"><span class="order-number">{_log_id}</span></td>
+								<td>{_username}</td>
+								<td style="text-align:left;">{_content}</td>
+								<td class="block-no">{_user_ip}</td>
+								<td>{_date_added}</td>
+							</tr>
+							{ENDFOR}
+							</tbody>
+
+						</table>
+					</div>
+					<!--分页-->
+			                <div class="col-md-8 col-xs-8" style="margin-top: 15px;margin-left: 20%;">
+			                  <div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+			                    <ul class="pagination">
+			                      <li class="paginate_button previous" id="consumer-tab1_previous">
+			                      	<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">首页</a>
+			                      </li>
+			                      <li class="paginate_button previous" id="consumer-tab1_previous">
+			                      	<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+			                      </li>
+			                      
+			                      {_FOREACH pages}
+			                      <li class="paginate_button {_IF active}active {ENDIF}">
+			                      	<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+			                      </li>
+			                      {ENDFOR}
+			                      {_IF is_end_page=0}
+			                      <li class="paginate_button next"id="consumer-tab1_next">
+			                        <a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+			                      </li>
+			                      {ENDIF}
+			                      <li class="paginate_button next"id="consumer-tab1_next">
+			                        <a href="{_pageurl}&page={_total_page}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">尾页</a>
+			                      </li>
+			                    </ul>
+			                  </div>
+			                </div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+<script>
+	$(function() {
+		 // $("#example1").DataTable();
+		
+		$("#pl-delect").click(function() {
+			$("input[name='sale-tab']:checked").each(function() { // 遍历选中的checkbox
+				n = $(this).parents("tr").index() + 1; // 获取checkbox所在行的顺序
+
+				$("#sale-tab1").find("tr:eq(" + n + ")").remove();
+
+			});
+		})
+		//表格全选
+		$(function() {
+			$(".sale-all").click(function() {
+				if(this.checked) {
+					$("input[name='sale-tab']").each(function() {
+
+						$(this).prop("checked", true);
+						$(this).attr("checked", true);
+					});
+
+				} else {
+					$("input[name='sale-tab']").each(function() {
+
+						$(this).removeAttr("checked", false);
+					});
+
+				}
+			});
+		})
+
+	})
+</script>

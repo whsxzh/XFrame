@@ -1,0 +1,230 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		color: white;
+		cursor: pointer;
+	}
+	
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	
+	.order-btn {
+		margin-top: 10px;
+	}
+</style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">客户范围列表</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">优惠券管理</a>
+			</li>
+			<li class="active">客户范围列表</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box">
+				<div class="col-md-12 order-header">
+					<div class="col-md-12 block-no">
+						<div class="col-xs-4 col-md-2" >
+								<select class="form-control form-select" onchange="select_user_type(this.value)" 
+								placeholder="请选择用户类别">
+									<option value="0">用户类型</option>
+									<option value="3" {_IF user_type=3} selected {ENDIF} >全部用户</option>
+									<option value="1" {_IF user_type=1} selected {ENDIF} >会员用户</option>
+									<option value="2" {_IF user_type=2} selected {ENDIF} >普通用户</option>
+								</select>
+						</div>
+						<div class="col-xs-4 col-md-2" >
+								<input type="tel" class="form-control form-input" value="{_customer_telephone}" placeholder="请输入用户电话" id="customer_telephone">
+						</div>
+						<div class="col-xs-4 col-md-2" >
+								<input type="tel" class="form-control form-input" value="{_customer_name}" placeholder="请输入用户昵称" id="customer_name">
+						</div>
+						<div class="col-xs-4 col-md-2 ">
+							<button type="submit" class="btn btn-main btn-sm search_user">搜索</button>
+						</div>
+					</div>
+				</div>
+				<div class="box-body">
+						<div class="dataTables_wrapper form-inline dt-bootstrap box-hidden box-auto">
+							<table id="order-tab1" class="table table-bordered table-striped">
+								<tr>
+									<th class="block-no">选择</th>
+									<th>用户ID</th>
+									<th>账号(电话)</th>
+									<th>昵称(真实姓名)</th>
+									<th>类型</th>
+								</tr>
+								{_FOREACH customers}
+								<tr>
+									<td class="block-no"><input type="checkbox" name="member_id" value="{_customer_id}"/></td>
+									<td>{_customer_id}</td>
+									<td>{_telephone}</td>
+									<td>{_firstname}（{_lastname}）</td>
+									<td>{_customer_type}</td>
+								</tr>
+								{ENDFOR}
+							</table>
+							<div class="col-md-12">
+									<div class="col-md-3 block-no">
+										<input type="checkbox" value="" id="chkall" class="goods-check1">
+										<label for="chkall" style="margin-left: 15px;color: white;">全选</label>
+										<label for="comfirm" style="margin-left: 15px;color: white;cursor:pointer;" id="member_comfirm" class="btn btn-main btn-sm">确认</label>
+										<label for="cancel" style="margin-left: 15px;color: white;cursor:pointer;" id="member_cancel" class="btn btn-main btn-sm">取消</label>
+									</div>
+									<div class="col-md-9">
+										<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+											<ul class="pagination">
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="首页">|<</a>
+												</li>
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													{_IF curpage=1}
+													<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+													{ELSE}
+													<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+													{ENDIF}
+												</li>
+												{_FOREACH pages}
+												<li class="paginate_button {_IF active}active {ENDIF}">
+													<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+												</li>
+												{ENDFOR}
+												<li class="paginate_button next" id="consumer-tab1_next">
+													{_IF lastPage=1}
+													<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+													{ELSE}
+													<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+													{ENDIF}										
+												</li>
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="尾页">>|</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+</div>
+<script type="text/javascript">
+	$(function() {
+		//全选
+		$('#chkall').on('click', function() {
+			if(this.checked) {
+				$("input[name='member_id']:checkbox").prop("checked", true);
+			} else {
+				$("input[name='member_id']:checkbox").prop("checked", false);
+			}
+		});
+
+		// 确定自选的用户
+		$("#member_comfirm").click(function(){
+			var member_id_array = [];
+			$("input[name='member_id']:checked").each(function() {
+				member_id_array.push($(this).val());
+			});
+			var members_str = member_id_array.join(',');
+			var sub_type="{_types}";
+			console.log(members_str);
+			if(member_id_array.length < 1){
+				alert("请选择具体哪些用户！");
+				location.reload();
+			}else{
+
+				 if(sub_type == 'add'){
+		             window.location = "{_couponAddUrl}&customer_ids_str="+members_str+"&customer_counts="+member_id_array.length+"&send_flag=4";
+		        }else if(sub_type == 'edit'){
+		        	 window.location = "{_couponEditUrl}&customer_ids_str="+members_str+"&ss=ss&customer_counts="+member_id_array.length+"&send_flag=4&coupon_id="+{_coupon_id};
+		        }else{
+		           window.location = "{_releaseCouponUrl}&ids_str="+members_str+"&counts="+member_id_array.length+"&send_flag=user_defined&coupon_id={_coupon_id}";
+		        }
+		      }
+		})
+
+		// 取消
+		$("#member_cancel").click(function(){
+			$("#chkall").prop("checked", false);
+			$("input[name='member_id']:checkbox").prop("checked", false);
+			history.back();// 返回上一页			
+		})
+
+	});
+
+	// 处理自选优惠券的用户类型搜索条件，1会员，2非会员
+	function select_user_type(value){
+		var sub_type="{_types}";
+		//alert(sub_type);return;
+		if(sub_type == 'add'){
+             window.location ="{_getMemberListUrl}&send_flag=user_defined&user_type="+value
+        }else if(sub_type == 'edit'){
+        	 window.location ="{_getMemberListUrl}&send_flag=user_defined&ss=ss&coupon_id={_coupon_id}&user_type="+value
+        }else{
+           	 window.location = "{_getMemberListUrl}&send_flag=user_defined&coupon_id={_coupon_id}&user_type="+value
+        }
+		
+	}
+
+	
+	$(function() {
+		// 处理搜索用户电话，用户昵称
+		$(".search_user").click(function(){
+			var sub_type="{_types}";
+			var customer_telephone = document.getElementById("customer_telephone").value;
+			var customer_name = document.getElementById("customer_name").value;
+			if('' == customer_telephone){
+				if(sub_type == 'add'){
+		             	window.location = "{_getMemberListUrl}&send_flag=user_defined&customer_name="+customer_name;
+		        }else if(sub_type == 'edit'){
+		        	window.location = "{_getMemberListUrl}&send_flag=user_defined&ss=ss&coupon_id={_coupon_id}&customer_name="+customer_name;
+		        }else{
+		           	window.location = "{_getMemberListUrl}&send_flag=user_defined&coupon_id={_coupon_id}&customer_name="+customer_name;
+		        }
+
+			}
+			if('' == customer_name){
+				if(sub_type == 'add'){
+		            window.location = "{_getMemberListUrl}&send_flag=user_defined&customer_telephone="+customer_telephone;
+		        }else if(sub_type == 'edit'){
+		        	window.location = "{_getMemberListUrl}&send_flag=user_defined&ss=ss&coupon_id={_coupon_id}&customer_telephone="+customer_telephone;
+		        }else{
+					window.location = "{_getMemberListUrl}&send_flag=user_defined&coupon_id={_coupon_id}&customer_telephone="+customer_telephone;
+		        }
+
+			}
+		})
+	});
+	
+</script>
+</body>
+
+</html>

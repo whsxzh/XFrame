@@ -1,0 +1,358 @@
+ {_INCLUDE header.html}
+  <!--中心内容-->
+  <div class="content-wrapper">
+    <section class="content-header">
+      <h1>首页banner-编辑</h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#"></a></li>
+        <li class="active"></li>
+      </ol>
+    </section>
+    <section class="content">
+      <div class="row">
+        
+        <div class="col-xs-12">
+          <div class="box box-primary">
+            <!--中心内容-->
+            <div class="row">
+              <div class="col-md-3"><img src="img/phone.png"></div>
+            
+              <div class="index-right-tab">
+               
+
+                <input type="hidden" name="category_id" value={_category_id}>
+                <!--右侧内容-->
+                <div class="col-md-9">
+                  <div class="col-md-12"><button class="btn btn-primary btn-xs index-bj-back ">返回</button></div>    
+                  <div class="col-md-12 index-img1">
+                      <div class="col-md-12">
+                        <div id="click"><img src="{_image}"></div>
+                        <a href="javascript:;" class="file">更换图片
+                          <input type="file" id="photo" name='photo'>
+                        </a>
+                      </div>
+                  </div>
+                
+                  
+                  <div class="col-md-12">   
+                    <div class="col-md-4">
+                        <div class="index-group clearfix">
+                          <label for="">标题：</label>
+                          <input type="text" class="form-control" placeholder="请输入标题名抻" value='{_name}' name='name'>
+                        </div>
+                    </div>                     
+                  </div>  
+                  
+                  <div class="col-md-12">   
+                   <div class="col-md-4">
+                        <div class="index-group clearfix">
+                           <label class="">商品分类：</label>
+                            
+                           <select class="form-control" id="banner-select">
+                              <option>请选择</option>
+                              <option value="0" data-value="0">h5</option>
+                              <option value="1" data-value="1">分类</option>
+                              <option value="2" data-value="2">商品</option>
+                          </select>
+                             
+                          </div>
+                      </div>                   
+                  </div> 
+                  
+                  <div class="col-md-12"> 
+                    <div class="col-md-4">
+                        <div class="fenlei_item clearfix">
+                          <div class="index-group"></div>
+                          <div class="index-group">
+                           <label for="">h5链接：</label>  <input type="text" value="" placeholder="链接" class="banner-input1">
+                          </div>
+                          
+                          <!--fenlei str-->
+                          <div class="index-group" >
+                            <label for="">分类：</label>
+                             <div class="dropdown">
+                                    <input type="text" id="fenlei-input" class="" value="" class="" placeholder="商品分类">
+                                    <button class="dropdown-btn">▼</button>
+                                   </div><br/>
+                                   
+                                   <div class="menu" style="display: none;">
+                                    {_FOREACH level1}
+                                      
+                                      <h1 class="l1">11</h1>
+                                      <div class="slist"> 
+
+                                            {_FOREACH level2}
+
+                                        <h2 class="l2"><a href="#">二级菜单</a></h2>
+                                        
+                                        <ul class="sslist">
+                                         <li class="l3"><a href="#">·三级菜单</a></li>
+                                         <li class="l3"><a href="#">·三级菜单</a></li>
+                                          <li class="l3"><a href="http://jihua.cnblogs.com" target="_blank">·jihua.cnblogs.com</a></li>
+                                          <li class="l3"><a href="#">·三级菜单</a></li>
+                                        </ul>
+                                        
+                                           {ENDFOR}
+                                       
+                                     </div>
+                                  
+                                  {ENDFOR}
+                                   </div>
+                                  
+                                   
+                          </div>
+                          <!--fenlei end-->
+                          
+                          
+                          
+                          <div class="index-group">
+                            <label for="">搜索商品：</label><input type="text" value="" placeholder="搜索商品" class="banner-input2">
+                            <button class="banner-search2"><img src="D:\phpStudy\WWW\hi2017\hi2017\front\img/hui_ser.png"></button>
+
+
+                          </div>
+                          
+                      </div>
+                    </div>                     
+                  </div> 
+                
+                  <div class="col-md-12">
+                    <div class="col-md-4">
+                      <div class="index-group clearfix">
+                          <label for="">排序:</label>
+                          <div class="i_box clearfix">
+                            <a href="javascript:;" class="J_minus" style="float: left;">-</a>
+                            <input type="text" class="J_input"  value="{_sort_order}"  name='sort_order'/>
+                            <a href="javascript:;" class="J_add" style="float: left;">+</a>
+                          </div>
+                      </div>  
+                    </div>    
+                  </div>    
+                    
+                  <div class="col-md-12">
+                    <button class="btn btn-primary banner-save" style="margin-left: 10px;">保存</button>
+                  </div>  
+                
+                </div>
+                
+              </div>
+            </div>
+            
+            
+        </div>
+   
+      </div>
+  
+    </section>
+  </div>
+   
+  <!--底部-->
+    {_INCLUDE footer.html}
+
+</div>
+
+<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="dist/js/app.min.js"></script>
+<script src="dist/js/demo.js"></script>
+<script src="plugins/iCheck/icheck.min.js"></script>
+
+</body>
+</html>
+
+  <script type="text/javascript" src="http://keleyi.com/keleyi/pmedia/jquery/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript">
+     // 树状菜单
+     $(document).ready(function () {
+          $(".l1").toggle(function () {
+              $(".slist").animate({ height: 'toggle', opacity: 'hide' }, "slow");
+             $(this).next(".slist").animate({ height: 'toggle', opacity: 'toggle' }, "slow");
+         }, function () {
+             $(".slist").animate({ height: 'toggle', opacity: 'hide' }, "slow");
+              $(this).next(".slist").animate({ height: 'toggle', opacity: 'toggle' }, "slow");
+        });
+  
+        $(".l2").toggle(function () {
+              $(this).next(".sslist").animate({ height: 'toggle', opacity: 'toggle' }, "slow");
+        }, function () {
+             $(this).next(".sslist").animate({ height: 'toggle', opacity: 'toggle' }, "slow");
+         });
+ 
+         $(".l2").click(function () {
+             $(".l3").removeClass("currentl3");
+            $(".l2").removeClass("currentl2");
+             $(this).addClass("currentl2");
+        });
+ 
+         $(".l3").click(function () {
+            $(".l3").removeClass("currentl3");
+             $(this).addClass("currentl3");
+        });
+ 
+         $(".close").toggle(function () {
+             $(".slist").animate({ height: 'toggle', opacity: 'show' }, "fast");
+             $(".sslist").animate({ height: 'toggle', opacity: 'show' }, "fast");
+        }, function () {
+              $(".slist").animate({ height: 'toggle', opacity: 'hide' }, "fast");
+             $(".sslist").animate({ height: 'toggle', opacity: 'hide' }, "fast");
+         });
+     });
+
+     $(function(){
+      $(".dropdown-btn").click(function(){
+        if($(".menu").is(":hidden")){
+             $(".menu").show();   
+      }else{
+            $(".menu").hide();    
+      }
+      })
+     })
+ </script>
+ 
+
+
+<script>
+$(function(){
+  $("#banner-select").change(function(){
+     var index=$(this).find('option:selected').index();
+     console.log(index);
+     $(".fenlei_item .index-group").eq(index).show();
+     $(".fenlei_item .index-group").eq(index).siblings().hide();
+  })
+})
+
+</script>
+
+<!--排序-->
+<script>
+$.fn.iVaryVal=function(iSet,CallBack){
+  /*
+   * Minus:点击元素--减小
+   * Add:点击元素--增加
+   * Input:表单元素
+   * Min:表单的最小值，非负整数
+   * Max:表单的最大值，正整数
+   */
+  iSet=$.extend({Minus:$('.J_minus'),Add:$('.J_add'),Input:$('.J_input'),Min:0,Max:20},iSet);
+  var C=null,O=null;
+  //插件返回值
+  var $CB={};
+  //增加
+  iSet.Add.each(function(i){
+    $(this).click(function(){
+      O=parseInt(iSet.Input.eq(i).val());
+      (O+1<=iSet.Max) || (iSet.Max==null) ? iSet.Input.eq(i).val(O+1) : iSet.Input.eq(i).val(iSet.Max);
+      //输出当前改变后的值
+      $CB.val=iSet.Input.eq(i).val();
+      $CB.index=i;
+      //回调函数
+      if (typeof CallBack == 'function') {
+                CallBack($CB.val,$CB.index);
+            }
+    });
+  });
+  //减少
+  iSet.Minus.each(function(i){
+    $(this).click(function(){
+      O=parseInt(iSet.Input.eq(i).val());
+      O-1<iSet.Min ? iSet.Input.eq(i).val(iSet.Min) : iSet.Input.eq(i).val(O-1);
+      $CB.val=iSet.Input.eq(i).val();
+      $CB.index=i;
+      //回调函数
+      if (typeof CallBack == 'function') {
+        CallBack($CB.val,$CB.index);
+        }
+    });
+  });
+  //手动
+  iSet.Input.bind({
+    'click':function(){
+      O=parseInt($(this).val());
+      $(this).select();
+    },
+    'keyup':function(e){
+      if($(this).val()!=''){
+        C=parseInt($(this).val());
+        //非负整数判断
+        if(/^[1-9]\d*|0$/.test(C)){
+          $(this).val(C);
+          O=C;
+        }else{
+          $(this).val(O);
+        }
+      }
+      //键盘控制：上右--加，下左--减
+      if(e.keyCode==38 || e.keyCode==39){
+        iSet.Add.eq(iSet.Input.index(this)).click();
+      }
+      if(e.keyCode==37 || e.keyCode==40){
+        iSet.Minus.eq(iSet.Input.index(this)).click();
+      }
+      //输出当前改变后的值
+      $CB.val=$(this).val();
+      $CB.index=iSet.Input.index(this);
+      //回调函数
+      if (typeof CallBack == 'function') {
+                CallBack($CB.val,$CB.index);
+            }
+    },
+    'blur':function(){
+      $(this).trigger('keyup');
+      if($(this).val()==''){
+        $(this).val(O);
+      }
+      //判断输入值是否超出最大最小值
+      if(iSet.Max){
+        if(O>iSet.Max){
+          $(this).val(iSet.Max);
+        }
+      }
+      if(O<iSet.Min){
+        $(this).val(iSet.Min);
+      }
+      //输出当前改变后的值
+      $CB.val=$(this).val();
+      $CB.index=iSet.Input.index(this);
+      //回调函数
+      if (typeof CallBack == 'function') {
+                CallBack($CB.val,$CB.index);
+            }
+    }
+  });
+}
+//调用
+$( function() {
+  
+  $('.i_box').iVaryVal({},function(value,index){
+    $('.i_tips').html('你点击的表单索引是：'+index+'；改变后的表单值是：'+value);
+  });
+  
+});
+</script>
+
+<!--图片上传-->
+  <script>
+    document.getElementById('photo').addEventListener('change',function(e){
+    
+    var files = this.files;
+    var img = new Image();
+    var reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onload = function(e){
+      var mb = (e.total/1024)/1024;
+      if(mb>= 2){
+        alert('文件大小大于2M');
+        return;
+      }
+      img.src = this.result;
+      img.style.width ="80%";
+      document.getElementById('click').style.width="100%";
+      document.getElementById('click').style.height="";
+      document.getElementById('click').innerHTML = '';
+      document.getElementById('click').appendChild(img);
+    }
+  });
+  </script>

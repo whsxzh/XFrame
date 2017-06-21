@@ -1,0 +1,300 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		color: white;
+		cursor: pointer;
+	}
+	
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	
+	.order-btn {
+		margin-top: 10px;
+	}
+</style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">商品列表</span>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box">
+				<div class="col-md-12 order-header">
+					<div class="col-md-12 block-no">
+						<div class="col-xs-8 col-md-1" >
+							<input class="form-control form-select" placeholder="商品ID" value="{_product_id}" id="product_id">
+						</div>
+						<div class="col-xs-3 col-md-2">
+							<select id="category" class="form-control category form-select" onchange="select_product_category(this.value)">
+								<option value="0">选择商品类别</option>
+								<option value="0">全部商品类别</option>
+								{_FOREACH cat}
+								<option value="{_category_id}" data-id="{_get.category}">{_name}</option>
+								{_FOREACH son}
+								<option value="{_category_id}">➡{_name}</option>
+								{_FOREACH son}
+								<option value="{_category_id}">➡➡{_name}</option>
+								{ENDFOR} {ENDFOR} {ENDFOR}
+							</select>
+						</div>
+						<div class="col-xs-3 col-md-2">
+							<select id="category" class="form-control category form-select" onchange="select_product_brand(this.value)">
+								<option value="0">选择商品品牌</option>
+								<option value="0">全部商品品牌</option>
+								{_FOREACH brand}
+								<option value="{_manufacturer_id}" {_IF is_selected=1} selected {ENDIF}>{_name}</option>
+								{ENDFOR}
+							</select>
+						</div>
+						<div class="col-xs-8 col-md-2" >
+							<input class="form-control form-select" placeholder="商品名称" value="{_product_name}" id="product_name">
+						</div>
+						<div class="col-md-2 col-xs-4">
+							<button type="submit" class="btn btn-main btn-sm search_product">搜索</button>
+						</div>
+					</div>
+				</div>
+				<div class="box-body">
+						<div class="dataTables_wrapper form-inline dt-bootstrap box-hidden box-auto">
+							<table id="order-tab1" class="table table-bordered table-striped">
+								<tr>
+									<th class="block-no">选择</th>
+									<th>商品ID</th>
+									<th>所属分类</th>
+									<th>所属品牌</th>
+									<th>商品名称</th>
+									<th>商品主图</th>
+								</tr>
+								{_FOREACH product_info}
+								<tr>
+									<td class="block-no"><input type="checkbox" name="product" value="{_product_id}" onchange="jacascript:check1(this)"  /></td>
+									<td>{_product_id}</td>
+									<td>{_category_name}</td>
+									<td>{_manufacturer_name}</td>
+									<td>{_name}</td>
+									<td><img src="{_image}" style="width:50px;height:50px;"></td>
+								</tr>
+								{ENDFOR}
+							</table>
+							<div class="col-md-12">
+									<div class="col-md-3 block-no">
+										<input type="checkbox" value="" id="chkall" class="goods-check1">
+										<label for="chkall" style="margin-left: 15px;color: white;" class="btn btn-main btn-sm">全选</label>
+										<label for="comfirm" style="margin-left: 15px;color: white;cursor:pointer;" id="product_comfirm" class="btn btn-main btn-sm">确认</label>
+									<label for="cancel" style="margin-left: 15px;color: white;cursor:pointer;" id="product_cancel" class="btn btn-main btn-sm">取消</label>
+									</div>
+									<div class="col-md-9">
+										<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+											<ul class="pagination">
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="首页">|<</a>
+												</li>
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													{_IF curpage=1}
+													<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+													{ELSE}
+													<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+													{ENDIF}
+												</li>
+												{_FOREACH pages}
+												<li class="paginate_button {_IF active}active {ENDIF}">
+													<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+												</li>
+												{ENDFOR}
+												<li class="paginate_button next" id="consumer-tab1_next">
+													{_IF lastPage=1}
+													<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+													{ELSE}
+													<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+													{ENDIF}										
+												</li>
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="尾页">>|</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+</div>
+<script type="text/javascript">
+	function check1(obj){
+		if($(obj).prop('checked')){
+			var product_id=$(obj).attr('value');
+			//alert(product_id);return;
+			//deleteCookie();
+			//delCookie('name');
+			setCookie('name',product_id);
+			var msg=getCookie('name');
+			ss=msg.split(',');
+			alert("您已经选择了"+ss.length+"件商品");
+			
+		}else{
+			var product_id=$(obj).attr('value');
+			var products=getCookie("name");
+			//alert(products);
+			var product=products.replace(new RegExp(','+product_id,'gm'),'');
+			var product=product.replace(new RegExp(product_id,'gm'),'');
+			//alert(product);
+			//去掉勾选时候把当前的商品id去掉
+			setCookie('name',0,product)
+		}
+	}
+
+	function setCookie(name,product_id=0,product=0){
+		var Days=30;
+		var exp=new Date();
+		exp.setTime(exp.getTime()+Days*24*3600*1000);
+		if(product_id==0){
+			//checkbox取消
+			var products=product;
+		}else{
+			if(getCookie('name')==null || getCookie('name')==''){
+				var products=product_id;
+			}else{
+				var products=getCookie('name')+","+product_id;
+			}
+			
+		}
+		
+		//alert(exp.toGMTString());return;
+		document.cookie=name + "="+ products + ";expires=" + exp.toGMTString(); 
+	}
+
+
+	//读取cookies 
+	function getCookie(name) 
+	{ 
+	    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+	 
+	    if(arr=document.cookie.match(reg))
+	 
+	        return unescape(arr[2]); 
+	    else 
+	        return null; 
+	} 
+
+	//删除cookies 
+	function delCookie(name) 
+	{ 
+	    var exp = new Date(); 
+	    exp.setTime(exp.getTime() - 1); 
+	    var cval=getCookie(name); 
+	    if(cval!=null) 
+	        document.cookie= name + "="+cval+";expires="+exp.toGMTString(); 
+	} 
+
+	// function getCookie(){
+	// 	var name=document.cookie;
+	// 	alert(name);
+	// }
+	// function deleteCookie(){
+	// 	var exp=new Date();
+	// 	exp.setTime(exp.getTime()-1);
+	// 	document.cookie="product=0;exp="+exp.toGMTString()+";path=/";
+	// 	var name=document.cookie;
+	// 	alert(name);
+	// }	
+</script>
+<script type="text/javascript">
+	$(function() {
+		//全选
+		$('#chkall').on('click', function() {
+			if(this.checked) {
+				$("input[name='product']:checkbox").prop("checked", true);
+			} else {
+				$("input[name='product']:checkbox").prop("checked", false);
+			}
+		});
+
+		// 确定所选商品
+		$("#product_comfirm").click(function(){
+			// var product_id_array = [];
+			// $("input[name='product']:checked").each(function() {
+			// 	product_id_array.push($(this).val());
+			// });
+			// var products_str = product_id_array.join(',');
+			var types="{_types}";
+			var products_str=getCookie('name');
+			if(products_str==null){
+				product_id_array="";
+			}else{
+				var product_id_array=products_str.split(',');
+			}
+			
+			delCookie('name');
+			// alert(products_str);return;
+			// console.log(products_str);
+			if(product_id_array.length < 1){
+				alert("请选择具体哪些商品！");
+				location.reload();
+			}else{
+
+				if(types == 'edit'){
+					var coupon_id="{_coupon_id}";
+					window.location = "{_couponEditUrl}&ids_str="+products_str+"&counts="+product_id_array.length+"&type=2&coupon_id="+coupon_id;
+				}else{
+					window.location = "{_couponAddUrl}&ids_str="+products_str+"&counts="+product_id_array.length+"&type=2";
+				}
+				
+			}
+		})
+
+		// 取消
+		$("#product_cancel").click(function(){
+			$("#chkall").prop("checked", false);
+			$("input[name='manufacturer']:checkbox").prop("checked", false);
+			history.back();// 返回上一页			
+		})
+
+	});
+
+	// 处理新增优惠券，选择部分商品的分类搜索条件
+	function select_product_category(value){
+		var cutUrl = window.location.href;
+		window.location = cutUrl+"&product_category_id="+value;
+	}
+
+	// 处理新增优惠券，选择部分商品的品牌搜索条件
+	function select_product_brand(value){
+		var cutUrl = window.location.href;
+		window.location = cutUrl+"&product_brand_id="+value;
+	}
+
+	$(function() {
+		$(".search_product").click(function(){
+			var cutUrl = window.location.href;
+			var product_name = document.getElementById("product_name").value;
+			var product_id = document.getElementById("product_id").value;
+			window.location = cutUrl+"&product_name="+product_name+"&product_id="+product_id;
+		})
+	});
+</script>
+</body>
+
+</html>

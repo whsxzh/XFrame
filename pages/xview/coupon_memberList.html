@@ -1,0 +1,142 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		color: white;
+		cursor: pointer;
+	}
+	
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	
+	.order-btn {
+		margin-top: 10px;
+	}
+</style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">客户范围列表</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">优惠券管理</a>
+			</li>
+			<li class="active">客户范围列表</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box">
+				<div class="col-md-12 order-header">
+					<div class="col-md-12 block-no">
+						<div class="col-xs-8 col-md-2" >
+							<!--<input type="text" class="form-control form-input" value='{_order_id}' placeholder="根据订单编号搜素" id='ordername' class="">-->
+								<select name="" class="form-control form-select" >
+									<option value="">用户类别</option>
+								</select>
+						</div>
+						<div class="col-md-2 col-xs-4">
+							<button type="submit" class="btn btn-main btn-sm search_order">搜索</button>
+						</div>
+
+					</div>
+				</div>
+				<div class="box-body">
+						<div class="dataTables_wrapper form-inline dt-bootstrap box-hidden box-auto">
+							<table id="order-tab1" class="table table-bordered table-striped">
+								<tr>
+									<th class="block-no">选择</th>
+									<th>账号</th>
+									<th>昵称</th>
+									<th>类型</th>
+								</tr>
+								<tr>
+									<td class="block-no"><input type="checkbox" name="product_id" value="{_product_id}"/></td>
+									<td>1023</td>
+									<td>1023</td>
+									<td>1023</td>
+								</tr>
+							</table>
+							<div class="col-md-12">
+									<div class="col-md-3 block-no">
+										<input type="checkbox" value="" id="chkall" class="goods-check1">
+										<label for="chkall" style="margin-left: 15px;color: white;">全选</label>
+									</div>
+									<div class="col-md-9">
+										<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+											<ul class="pagination">
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="首页">|<</a>
+												</li>
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													{_IF curpage=1}
+													<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+													{ELSE}
+													<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+													{ENDIF}
+												</li>
+												{_FOREACH pages}
+												<li class="paginate_button {_IF active}active {ENDIF}">
+													<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+												</li>
+												{ENDFOR}
+												<li class="paginate_button next" id="consumer-tab1_next">
+													{_IF lastPage=1}
+													<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+													{ELSE}
+													<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+													{ENDIF}										
+												</li>
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="尾页">>|</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+</div>
+<script type="text/javascript">
+	$(function() {
+		//全选
+		$('#chkall').on('click', function() {
+			if(this.checked) {
+				$("input[name='product_id']:checkbox").prop("checked", true);
+			} else {
+				$("input[name='product_id']:checkbox").prop("checked", false);
+			}
+		});
+	});
+
+
+	
+</script>
+</body>
+
+</html>

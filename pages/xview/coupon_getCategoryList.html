@@ -1,0 +1,520 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+.order-state a{color: white;}
+.order-header{background: rgba(0,0,0,0.1);padding: 0;padding-top: 8px;margin-bottom: 10px;}
+.order-header ul{padding: 0; margin: 0;}
+.order-header ul li{float: left;text-align: center;background: rgba(0,0,0,0.1);padding: 8px 0;color: white;cursor: pointer;}
+.order-header ul li.active{background: rgba(0,0,0,0.2);}
+</style>
+<!--分类管理-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">选择优惠券商品分类信息</span>
+	</section>
+	<section class="content">
+		<div class="row">
+				<div class="box box-primary index-box" style="max-height: 750px;overflow: auto;">
+					 <div class="col-md-12 order-header">
+							<div class="col-md-5 col-xs-6 order-box order-margin">
+								<input type="checkbox" value="" id="chkall" class="goods-check1">
+								<label for="chkall" style="margin-left: 15px;color: white;">全选</label>
+							</div>
+							<div class="col-md-7 col-xs-6 block-no text-right">
+								<button id="category_comfirm" class="btn btn-main block-no btn-xs">确认</button>
+								<button id="category_cancel" class="btn btn-main block-no btn-xs">取消</button>
+							</div>
+					</div>
+
+					
+					
+					<!--分类设置-->
+					<table id="fenlei-tab" class="table table-bordered">
+						<!-- <tr>
+							<th style="text-align: left;">
+								<button type="button" class="btn btn-main block-no" data-toggle="modal" data-target="#Modal-add-fenlei">新增分类</button>
+							</th>
+						</tr> -->
+
+						<!--<tr>
+							<th style="text-align: left; display:inline;display: flex;align-items: center;">
+								<input type="checkbox" value="" id="chkall" class="goods-check1" style="margin:28px 0 0 0;">
+								<label for="chkall" style="margin-left: 15px;color: white;">全选</label>
+								<label for="comfirm" style="margin-left: 15px;color: white;cursor:pointer;padding: 2px 2px;" id="category_comfirm" class="btn btn-main block-no btn-sm">确认</label>
+								<label for="cancel" style="margin-left: 15px;color: white;cursor:pointer;padding: 2px 2px;" id="category_cancel" class="btn btn-main block-no">取消</label>
+							</th>
+						</tr>-->
+						{_FOREACH cate}
+						<tr>
+							<td style="display:none">{_category_id}</td>
+							<td>
+								<!--infor-1-->
+								<div class="one-content clearfix">
+									<div class="left" style="display:inline;">
+										<input style="display:inline-block;" type="checkbox" name="category" value="{_category_id}" data-pid="{_parent_id}" class="checkbox" {_IF checked}checked {ENDIF}>
+										<span class="pro_classity"><!--<span class="zoom">+</span>-->{_name}</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+						{_FOREACH son}
+						<tr>
+							<td style="display:none">{_parent_id}</td>
+							<td>
+								<div class="classity_child children clearfix">
+									<div class="left" style="display:inline;">
+										<input style="display:inline-block;" type="checkbox" name="category" value="{_category_id}" data-pid="{_parent_id}" class="checkbox" {_IF checked}checked {ENDIF}>
+										<span class="pro_classity">{_name}</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+						{_FOREACH son}
+						<tr>
+							<td style="display:none">{_parent_id}</td>
+							<td>
+								<div class="guige_child children clearfix">
+									<div class="left" style="display:inline;">
+										<input style="display:inline-block;" type="checkbox" name="category" value="{_category_id}" data-pid="{_parent_id}" class="checkbox" {_IF checked}checked {ENDIF}>
+										<span class="pro_classity">{_name}</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+						{ENDFOR} {ENDFOR} {ENDFOR}
+					</table>
+
+				</div>
+
+
+		</div>
+
+	</section>
+</div>
+
+<!--底部-->
+
+{_INCLUDE footer.html}
+
+<!--新增分类弹框-->
+<div class="modal fade" id="Modal-add-fenlei" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">新增分类</h4>
+			</div>
+			<div class="modal-body">
+				<form enctype="multipart/form-data" method="post" action="xindex.php?m=catalog&act=saveImage">
+
+					<div class="col-md-12 index-img1">
+						<div class="col-md-12">
+							<div id="click"><img src="{_image}"></div>
+							<a href="javascript:;" class="file">新增图片
+								<input type="file" id="photo" name="headurl">
+							</a>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="recipient-name" class="control-label" style="color:black">名称:</label>
+						<input type="text" class="form-control" id="category_name">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label" style="color:black">排序:</label>
+						<input type="number" min="0" class="form-control" id="sort">
+					</div>
+					<div class="form-group">
+						<span style="color: red;" class="add_tip"></span>
+					</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="submit" data-attr="0" data-parent="0" class="btn btn-primary fenlei_save">保存</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!--添加子类弹框-->
+<div class="modal fade" id="Modal-classify" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">添加子类</h4>
+			</div>
+			<div class="modal-body">
+				<form enctype="multipart/form-data" method="post" action="xindex.php?m=catalog&act=saveImage">
+
+					<div class="col-md-12 index-img1">
+						<div class="col-md-12">
+							<div id="click1"><img src="{_image}"></div>
+							<a href="javascript:;" class="file">新增图片
+								<input type="file" id="photo1" name="headurl">
+							</a>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label" style="color:black">名称:</label>
+						<input type="text" class="form-control" id="son_name">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label" style="color:black">排序:</label>
+						<input type="number" min="0" class="form-control" id="son_sort">
+					</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="submit" data-attr="1" data-parent="" class="btn btn-primary fenlei_son_save" onsubmit="check()">保存</button>
+
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!--编辑弹框-->
+<div class="modal fade" id="Modal-classify-edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">编辑</h4>
+			</div>
+
+			<form enctype="multipart/form-data" method="post" action="xindex.php?m=catalog&act=saveImage">
+				<div class="col-md-12 index-img1">
+					<div class="col-md-12" style="z-index:999;">
+						<div id="click2"><img id='edit_image' src="{_image}"></div>
+						<a href="javascript:;" class="file">更换图片
+							<input type="file" id="photo2" name="headurl">
+						</a>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="recipient-name" class="control-label" style="color:black">名称:</label>
+						<input type="text" class="form-control" id="edit_category">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label" style="color:black">排序:</label>
+						<input type="number" min="0" class="form-control" id="edit_sort">
+					</div>
+					<div class="form-group">
+						<span style="color: red;" class="add_tip1"></span>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="hidden" name="category_id" id="c_id">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="submit" class="btn btn-primary edit_sure" data-id="" data-toggle="modal" data-target=".save">保存</button>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+<!--删除提示-->
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="Modal-classify-delect">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content" style="text-align: center;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">提示</h4>
+			</div>
+
+			<div class="modal-body">
+				<p style="font-size: 14px;">是否删除信息</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" data-id="" class="btn btn-primary sure_delete">确定</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- 保存提示 modal -->
+<div class="save-modal-content">
+	<div class="save-modal-body" style="text-align: center;"></div>
+</div>
+
+<script>
+	$(document).on('click', '.classity_parent_add', function() {
+		console.log(111);
+		$(this).parent().parent().parent().find('.children').toggle();
+	});
+</script>
+
+<script>
+	$(function() {
+
+		//缩放
+		$(document).on('click', '.zoom', function() {
+			$('.classity_child').eq($(this).index()).slideToggle();
+		});
+
+		$(".edit_sure").click(function() {
+			if($("#edit_category").val() == "" || $("#edit_category").val() == null) {
+				$(".add_tip1").html("分类名称不能为空");
+				return;
+			} else {
+				$(".add_tip1").html("");
+			}
+			var photo = $('#photo2').val();
+			if(photo == '') {
+				//说明使用的是原图片
+				photo = "{_image}";
+				var index = photo.indexOf("image") + 6;
+				photo = photo.substring(index);
+
+			} else {
+				//不是原图片，进行拼接
+				photo = "catalog/gd/product/" + photo;
+				photo = photo.replace("C:\\fakepath\\", '');
+			}
+			//alert(photo);return;
+			category(0, 0, $("#edit_category").val(), $("#edit_sort").val(), "update", $(this).attr("data-id"), photo);
+		});
+		//编辑
+		$(".category_edit").click(function() {
+			$("#edit_category").val($(this).attr("data-cate"));
+			$("#edit_sort").val($(this).attr("data-sort"));
+			$("#c_id").val($(this).attr("data-id"));
+			$(".edit_sure").attr("data-id", $(this).attr("data-id"));
+			$("#edit_image").attr('src', ($(this).attr("data-img")));
+
+		});
+		$(".delete_cat").click(function() {
+			$(".sure_delete").attr("data-id", $(this).attr("data-id"));
+		});
+		//删除
+		$(".sure_delete").click(function() {
+			var url = "{_deletecategory}";
+			$.ajax({
+				url: url,
+				type: 'post',
+				data: { id: $(this).attr("data-id") },
+				success: function(json) {
+					$(".save-modal-content").show()
+					$("#Modal-add-fenlei").hide();
+					$(".save-modal-body").html("删除成功");
+					setTimeout(function() {
+						$('.save-modal-content').hide();
+						$(".modal-backdrop").hide();
+						location.reload();
+					}, 1000);
+				},
+				error: function() {
+					$(".save-modal-content").show()
+					$("#Modal-add-fenlei").hide();
+					$(".save-modal-body").html("请求失败");
+					setTimeout(function() {
+						$('.save-modal-content').hide();
+						$(".modal-backdrop").hide();
+						location.reload();
+					}, 1000);
+				}
+			});
+		});
+		$(".addchild").click(function() {
+			$(".fenlei_son_save").attr("data-parent", $(this).attr("data-id"));
+		});
+		//添加一级
+		$(".fenlei_save").click(function() {
+			if($("#category_name").val() == "" || $("#category_name").val() == null) {
+				$(".add_tip").html("分类名称不能为空");
+				return;
+			} else {
+				$(".add_tip").html("");
+			}
+
+			var photo = $('#photo').val();
+			if(photo == '') {
+				//说明使用的是原图片
+				alert("请添加图片");
+				return;
+
+			} else {
+				photo = photo.replace("C:\\fakepath\\", '');
+			}
+			//alert($("#category_name").val());return;
+			category($(this).attr("data-attr"), $(this).attr("data-parent"), $("#category_name").val(), $("#son_sort").val(), "add", 0, photo);
+
+		})
+		//添加子级
+		setTimeout("msg()", "2000");
+		$(".fenlei_son_save").click(
+			function msg() {
+				if($("#son_name").val() == "" || $("#son_name").val() == null) {
+					$(".add_tip").html("分类名称不能为空");
+					return;
+				} else {
+					$(".add_tip").html("");
+				}
+
+				var photo = $('#photo1').val();
+				if(photo == '') {
+					//说明使用的是原图片
+					photo = "{_image}";
+					var index = photo.indexOf("image") + 6;
+					photo = photo.substring(index);
+
+				} else {
+					photo = photo.replace("C:\\fakepath\\", '');
+				}
+
+				category($(this).attr("data-attr"), $(this).attr("data-parent"), $("#son_name").val(), $("#son_sort").val(), "add", 0, photo);
+			}
+
+		)
+
+		function category(attr, parent, cat, sort, type, id, photo) {
+			var url = "{_addcategory}";
+			$.ajax({
+				url: url,
+				type: 'post',
+				data: { attr: attr, parent: parent, cat: cat, sort, sort, type: type, id: id, photo: photo },
+				success: function(json) {
+					$(".save-modal-content").show()
+					$("#Modal-add-fenlei").hide();
+					$(".save-modal-body").html("操作成功");
+					setTimeout(function() {
+						$('.save-modal-content').hide();
+						$(".modal-backdrop").hide();
+
+						function check() {
+							return true;
+						}
+						location.reload();
+					}, 1000);
+				},
+				error: function() {
+					$(".save-modal-content").show()
+					$("#Modal-add-fenlei").hide();
+					$(".save-modal-body").html("请求失败");
+					setTimeout(function() {
+						$('.save-modal-content').hide();
+						$(".modal-backdrop").hide();
+						location.reload();
+					}, 1000);
+				}
+			});
+		}
+
+		// $("#fenlei-tab").DataTable();
+
+	});
+</script>
+
+<!--图片上传-->
+<script>
+	document.getElementById('photo').addEventListener('change', function(e) {
+		var files = this.files;
+		var img = new Image();
+		var reader = new FileReader();
+		reader.readAsDataURL(files[0]);
+		reader.onload = function(e) {
+			var mb = (e.total / 1024) / 1024;
+			if(mb >= 2) {
+				alert('文件大小大于2M');
+				return;
+			}
+			img.src = this.result;
+			img.style.width = "80%";
+			document.getElementById('click').style.width = "100%";
+			document.getElementById('click').style.height = "";
+			document.getElementById('click').innerHTML = '';
+			document.getElementById('click').appendChild(img);
+		}
+	});
+</script>
+<script>
+	document.getElementById('photo1').addEventListener('change', function(e) {
+		var files = this.files;
+		var img = new Image();
+		var reader = new FileReader();
+		reader.readAsDataURL(files[0]);
+		reader.onload = function(e) {
+			var mb = (e.total / 1024) / 1024;
+			if(mb >= 2) {
+				alert('文件大小大于2M');
+				return;
+			}
+			img.src = this.result;
+			img.style.width = "80%";
+			document.getElementById('click1').style.width = "100%";
+			document.getElementById('click1').style.height = "";
+			document.getElementById('click1').innerHTML = '';
+			document.getElementById('click1').appendChild(img);
+		}
+	});
+</script>
+<script>
+	document.getElementById('photo2').addEventListener('change', function(e) {
+		var files = this.files;
+		var img = new Image();
+		var reader = new FileReader();
+		reader.readAsDataURL(files[0]);
+		reader.onload = function(e) {
+			var mb = (e.total / 1024) / 1024;
+			if(mb >= 2) {
+				alert('文件大小大于2M');
+				return;
+			}
+			img.src = this.result;
+			img.style.width = "80%";
+			document.getElementById('click2').style.width = "100%";
+			document.getElementById('click2').style.height = "";
+			document.getElementById('click2').innerHTML = '';
+			document.getElementById('click2').appendChild(img);
+		}
+	});
+</script>
+
+<script type="text/javascript">
+$(function() {
+		//全选
+		$('#chkall').on('click', function() {
+			if(this.checked) {
+				$("input[name='category']:checkbox").prop("checked", true);
+			} else {
+				$("input[name='category']:checkbox").prop("checked", false);
+			}
+		});
+
+		// 确定所选分类
+		$("#category_comfirm").click(function(){
+			var category_id_array = [];
+			$("input[name='category']:checked").each(function() {
+				category_id_array.push($(this).val());
+			});
+			var categorys_str = category_id_array.join(',');
+			var types="{_types}";
+			console.log(categorys_str);
+			if(category_id_array.length < 1){
+				alert("请选择商品分类！");
+				location.reload();
+			}else{
+				if(types == 'edit'){
+					var coupon_id="{_coupon_id}";
+					window.location = "{_couponEditUrl}&ids_str="+categorys_str+"&counts="+category_id_array.length+"&type=3&coupon_id="+coupon_id;
+				}else{
+					window.location = "{_couponAddUrl}&ids_str="+categorys_str+"&counts="+category_id_array.length+"&type=3";
+				}
+				
+			}
+		})
+
+		// 取消
+		$("#category_cancel").click(function(){
+			$("#chkall").prop("checked", false);
+			$("input[name='category']:checkbox").prop("checked", false);
+			history.back();// 返回上一页			
+		})
+
+})
+</script>

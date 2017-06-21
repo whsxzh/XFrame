@@ -1,0 +1,185 @@
+ {_INCLUDE header.html}
+<style>
+	.save-modal-body {
+		width: 200px;
+		text-align: center;
+		font-size: 14px;
+		height: 80px;
+		background: #FFFFFF;
+		z-index: 11111;
+		position: absolute;
+		top: 30%;
+		left: 50%;
+		line-height: 80px;
+	}
+	
+	.save-modal-content {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 1050;
+		overflow: hidden;
+		-webkit-overflow-scrolling: touch;
+		outline: 0;
+		background: rgba(0, 0, 0, 0.3);
+		display: none;
+	}
+	table tr td:nth-child(2){text-align: left;}
+</style>
+<!--订单管理内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">交易详情</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">资金管理</a>
+			</li>
+			<li class="active">交易详情</li>
+		</ol>
+	</section>
+	<section class="content" style="padding-top: 0;">
+		<div class="row">
+			<div class="box box-primary">
+					<div style="margin-bottom: 20px;margin-top: 10px;">
+						
+						<div class="order-tab clearfix box-auto">
+							<table border="" cellspacing="" cellpadding="" style="width: 100%;margin-top: 15px;" id="order-tab1" class="table table-bordered table-striped">
+								<tr>
+									<td>用户名</td>
+									<td>{_firstname}</td>
+								</tr>
+								<tr>
+									<th>电话号码</th>
+									<td>{_telephone}</td>
+								</tr>
+								<tr>
+									<th>提现金额</th>
+									<td>{_money1}</td>
+								</tr>
+								<tr>
+									<th>余额</th>
+									<td>{_balance}</td>
+								</tr>
+								<tr>
+									<th>可用余额</th>
+									<td>{_availabe_balance}</td>
+								</tr>
+								
+								<tr>
+									<td>交易信息</td>
+									<td>
+										<div style="height:280px;overflow:auto;">	
+											<p style="color: red;">总收入：{_total} (分享差价,退款,返利)</p>
+											<p style="color: red;">总支出：{_jian_total} (会员购买,购买(余额)支出)</p>
+											<p style="color: red;">总返利：{_fan}(已解锁的返利)</p>
+											<p style="color: red;">未解锁资金：{_lockfan}</p>
+											{_IF transaction}
+											<table>
+												<caption>资金流水</caption>
+												<thead>
+													<tr>
+														<th>交易编号</th>
+														<th>订单号</th>
+														<th>时间</th>
+														<th>描述</th>
+														<th>资金变化</th>
+														<th>返利</th>
+														<th>提现</th>
+														
+														<th>余额</th>
+														<th>可用余额</th>
+														
+														<th>凭证号</th>
+														<!-- <th>类型</th> -->
+														<th>商品名称</th>
+
+
+													</tr>
+												</thead>
+												<tbody>
+												{_FOREACH transaction}
+													<tr>
+													<td>{_customer_transaction_id}&nbsp;&nbsp;</td>
+													<td>{_order_id}&nbsp;&nbsp;</td>
+													<td>{_date_added}&nbsp;&nbsp;</td>
+													<td style="text-align: left;"><a href="xindex.php?m=sale&act=order_detail&order={_order_id}" target="_blank">{_description}</a>&nbsp;&nbsp;</td>
+													<td>{_amount}&nbsp;&nbsp;</td>
+													
+													<td>{_amount1}&nbsp;&nbsp;</td>
+													<td>{_amount2}&nbsp;&nbsp;</td>
+													
+													<td>{_last_balance}&nbsp;&nbsp;</td>
+													<td>{_last_availabe_balance}&nbsp;&nbsp;</td>
+													
+													<td>{_pingzhen}&nbsp;&nbsp;</td>
+													<!-- <td>{_order_type_sa}&nbsp;&nbsp;</td> -->
+													<td style="text-align: left;">{_product}&nbsp;&nbsp;</td>
+													
+													</tr>
+												{ENDFOR}
+													
+												</tbody>
+											</table>
+												
+											{ELSE}
+												<p>暂无交易信息</p>
+											{ENDIF}
+												
+
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>提现记录</td>
+									<td>
+										<div style="height:240px;overflow:auto;">
+											<p style="color: red;">总提现：{_money}</p>
+											{_IF history}
+												{_FOREACH history}
+													<p>提现单号：{_order_num}&nbsp;&nbsp;
+													提现金额：{_money}&nbsp;&nbsp;
+													提现类型：{_type_remark}&nbsp;&nbsp;
+													提现时间：{_date_added}&nbsp;&nbsp;
+													提现状态：{_status}&nbsp;&nbsp;
+													真实姓名：{_true_name}&nbsp;&nbsp;
+													提现账号：{_account}&nbsp;&nbsp;
+													</p>
+												{ENDFOR}
+											{ELSE}
+												<p>暂无提现记录</p>
+											{ENDIF}
+										</div>
+									</td>
+								</tr>
+							</table>
+							<div class="col-md-12 text-right" style="margin-bottom: 10px;">
+								<button onclick="javascript:history.back();" class="btn btn-primary btn-sm">返回</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+		</div>
+
+	</section>
+
+</div>
+
+
+<!-- 底部 -->
+{_INCLUDE footer.html}
+
+<script type="text/javascript">
+	$(".search_order").click(function(){
+		var name=$("#name").val();
+		var url="{_send_money}";
+		url=url.replace("&amp;","&");
+		// alert(url);
+		location.href=url+"&name="+name;
+	})
+</script>

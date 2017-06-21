@@ -1,0 +1,287 @@
+ {_INCLUDE header.html}
+<!--普通用户管理-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">用户列表</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">用户管理</a>
+			</li>
+			<li class="active">用户列表</li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="row">
+			<div class="box">
+				<div class="order-tab">
+					<div class="row">
+						<div class="box-body block-no" id="box-body">
+							<form action="xindex.php?m=customer&act=getList">
+								<input type="hidden" name="m" value="customer">
+								<input type="hidden" name="act" value="getList">
+								<div class="col-xs-2 col-md-2">
+									<select class="form-control form-select" name="merchant_id">
+									{_IF merchant_id=1}
+										<option value="0">全部</option>
+										<option value="1" selected="selected">普通用户</option>
+										<option value="2">会员用户</option>
+										<option value="3">企业用户</option>
+									{ENDIF}
+									{_IF merchant_id=2}
+										<option value="0">全部</option>
+										<option value="1">普通用户</option>
+										<option value="2" selected="selected">会员用户</option>
+										<option value="3">企业用户</option>
+									{ENDIF}
+									{_IF merchant_id=0}
+										<option value="0" selected="selected">全部</option>
+										<option value="1">普通用户</option>
+										<option value="2">会员用户</option>
+										<option value="3">企业用户</option>
+									{ENDIF}
+									{_IF merchant_id=3}
+										<option value="0">全部</option>
+										<option value="1">普通用户</option>
+										<option value="2">会员用户</option>
+										<option value="3" selected="selected">企业用户</option>
+									{ENDIF} 
+									</select>
+								</div>
+								<div class="col-xs-2  col-md-2">
+									<input type="text" class="form-control form-input" name='lastname' placeholder="请输入姓名" value="{_lastname}">
+								</div>
+								<div class="col-xs-2  col-md-2">
+									<input type="text" class="form-control form-input" name='firstname' placeholder="请输入用户昵称" value="{_firstname}">
+								</div>
+								<div class="col-xs-2  col-md-2">
+									<input type="text" class="form-control form-input" name='telephone' placeholder="用户电话" value="{_telephone}">
+								</div>
+								<div class="col-xs-2  col-md-2">
+									<button type="submit" class="btn btn-main btn-sm">搜索</button>
+								</div>
+							</form>
+							<div class="col-xs-2 col-md-2">
+								<button type="button" class="btn btn-main pull-right" onclick="javascript:location='xindex.php?m=customer&act=detail'">新建用户</button>
+							</div>
+						</div>
+		
+					</div>
+
+					<div class="order-tab">
+						<!-- 普通用户管理 -->
+						<div class="box-body box-auto">
+							<table id="tent-tab1" class="table table-bordered table-striped">
+								<tr>
+									<th class="block-no">id</th>
+									<th>图片</th>
+									<th class="block-no">类型</th>
+									<th>昵称</th>
+									<th>姓名</th>
+									<th>账号</th>
+									<th>身份证</th>
+									<th>注册时间</th>
+<!-- 									<th class="block-no">登录ip</th> -->
+									<th>所属代理昵称</th>
+									<th>所属邀请码</th>
+									<th class="block-no">备注</th>
+									<th class="block-no">操作</th>
+								</tr>
+								{_FOREACH customer}
+								<tr>
+									<td class="block-no">{_customer_id}</td>
+									<td><img alt="图片" src="{_headurl}?x-oss-process=image/resize,w_128,limit_0" width="80px" height="60px"></td>
+									<td class="block-no">
+									{_IF merchant_id>0}
+										{_IF proxy_status=0}
+											<span style='color:pink'>会员用户</span>
+										{ELSE}
+											<span style='color:rgb(0,204,255);'>企业用户</span>
+										{ENDIF}
+									{ELSE}
+									普通用户
+									{ENDIF}	
+									</td>
+									<td>{_firstname}</td>
+									<td>{_lastname}</td>
+									<td>{_telephone}</td>
+									<td>{_card}</td>
+									<td>{_date_added}</td>
+<!-- 									<td class="block-no">{_ip}</td> -->
+									<td>
+										<a href="#">{_parent_name}</a>
+									</td>
+									<td class="block-no">{_invitecode}</td>
+									<td class="block-no">{_remark}</td>
+									<td class="agent-btn block-no">
+										<a href="{_money_url}" class="btn btn-xs btn-main">资金明细</a>
+										<a class="btn btn-main btn-xs" href="xindex.php?m=customer&act=detail&id={_customer_id}&page={_page}">查看详情</button>
+										<a class="btn btn-main btn-xs" href="javascript:;" onclick="stop({_customer_id})" id="s_{_customer_id}" item="{_status}">{_status_type}</a>
+										{_IF merchant_id=1}
+										<a href="javascript:;" onclick="changtype({_customer_id})" class="c_{_customer_id} btn btn-xs btn-main" item="{_proxy_status}">{_change_type}</a>
+										{ENDIF}
+									</td>
+								</tr>
+								{ENDFOR}
+							</table>
+							
+							<div class="row">
+								<!--<div class="col-sm-5">
+									<div class="dataTables_info" id="consumer-tab1_info" role="status" aria-live="polite">共5页</div>
+								</div>-->
+								<!--分页-->
+								<div class="col-md-12" style="margin-top: 15px;">
+									<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+										<ul class="pagination">
+											<li class="paginate_button next" id="consumer-tab1_first">
+											<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">首页</a>
+										</li>
+										{_IF firstPage=1}
+										<li class="paginate_button previous" id="consumer-tab1_previous">
+											<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+										</li>
+										{ENDIF}
+										{_FOREACH pages}
+										<li class="paginate_button {_IF active}active {ENDIF}">
+											<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+										</li>
+										{ENDFOR}
+										{_IF is_end_page=1}
+											<li class="paginate_button next" id="consumer-tab1_next">
+												<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+											</li>
+										{ENDIF}
+
+										<li class="paginate_button next" id="consumer-tab1_end">
+											<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">尾页</a>
+										</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+		
+						</div>
+						<!-- /.普通用户管理 -->
+		
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+</div>
+
+<!--代理信息弹框-->
+<div class="modal fade" id="consumer-infor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">普通用户管理</h4>
+			</div>
+			<div class="modal-body">
+				<form action="xindex.php?m=customer&act=getList">
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">手机:</label>
+						<input type="text" name='telephone' class="form-control" id="">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">昵称:</label>
+						<input type="text" name='firstname' class="form-control" id="">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">联系方式:</label>
+						<input type="text" class="form-control" id="">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">地址:</label>
+						<input type="text" class="form-control" id="">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">备注:</label>
+						<input type="text" class="form-control" id="">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+
+</html>
+
+<!--**********是否禁用************-->
+<script type="text/javascript">
+	function stop(cid) {
+		var type = $('#s_' + cid).attr('item');
+		var url = "{_forbidden_url}";
+		$.ajax({
+			type: "post",
+			url: url,
+			data: {
+				type: type,
+				cid: cid,
+			},
+			// dataType:"json",
+			success: function(msg) {
+				if(msg == 1) {
+					if(type == 1) {
+						$('#s_' + cid).attr('item', 0);
+						$('#s_' + cid).html('启用');
+					} else {
+						$('#s_' + cid).attr('item', 1);
+						$('#s_' + cid).html('禁用');
+					}
+				} else {
+					alert("修改失败！");
+				}
+			}
+		})
+	}
+</script>
+<!--**********是否禁用************-->
+
+<!--**********修改会员类型************-->
+<script type="text/javascript">
+	function changtype(cid) {
+		var type = $('.c_' + cid).attr('item');
+		var url = "{_change_type_url}";
+		$.ajax({
+			type: "post",
+			url: url,
+			data: {
+				type: type,
+				cid: cid,
+			},
+			// dataType:"json",
+			success: function(msg) {
+				if(msg == 1) {
+					if(type == 1) {
+						$('.c_' + cid).attr('item', 0);
+						$('.h_' + cid).html('普通会员');
+						$('.c_' + cid).html('转为企业会员');
+					} else {
+						$('.c_' + cid).attr('item', 1);
+						$('.h_' + cid).html('企业会员');
+						$('.c_' + cid).html('转为普通会员');
+					}
+				} else {
+					alert("修改失败！");
+				}
+			}
+		})
+	}
+</script>

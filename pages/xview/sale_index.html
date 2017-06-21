@@ -1,0 +1,100 @@
+ {_INCLUDE header.html}
+<div class="content-wrapper" style="padding:0 15px;">
+	<section class="content-header">
+		<span style="font-size: 25px;">销售报表</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">业绩报表</a>
+			</li>
+			<li class="active">流量方业绩报表</li>
+		</ol>
+	</section>
+	<!--中心内容str-->
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+					 <div class="box-body box-auto">
+					 	<div class="box-tools" style="position: absolute;right:18%;top: 8px;z-index: 999;">
+							<form action="xindex.php?m=sale&act=index" method="post" id="f1">
+								<button class="btn btn-main btn-sm pull-right" type="submit">搜索</button>
+								<input type="text" name="datepicker" placeholder="选择时间" class="pull-right date-money" id="datepicker" name="datepicker" value="{_dt.0} - {_dt.1}">
+							</form>
+						</div>
+						<table id="example1" class="table table-bordered table-striped">
+								 <thead>
+									<tr>
+										<th>邀请码</th>
+										<th>流量方</th>
+										<th>新增客户数</th>
+										
+										<th>新增订单数</th>
+										<th>新增销售额</th>
+										<th>新增返利收入</th>
+										
+										<th class="block-no">操作</th>
+									</tr>
+								 </thead>
+								<tbody>
+								{_FOREACH data}
+								<tr>
+									<td>{_invitecode}</td>
+									<td>{_lastname}</td>
+									<td>{_cnum}</td>
+									<td>{_num1}</td>
+									<td>{_totle}</td>
+									<td>{_rttotle}</td>
+									
+									<td class="sale-btn block-no">
+										<a href="{_record_url}&id={_customer_id}" class="btn btn-main btn-xs">销售记录</a>
+										<a href="{_total_url}&id={_customer_id}" class="btn btn-main btn-xs">销售统计</a>
+									</td>
+								</tr>
+								{ENDFOR}
+								</tbody>
+								<tfoot>
+                <tr>
+               
+                  <th>合计:{_sum1.inviteNum}</th>
+                  <th>{_sum1.proxyNum}</th>
+                  <th>{_sum1.ncNum}</th>
+                  <th>{_sum1.orderNum}</th>
+                   <th>{_sum1.moneyNum}</th>
+                   <th>{_sum1.rebackNum}</th>
+                    <th>——</th>
+
+                </tr>
+                </tfoot>
+							</table>
+					</div>
+				</div>
+		</div>
+	</section>
+	<!--中心内容end-->
+
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+<script>
+  $(function () {
+    $("#example1").DataTable();
+    //时间段
+   //时间插件
+//	$('#datepicker').datepicker({
+//    autoclose: true
+//  });
+		
+	 //邀请码
+    $('#datepicker').daterangepicker({
+      	autoclose: true
+	});
+
+	$(document).on('click','.applyBtn',function(){
+		$("#f1").submit();
+	});
+  });
+</script>

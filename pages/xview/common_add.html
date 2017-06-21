@@ -1,0 +1,483 @@
+ {_INCLUDE header.html}
+  <!--中心内容-->
+  <div class="content-wrapper">
+    <section class="content-header">
+      <h1>首页banner-新增</h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#"></a></li>
+        <li class="active"></li>
+      </ol>
+    </section>
+    <section class="content">
+      <div class="row">
+        
+        <div class="col-xs-12">
+          <div class="box box-primary">
+            <!--中心内容-->
+            <div class="row">
+              <div class="col-md-3"><img src="img/phone.png"></div>
+            
+              <div class="index-right-tab">
+               
+
+                <input type="hidden" name="category_id" value={_category_id}>
+                <!--右侧内容-->
+                <div class="col-md-9">
+                  <div class="col-md-12"><button onclick="javascript:history.go(-1)" class="btn btn-primary btn-xs index-bj-back ">返回</button></div>    
+                  <div class="col-md-12 index-img1">
+                      <div class="col-md-12">
+                        <div id="click"><img src="{_image}" alt="请添加图片"></div>
+                        <a href="javascript:;" class="file">更换图片
+                          <input type="file" id="photo" name='photo'>
+                        </a>
+                      </div>
+                  </div>
+                
+                  
+                  <div class="col-md-12">   
+                    <div class="col-md-4">
+                        <div class="index-group clearfix">
+                          <label for="">标题：</label>
+                          <input type="text" class="form-control" placeholder="请输入标题名抻" value='{_name}' name='name' id='name'>
+                        </div>
+                    </div>                     
+                  </div>  
+                  
+                  <div class="col-md-12">   
+                   <div class="col-md-4">
+                        <div class="index-group clearfix">
+                           <label class="">链接类型</label>
+                            
+                           <select class="form-control" id="banner-select">
+                              <option>请选择</option>
+                              {_IF type=1}
+	                              <option value="0" data-value="0" selected="selected">h5</option>
+	                              <option value="1" data-value="1">分类</option>
+	                              <option value="2" data-value="2">商品</option>
+                              {ELSE}
+                              	<option value="0" data-value="0" >h5</option>
+	                              {_IF subtype=0}
+		                              <option value="1" data-value="1" selected="selected">分类</option>
+		                              <option value="2" data-value="2">商品</option>
+	                               {ELSE}
+		                              <option value="1" data-value="1">分类</option>
+		                              <option value="2" data-value="2" selected="selected">商品</option>
+	                              {ENDIF}
+                              {ENDIF}
+                              
+                          </select>
+                             
+                          </div>
+                      </div>                   
+                  </div> 
+                  
+                  <div class="col-md-12"> 
+                    <div class="col-md-4">
+                        <div class="fenlei_item clearfix">
+                          <div class="index-group"></div>
+                          <div class="index-group">
+                           <label for="">h5链接：</label>  <input type="text" value="{_link}" placeholder="链接" class="banner-input1" id='link'>
+                          </div>
+                          
+				          <!--fenlei str-->
+				          <div class="index-group" >
+				            <label for="">分类：</label>
+				             <div class="dropdown">
+			                    <input type="text" id="fenlei-input" class="" value="" class="" placeholder="商品分类">
+			                    <button class="dropdown-btn">▼</button>
+			                   </div><br/>
+				                   
+				                <div class="menu" style="display: none;">
+				                    {_FOREACH cat}
+				                      <h1 class="l1">{_name}</h1>
+				                      <div class="slist">
+				                            {_FOREACH son}
+				                        <h2 class="l2"><a href="#">{_name2}</a></h2>
+				                        <ul class="sslist">
+				                              {_FOREACH son}
+				                         <li class="l3" value="{_category_id2}" data="{_category_id2}"><a href="#">{_name2}</a></li>
+				                              {ENDFOR}
+				                        </ul>
+				                           {ENDFOR}
+				                </div>
+				                  
+				                  {ENDFOR}
+				            </div>
+                  
+                   
+          </div>
+          <!--fenlei end-->
+                          
+                          
+                          
+                          <div class="index-group">
+                            <label for="">搜索商品：</label><input type="text" value="" placeholder="搜索商品" class="banner-input2" id="inputString" onkeyup="lookup(this.value);" onblur="fill();">
+                            <div class="suggestionsBox" id="suggestions" style="display: none;">
+							<div class="suggestionList" id="autoSuggestionsList">
+							</div>
+							</div>
+                            <button class="banner-search2" ></button>
+
+
+                          </div>
+                          
+                      </div>
+                    </div>                     
+                  </div> 
+                
+                  <div class="col-md-12">
+                    <div class="col-md-4">
+                      <div class="index-group clearfix">
+                          <label for="">排序:</label>
+                          <div class="i_box clearfix">
+                            <a href="javascript:;" class="J_minus" style="float: left;">-</a>
+                            <input id="sort_order" type="text" class="J_input"  value="0"  name='sort_order'/>
+                            <a href="javascript:;" class="J_add" style="float: left;">+</a>
+                          </div>
+                      </div>  
+                    </div>    
+                  </div>    
+                    
+                  <div class="col-md-12">
+                    <button class="btn btn-primary banner-save" style="margin-left: 10px;" onclick=sendAjax() id='submit'>保存</button>
+                  </div>  
+                
+                </div>
+                
+              </div>
+            </div>
+            
+            
+        </div>
+   
+      </div>
+  
+    </section>
+  </div>
+   
+  <!--底部-->
+    {_INCLUDE footer.html}
+
+</div>
+
+<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="dist/js/app.min.js"></script>
+<script src="dist/js/demo.js"></script>
+<script src="plugins/iCheck/icheck.min.js"></script>
+
+</body>
+</html>
+
+  <script type="text/javascript" src="http://keleyi.com/keleyi/pmedia/jquery/jquery-1.4.2.min.js"></script>
+
+<!-- 类似百度输入框的样式和css -->
+<script type="text/javascript">
+	// function lookup(inputString) {
+
+	// 	if(inputString.length == 0) {
+		
+	// 		// Hide the suggestion box.
+	// 		$('#suggestions').hide();
+	// 	}else{
+		
+	// 		$.post("xindex.php?m=common&act=productAjax", {name: ""+inputString+""}, function(data){		
+	// 		if(data.length >0) {		
+	// 			$('#suggestions').show();
+	// 			$('#autoSuggestionsList').html(data);
+	// 			}
+	// 		});
+	// 	}
+	// } // lookup
+	// function fill(thisValue) {
+	// 	$('#inputString').val(thisValue);
+	// 	setTimeout("$('#suggestions').hide();", 200);
+	// }
+</script>
+<style type="text/css">
+
+h3 {
+margin: 0px;
+padding: 0px;
+}
+.suggestionsBox {
+position: relative;
+left: 30px;
+margin: 10px 0px 0px 0px;
+width: 200px;
+background-color: #212427;
+-moz-border-radius: 7px;
+-webkit-border-radius: 7px;
+border: 2px solid #000;
+color: #fff;
+}
+.suggestionList {
+margin: 0px;
+padding: 0px;
+}
+.suggestionList li {
+margin: 0px 0px 3px 0px;
+padding: 3px;
+cursor: pointer;
+}
+.suggestionList li:hover {
+background-color: #659CD8;
+}
+</style>
+
+<!-- 类似百度输入框的js代码和css -->
+
+
+
+
+<!-- 点击下拉列表框，将内容传到文本框 -->
+<script type="text/javascript">
+	$(".sslist li").click(function(){
+		var str=$(this).attr("value");//$(".sslist li").eq($(this).index())
+		//$("#fenlei-input").val(11);
+		//通过获取到的商品编号通过ajax请求获取到商品名称
+		var data={str:str};
+		$.post("xindex.php?m=common&act=getName",data,function(msg){
+				$("#fenlei-input").val(msg);
+		});
+		
+	});
+</script>
+<!-- 点击保存，提交ajax请求 -->
+  <script type="text/javascript">
+  		function sendAjax(){
+  			//获取到页面中的信息
+  			var photo=$('#photo').val();
+  			var name=$("#name").val();
+  			var link=$('#link').val();
+  			var banner_select=$('#banner-select').val();
+  			var fenlei_input=$('#fenlei-input').val();
+  			var inputString=$('#inputString').val();
+  			var sort_order=$('#sort_order').val();
+  			
+  			if(photo == ''){
+  				//说明使用的是原图片
+  				photo="{_image}";
+  				var index=photo.indexOf("image")+6;
+  				photo=photo.substring(index);
+  				
+  			}else{
+  				//不是原图片，进行拼接
+  				photo="catalog/gd/product/"+photo;
+  				
+  			}
+  			 var data={photo:photo,name:name,link:link,banner_select:banner_select,fenlei_input:fenlei_input,inputString:inputString,sort_order:sort_order};
+  			 $.post("xindex.php?m=common&act=banner_add",data,function(msg){
+  			 	alert(msg);
+  			 	if(msg == "新增成功"){
+  			 		location.href="xindex.php?m=common&act=banner";
+  			 	}
+  			 });
+  		}
+  </script>
+
+  <script type="text/javascript">
+     // 树状菜单
+     $(document).ready(function () {
+          $(".l1").toggle(function () {
+              $(".slist").animate({ height: 'toggle', opacity: 'hide' }, "slow");
+             $(this).next(".slist").animate({ height: 'toggle', opacity: 'toggle' }, "slow");
+         }, function () {
+             $(".slist").animate({ height: 'toggle', opacity: 'hide' }, "slow");
+              $(this).next(".slist").animate({ height: 'toggle', opacity: 'toggle' }, "slow");
+        });
+  
+        $(".l2").toggle(function () {
+              $(this).next(".sslist").animate({ height: 'toggle', opacity: 'toggle' }, "slow");
+        }, function () {
+             $(this).next(".sslist").animate({ height: 'toggle', opacity: 'toggle' }, "slow");
+         });
+ 
+         $(".l2").click(function () {
+             $(".l3").removeClass("currentl3");
+            $(".l2").removeClass("currentl2");
+             $(this).addClass("currentl2");
+        });
+ 
+         $(".l3").click(function () {
+            $(".l3").removeClass("currentl3");
+             $(this).addClass("currentl3");
+        });
+ 
+         $(".close").toggle(function () {
+             $(".slist").animate({ height: 'toggle', opacity: 'show' }, "fast");
+             $(".sslist").animate({ height: 'toggle', opacity: 'show' }, "fast");
+        }, function () {
+              $(".slist").animate({ height: 'toggle', opacity: 'hide' }, "fast");
+             $(".sslist").animate({ height: 'toggle', opacity: 'hide' }, "fast");
+         });
+     });
+
+     $(function(){
+      $(".dropdown-btn").click(function(){
+        if($(".menu").is(":hidden")){
+             $(".menu").show();   
+      }else{
+            $(".menu").hide();    
+      }
+      })
+     })
+ </script>
+ 
+
+
+<script>
+$(function(){
+  {_IF type=1}
+  	 $(".fenlei_item .index-group").eq(1).show();
+  {ELSE}
+ 		{_IF subtype=0}
+  	 		$(".fenlei_item .index-group").eq(2).show();
+	  	{ELSE}
+	  		$(".fenlei_item .index-group").eq(3).show();
+	  	{ENDIF} 
+  {ENDIF}
+ 
+  $("#banner-select").change(function(){
+     var index=$(this).find('option:selected').index();
+     // console.log(index);
+     $(".fenlei_item .index-group").eq(index).show();
+     $(".fenlei_item .index-group").eq(index).siblings().hide();
+  })
+})
+
+</script>
+
+<!--排序-->
+<script>
+$.fn.iVaryVal=function(iSet,CallBack){
+  /*
+   * Minus:点击元素--减小
+   * Add:点击元素--增加
+   * Input:表单元素
+   * Min:表单的最小值，非负整数
+   * Max:表单的最大值，正整数
+   */
+  iSet=$.extend({Minus:$('.J_minus'),Add:$('.J_add'),Input:$('.J_input'),Min:0,Max:20},iSet);
+  var C=null,O=null;
+  //插件返回值
+  var $CB={};
+  //增加
+  iSet.Add.each(function(i){
+    $(this).click(function(){
+      O=parseInt(iSet.Input.eq(i).val());
+      (O+1<=iSet.Max) || (iSet.Max==null) ? iSet.Input.eq(i).val(O+1) : iSet.Input.eq(i).val(iSet.Max);
+      //输出当前改变后的值
+      $CB.val=iSet.Input.eq(i).val();
+      $CB.index=i;
+      //回调函数
+      if (typeof CallBack == 'function') {
+                CallBack($CB.val,$CB.index);
+            }
+    });
+  });
+  //减少
+  iSet.Minus.each(function(i){
+    $(this).click(function(){
+      O=parseInt(iSet.Input.eq(i).val());
+      O-1<iSet.Min ? iSet.Input.eq(i).val(iSet.Min) : iSet.Input.eq(i).val(O-1);
+      $CB.val=iSet.Input.eq(i).val();
+      $CB.index=i;
+      //回调函数
+      if (typeof CallBack == 'function') {
+        CallBack($CB.val,$CB.index);
+        }
+    });
+  });
+  //手动
+  iSet.Input.bind({
+    'click':function(){
+      O=parseInt($(this).val());
+      $(this).select();
+    },
+    'keyup':function(e){
+      if($(this).val()!=''){
+        C=parseInt($(this).val());
+        //非负整数判断
+        if(/^[1-9]\d*|0$/.test(C)){
+          $(this).val(C);
+          O=C;
+        }else{
+          $(this).val(O);
+        }
+      }
+      //键盘控制：上右--加，下左--减
+      if(e.keyCode==38 || e.keyCode==39){
+        iSet.Add.eq(iSet.Input.index(this)).click();
+      }
+      if(e.keyCode==37 || e.keyCode==40){
+        iSet.Minus.eq(iSet.Input.index(this)).click();
+      }
+      //输出当前改变后的值
+      $CB.val=$(this).val();
+      $CB.index=iSet.Input.index(this);
+      //回调函数
+      if (typeof CallBack == 'function') {
+                CallBack($CB.val,$CB.index);
+            }
+    },
+    'blur':function(){
+      $(this).trigger('keyup');
+      if($(this).val()==''){
+        $(this).val(O);
+      }
+      //判断输入值是否超出最大最小值
+      if(iSet.Max){
+        if(O>iSet.Max){
+          $(this).val(iSet.Max);
+        }
+      }
+      if(O<iSet.Min){
+        $(this).val(iSet.Min);
+      }
+      //输出当前改变后的值
+      $CB.val=$(this).val();
+      $CB.index=iSet.Input.index(this);
+      //回调函数
+      if (typeof CallBack == 'function') {
+                CallBack($CB.val,$CB.index);
+            }
+    }
+  });
+}
+//调用
+$( function() {
+  
+  $('.i_box').iVaryVal({},function(value,index){
+    $('.i_tips').html('你点击的表单索引是：'+index+'；改变后的表单值是：'+value);
+  });
+  
+});
+</script>
+
+<!--图片上传-->
+  <script>
+    document.getElementById('photo').addEventListener('change',function(e){
+    
+    var files = this.files;
+    var img = new Image();
+    var reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onload = function(e){
+      var mb = (e.total/1024)/1024;
+      if(mb>= 2){
+        alert('文件大小大于2M');
+        return;
+      }
+      img.src = this.result;
+      img.style.width ="80%";
+      document.getElementById('click').style.width="100%";
+      document.getElementById('click').style.height="";
+      document.getElementById('click').innerHTML = '';
+      document.getElementById('click').appendChild(img);
+    }
+  });
+  </script>

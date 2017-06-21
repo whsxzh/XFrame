@@ -1,0 +1,179 @@
+ {_INCLUDE header.html}
+<style>
+	input:focus {
+		outline: none;
+	}
+	
+	table {
+		color: white;
+	}
+	
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding-top: 8px;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		cursor: pointer;
+		color: white;
+	}
+	
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	.order-state a{color: white;}
+</style>
+<!--我的商品库-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">推送列表</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">商品库管理</a>
+			</li>
+			<li class="active">我的商品库</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box box-primary">
+					<div class="col-md-12 order-header">
+						<div class="col-md-6 col-xs-12 order-box" style="padding-bottom: 10px;">
+							<ul class="clearfix">
+								<li class="col-md-2 col-xs-6" data-id="1">推送编辑</li>
+								<li class="col-md-2 col-xs-6 active" data-id="2">推送列表</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="tab-content">
+						<div class="active tab-pane" id="activity">
+							<table id="mygood-tab1" class="table table-bordered table-striped">
+								<tr>
+									<th>序号</th>
+									<th>标题</th>
+									<th>内容</th>
+									<th>链接</th>
+									<th>对象</th>
+									<th>推送状态</th>
+									<th>推送时间</th>
+									<th>编辑时间</th>
+									<th>操作</th>
+								</tr>
+								<tr>
+									<td><input type="checkbox" class="chk" /></td>
+									<td>哈哈哒</td>
+									<td>哈哈哒</td>
+									<td>哈哈哒</td>
+									<td>哈哈哒</td>
+									<td>哈哈哒</td>
+									<td>哈哈哒</td>
+									<td>哈哈哒</td>
+									<td>
+										<button class="btn btn-main btn-xs">商品列表</button>
+										<button class="btn btn-main btn-xs">禁用</button>
+									</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" class="chk" /></td>
+									<td>哈哈哒</td>
+									<td>哈哈哒</td>
+									<td>哈哈哒</td>
+									<td>哈哈哒</td>
+									<td>哈哈哒</td>
+									<td>哈哈哒</td>
+									<td>哈哈哒</td>
+									<td>
+										<button class="btn btn-main btn-xs">商品列表</button>
+										<button class="btn btn-main btn-xs">禁用</button>
+									</td>
+								</tr>
+							</table>
+							<div class="row">
+								<div class="col-md-1" style="text-align: center;">
+									<input type="checkbox" id="chkall" />
+									<label for="chkall" style="color: white;">全选</label>
+								</div>
+								<div class="col-md-1">
+									<button class="btn btn-default btn-xs" id="pl-del">批量删除</button>
+								</div>
+								<div class="col-md-10" style="margin-bottom: 10px;">
+									<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+										<ul class="pagination">
+											<li class="paginate_button previous disabled" id="example2_previous">
+												<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">上一页</a>
+											</li>
+											<li class="paginate_button active">
+												<a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0">1</a>
+											</li>
+											<li class="paginate_button ">
+												<a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0">2</a>
+											</li>
+											<li class="paginate_button ">
+												<a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0">3</a>
+											</li>
+											<li class="paginate_button ">
+												<a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0">4</a>
+											</li>
+											<li class="paginate_button ">
+												<a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0">5</a>
+											</li>
+											<li class="paginate_button ">
+												<a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0">6</a>
+											</li>
+											<li class="paginate_button next" id="example2_next">
+												<a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0">下一页</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+ {_INCLUDE footer.html}
+
+<script type="text/javascript">
+	$(function(){
+		$('.order-box ul li').on('click',function(){
+			$(this).addClass('active').siblings().removeClass('active');
+		});
+		$("#chkall").on('click',function() {
+			if(this.checked) {
+				$("input[class='chk']").each(function() {
+					$(this).prop("checked", true);
+					$(this).attr("checked", true);
+				});
+			} else {
+				$("input[class='chk']").each(function() {
+					$(this).removeAttr("checked", false);
+				});
+			}
+		});
+		//批量删除
+		$('#pl-del').on('click',function(){
+			$("input[class='chk']:checked").each(function() { // 遍历选中的checkbox
+	            $(this).parent().parent().remove();
+	        });
+		});
+	});
+</script>

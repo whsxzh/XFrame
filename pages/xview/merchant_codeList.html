@@ -1,0 +1,297 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px;
+	}
+</style>
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">邀请码</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">邀请码</a>
+			</li>
+			<li class="active">邀请码</li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="order-tab">
+					<div class="box-body order-header">
+						<form action="xindex.php?m=merchant&act=codeList" method="get">
+							<input type="hidden" name="m" value="merchant">
+							<input type="hidden" name="act" value="codeList">
+							<input type="hidden" name="mid" value="{_mid}">
+							<input type="hidden" class="form-control" id="" name="re_page" value="{_re_page}">
+							<div class="col-xs-4 col-md-2">
+								<input type="text" class="form-control form-input" name='invitecode' value="{_invitecode}" placeholder="请输入邀请码">
+							</div>
+							<div class="col-xs-2  col-md-2">
+								<button type="submit" class="btn btn-primary btn-sm">搜索</button>
+
+							</div>
+						</form>
+						<a class="btn btn-primary btn-sm" href="javascript:;" data-toggle="modal" data-target="#tent-delect" style="position: absolute;right:120px;top: 10px;" id="add">新增邀请码</a>
+						<span type="" class="btn btn-default btn-sm" id="goback" style="position: absolute;right:20px;top: 10px;">返回</span>
+					</div>
+					<!-- 内容 -->
+					<div class="box-body">
+						<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+						<table id="number-tab1" class="table table-bordered table-striped">
+							<!--<thead>-->
+							<tr>
+								<th>邀请码</th>
+								<th>使用人数</th>
+								<th>添加时间</th>
+								<th>失效时间</th>
+								<th>使用弹出网址</th>
+								<th>状态</th>
+								<th>操作</th>
+							</tr>
+							<!--</thead>
+              <tbody>-->
+							{_FOREACH codelist}
+							<tr>
+								<td>{_invitecode}</td>
+								<td>{_times}</td>
+								<td>{_date_added}</td>
+								<td>{_end_date}</td>
+								<td>{_url}</td>
+								<td class="c_{_invitecode_id}">{_is_status}</td>
+								<td class="tent-btn">
+									<a href="javascript:;" class="btn btn-main btn-xs" data-toggle="modal" data-target="#tent-delect" onclick="edit({_invitecode_id})">编辑</a>
+									<a href="javascript:;" onclick="stop({_invitecode_id})" class="s_{_invitecode_id}" item="{_status}">{_status_type}</a>
+								</td>
+							</tr>
+							{ENDFOR}
+
+							<!--</tbody>-->
+						</table>
+
+						<!--分页-->
+						<div class="col-md-12" style="margin-top: 10px;">
+							<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+								<ul class="pagination">
+									<li class="paginate_button previous disabled" id="consumer-tab1_previous">
+										<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+									</li>
+
+									{_FOREACH pages}
+									<li class="paginate_button {_IF active}active {ENDIF}">
+										<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+									</li>
+									{ENDFOR}
+
+									<li class="paginate_button next" id="consumer-tab1_next">
+										<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+									</li>
+
+								</ul>
+							</div>
+						</div>
+						<!--分页-->
+
+					</div>
+					</div>
+					<!-- /. -->
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+</div>
+<!--邀请码信息弹框-->
+<div class="modal fade" id="tent-delect" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">邀请码信息</h4>
+			</div>
+			<div class="modal-body">
+				<form id="form01">
+					<div class="form-group">
+						<label for="recipient-name" class="">邀请码名称</label>
+						<input type="hidden" class="form-control" id="mid" name="merchant_id" value="{_mid}">
+						<input type="hidden" class="form-control" id="invitecode_id" name="invitecode_id">
+						<input type="text" class="form-control" id="invitecode" name="invitecode">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="">企业会员账号(手机号码):</label>
+						<input type="text" class="form-control" name="customer" id="customer" placeholder="请输入会员账号(手机号码)">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="">弹出网址:</label>
+						<input type="text" class="form-control" name="url" id="url">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="">联系电话:</label>
+						<input type="text" class="form-control" name="telephone" id="telephone">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="">所属地址:</label>
+						<input type="text" name="address" class="form-control" id="address">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="">有效日期:</label>
+						<input type="text" name="end_date" class="form-control" id="end_date">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="">备注:</label>
+						<input type="text" class="form-control" name="remark" id="remark">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="sub_form">保存</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+
+</html>
+<script type="text/javascript">
+	$('#sub_form').click(function() {
+		var customer = $('#customer').val();
+		var merchant_id = $('#mid').val();
+		var invitecode_id = $('#invitecode_id').val();
+		var invitecode = $('#invitecode').val();
+		var telephone = $('#telephone').val();
+		var address = $('#address').val();
+		var remark = $('#remark').val();
+		var in_url = $('#url').val();
+		var end_date = $('#end_date').val();
+		var str = /^1[3|4|5|8][0-9]\d{8}$/;
+		if(invitecode == '') {
+			layer.msg('请输入邀请码名称', { offset: 't', time: 2000, anim: 6 });
+			return false;
+		}
+		if(!str.test(customer)) {
+			layer.msg('手机号格式不合法', { offset: 't', time: 2000, anim: 6 });
+			return false;
+		}
+		$.ajax({
+			type: "post",
+			url: "{_form_url}",
+			// dataType:"json",
+			data: {
+				customer: customer,
+				merchant_id: merchant_id,
+				invitecode_id: invitecode_id,
+				invitecode: invitecode,
+				telephone: telephone,
+				address: address,
+				remark: remark,
+				url: in_url,
+				end_date: end_date
+			},
+			success: function(msg) {
+				if(msg == 4) {
+					layer.msg('该邀请码已存在', { offset: 't', time: 2000, anim: 6 });
+					return false;
+				} else if(msg == 3) {
+					layer.msg('会员账号为空', { offset: 't', time: 2000, anim: 6 });
+					return false;
+				} else if(msg == 2) {
+					layer.msg('该企业下无此会员', { offset: 't', time: 2000, anim: 6 });
+					return false;
+				} else if(msg == 1) {
+					layer.msg('保存成功', { offset: 't', time: 2000, anim: 6 });
+					$('#form01')[0].reset();
+					$('#tent-delect').hide();
+					$('.modal-backdrop').hide();
+					window.location.reload();
+				} else {
+					layer.msg('保存失败', { offset: 't', time: 2000, anim: 6 });
+					return false;
+				}
+
+			}
+		})
+	})
+</script>
+<script>
+	$('#end_date').datepicker({
+		autoclose: true
+	});
+</script>
+<!--**********是否禁用************-->
+<script type="text/javascript">
+	function stop(cid) {
+		var type = $('.s_' + cid).attr('item');
+		var url = "{_stop_url}";
+		$.ajax({
+			type: "post",
+			url: url,
+			data: {
+				type: type,
+				invitecode_id: cid,
+			},
+			// dataType:"json",
+			success: function(msg) {
+				if(msg == 1) {
+					if(type == 1) {
+						$('.s_' + cid).attr('item', 0);
+						$('.s_' + cid).html('禁用');
+						$('.c_' + cid).html('有效');
+					} else {
+						$('.s_' + cid).attr('item', 1);
+						$('.s_' + cid).html('启用');
+						$('.c_' + cid).html('无效');
+					}
+				} else {
+					layer.msg('修改失败', { offset: 't', time: 2000, anim: 6 });
+				}
+			}
+		})
+	}
+</script>
+<!--**********是否禁用************-->
+<!--**********编辑************-->
+<script type="text/javascript">
+	function edit(id) {
+		var url = "{_edit_url}";
+		$.ajax({
+			type: "post",
+			url,
+			url,
+			data: { invitecode_id: id },
+			dataType: "json",
+			success: function(msg) {
+				$('#customer').val(msg.account);
+				$('#invitecode_id').val(msg.invitecode_id);
+				$('#invitecode').val(msg.invitecode);
+				$('#telephone').val(msg.telephone);
+				$('#address').val(msg.address);
+				$('#remark').val(msg.remark);
+				$('#url').val(msg.url);
+				$('#end_date').val(msg.end_date);
+			}
+		})
+	}
+</script>
+<!--**********编辑************-->
+<script type="text/javascript">
+	$('#add').click(function() {
+		$('#form01')[0].reset();
+	})
+	$('#goback').click(function() {
+		window.location.href = "{_back_url}";
+	})
+</script>

@@ -1,0 +1,167 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+  .box-footer{background: none;border: none;}
+  .index-img1 img{height: 200px}
+    .save-modal-body{width: 200px;text-align: center;font-size: 14px;height: 80px;background: #FFFFFF;z-index: 11111;position: absolute;top: 30%;left: 50%;
+line-height: 80px;}
+  .save-modal-content{position: fixed;top: 0;right: 0;bottom: 0;left: 0;z-index: 1050;overflow: hidden; -webkit-overflow-scrolling: touch;outline: 0;
+background: rgba(0,0,0,0.3);display: none;}  
+
+ </style>
+<div class="content-wrapper">
+  <section class="content-header">
+    <span style="font-size: 25px;">用户反馈</span>
+    <ol class="breadcrumb">
+      <li>
+        <a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+      </li>
+      <li>
+        <a href="#">用户反馈</a>
+      </li>
+      <li class="">
+        <a href="#">反馈回复</a>
+      </li>
+    </ol>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="box">
+        <div class="box-body box-auto">
+          <form class="form-horizontal" method="post" action="" enctype="multipart/form-data" onsubmit="return check()">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="inputEmail3" class="col-md-1 control-label">昵称</label>
+                <div class="col-md-3">
+                  <input type="text" value="{_data.username}" name="name" class="form-control form-input" readonly="readonly" style="background: none;">
+                </div>
+                <label for="inputEmail3" class="col-md-1 control-label">反馈时间</label>
+                <div class="col-md-3">
+                  <input type="text" value="{_data.add_time}" name="name" class="form-control form-input" readonly="readonly" style="background: none;">
+                </div>
+                <label for="inputEmail3" class="col-md-1 control-label">反馈状态：</label>
+                <div class="col-md-3 " style="color: red;margin-top: 8px;">
+                  {_IF deal_status=0} 未处理 {ENDIF}
+                  {_IF deal_status=1} 已处理 {ENDIF}
+                  {_IF deal_status=2} 处理中 {ENDIF}
+                  <!-- <select name="" class="form-control form-select">
+                  	<option value="">未处理</option>
+                  	<option value="">处理中</option>
+                  	<option value="">处理完成</option>
+                  </select> -->
+                </div>
+
+              </div>
+              <div class="form-group">
+                <label for="inputEmail3" class="col-md-1 control-label">反馈内容</label>
+                <div class="col-md-11">
+                	<textarea name="" rows="5" cols="" class="form-control form-input" readonly="readonly" style="background: none;">{_data.content}</textarea>
+                </div>
+              </div>
+			<div class="form-group">
+              <label for="inputEmail3" class="col-md-1 control-label">反馈回复</label>
+              <div class="col-md-7">
+               <textarea style='height:200px' class="form-control form-input" id="apply" name='msg' ></textarea>
+              </div>
+              <label for="inputEmail3" class="col-md-1 control-label">处理状态</label>
+              <div class="col-md-3">
+                  <select name="" class="form-control form-select deal_status">
+                    <option value="2">处理中</option>
+                    <option value="1">处理完成</option>
+                  </select>
+                </div>
+              <!-- <div class="col-md-4 index-img1" style="text-align: right;">
+                <div id="click" ><img src="{_image}" alt="请先添加图片" style="height: 200px;color: white;"></div>
+                <a href="javascript:;" class="file">选择图片
+                  <input type="file" id="photo" name="headurl">
+                </a>
+              </div> -->
+            </div>
+            <div class="box-footer">
+              <div style="float:right;">
+                <button type="button" class="btn btn-main btn-xs deal_save">保存</button>
+                <a class="btn btn-main btn-xs coupon-cancel" onclick="history.back();" style="margin-left:15px;">取消</a>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+<!-- 保存提示 modal -->
+<div class="save-modal-content">
+  <div class="save-modal-body" style="text-align: center;"></div> 
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+</body>
+
+</html>
+
+<!--图片上传-->
+  <script>
+    $(function(){
+      $(".deal_save").click(function(){
+        var id="{_id}";
+        var content=$("#apply").val();
+        var type=$(".deal_status").val();
+        var url="xindex.php?m=report&act=goFeedback";
+        $.ajax({
+              url: url,
+              type: 'post',
+              data: {id: id,content:content,type:type},
+              dataType: 'json',
+              success: function (data) {
+                displaynone(4);
+                $(".save-modal-body").html(data.msg);
+                timeout();
+              },
+              error:function(){
+                displaynone(4);
+                $(".save-modal-body").html("请求失败");
+                timeout();
+              }
+          });
+
+      });
+      function displaynone($num){
+        $(".save-modal-content").show();
+              $("#modal-backdrop").hide();
+              // $("#Modal-classify"+$num+"").hide();
+      }
+      //隐藏提示
+      function timeout(){
+         setTimeout(function(){
+                $('.save-modal-content').hide();
+                $(".fade").hide();
+                location.reload();
+              },2000);
+      }
+      
+    });
+
+  //   document.getElementById('photo').addEventListener('change',function(e){
+    
+  //   var files = this.files;
+  //   var img = new Image();
+  //   var reader = new FileReader();
+  //   reader.readAsDataURL(files[0]);
+  //   reader.onload = function(e){
+  //     var mb = (e.total/1024)/1024;
+  //     if(mb>= 2){
+  //       alert('文件大小大于2M');
+  //       return;
+  //     }
+  //     img.src = this.result;
+  //     img.style.width ="80%";
+  //     document.getElementById('click').style.width="100%";
+  //     document.getElementById('click').style.height="";
+  //     document.getElementById('click').innerHTML = '';
+  //     document.getElementById('click').appendChild(img);
+  //   }
+  // });
+  </script>

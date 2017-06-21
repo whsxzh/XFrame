@@ -1,0 +1,377 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+.order-header{background: rgba(0,0,0,0.1);padding: 8px 0;margin-bottom: 10px;}
+.order-header ul{padding: 0; margin: 0;}
+.order-header ul li{float: left;text-align: center;background: rgba(0,0,0,0.1);padding: 8px 0;color: white;cursor: pointer;}
+.order-header ul li.active{background: rgba(0,0,0,0.2);}
+.order-btn{margin-top: 10px;}
+ </style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<!--<h1>位置管理</h1>-->
+		<span style="font-size: 25px;">位置管理</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">CMS管理</a>
+			</li>
+			<li class="active">位置管理</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<!--中心内容-->
+				<div class="row">
+						<div class="col-md-12 col-xs-12">
+						<div class="col-md-12 order-header">
+							<div class="col-md-6 col-xs-12">
+								<ul class="clearfix">
+									<li class="col-md-2 col-xs-6 active" onclick="location.href='{_getListSite}'">位置管理</li>
+								</ul>
+							</div>
+							<!--header new end-->
+
+							<!--search new -->
+							<div class="col-md-2 col-xs-12 col-md-offset-4" style="text-align: right;">
+								<a  data-toggle="modal" data-target="#pd-add" class="btn btn-main btn-sm search_order block-no">新增位置</a>
+							</div>
+						</div>
+						
+						<div class="order-tab">
+							<!-- /.全部订单 -->
+							<div class="box-body" style="padding: 0;">
+								<table id="order-tab1" class="table table-bordered table-striped">
+									<!--<thead>-->
+									<tr>
+										<th>位置ID</th>
+										<th>位置名称</th>
+										<th>位置图片</th>
+										<th>状态</th>
+										<th class="block-no">操作</th>
+									</tr>
+									<!--</thead>
+						                <tbody>-->
+						               {_IF sites} {_FOREACH sites homepage}
+										<tr>
+											<td>{_banner_id}</td>
+											<td>{_name}</td>
+											<td><img src="{_banner_image}" style="width: 80px;height: 50px;"></td>
+											<td class='status' data-id="{_banner_id}">{_IF status=1} 开启{ELSE} 禁用{ENDIF}</td>
+											<td class="sale-btn block-no">
+												<a href="#" data-toggle="modal"  class="btn btn-main btn-xs edit" onclick="location.href='{_homepage}'+'&banner_id='+'{_banner_id}'">位置广告</a>
+												<a href="#" data-toggle="modal" data-target="#pd-edit" class="btn btn-main btn-xs edit" data-image="{_banner_image}" data-value="{_banner_id}" data-name="{_name}">编辑</a>
+												{_IF status=1}
+												<a href="#" class="btn btn-main btn-xs oprate" data-value="{_banner_id}">禁用</a>
+												{ELSE}
+												<a href="#" class="btn btn-main btn-xs oprate" data-value="{_banner_id}">启用</a>
+												{ENDIF}
+											</td>
+										</tr>
+										{ENDFOR}
+										{ELSE}
+											<tr><td colspan="11" >没有数据</td></tr>
+										{ENDIF}
+
+									<!--</tbody>-->
+								</table>
+
+								<div class="row">
+									<!--分页-->
+									<div class="col-md-12" style="margin-top: 15px;">
+										<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+											<ul class="pagination">
+												<li class="paginate_button previous " id="consumer-tab1_previous">
+													<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+												</li>
+
+												{_FOREACH pages}
+												<li class="paginate_button {_IF active}active {ENDIF}">
+													<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+												</li>
+												{ENDFOR}
+
+												<li class="paginate_button next" id="consumer-tab1_next">
+													<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+												</li>
+
+											</ul>
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+				
+					
+					
+					<div class="col-md-9" style="display: none;">
+						<div class="nav-tabs-custom" style="margin-top: 20px;">
+							<a data-toggle="modal" data-target="#pd-add" class="btn btn-primary right" style="margin-right: 20px;">新增位置</a>
+							<ul class="nav nav-tabs">
+								<li>
+									<a href={_homepage}>广告管理</a>
+								</li>
+								<li class="active">
+									<a href={_getListSite}>位置管理</a>
+								</li>
+							</ul>
+							<div class="tab-content">
+								<div class="active tab-pane" id="pt_management">
+									<div class="col-md-12" class="index-tab2">
+										<div class="index-tab" style="padding-top: 20px;margin-left: -30px;">
+											<div class="box-body">
+												<table id="index-tab2" class="table table-bordered table-striped">
+													<thead>
+														<tr>
+															<th>位置ID</th>
+															<th>位置名称</th>
+															<th>状态</th>
+															<th>操作</th>
+														</tr>
+													</thead>
+													<tbody>
+
+														{_IF sites} {_FOREACH sites}
+														<tr>
+															<td>{_banner_id}</td>
+															<td>{_name}</td>
+															<td class='status' data-id="{_banner_id}">{_IF status=1} 开启{ELSE} 禁用{ENDIF}</td>
+															<td class="sale-btn">
+																<a href="#" data-toggle="modal" data-target="#pd-edit" class="btn btn-primary btn-xs edit" data-value="{_banner_id}" data-name="{_name}">编辑</a>
+																{_IF status=1}
+																<a href="#" class="btn btn-primary btn-xs oprate" data-value="{_banner_id}">禁用</a>
+																{ELSE}
+																<a href="#" class="btn btn-primary btn-xs oprate" data-value="{_banner_id}">启用</a>
+																{ENDIF}
+															</td>
+														</tr>
+														{ENDFOR}
+														{ELSE}
+															<tr><td colspan="11" >没有数据</td></tr>
+														{ENDIF}
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	</div>
+
+	<!--广告位置编辑-->
+	<div class="modal fade" id="pd-edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="exampleModalLabel">位置管理编辑</h4>
+				</div>
+				<div class="modal-body">
+					<form method="post" action="xindex.php?m=common&act=saveImage1" enctype="multipart/form-data" >
+						
+						<div class="col-md-6 index-img1" style="border:1px solid #e5e5e5;">
+		                  <div class="col-md-12">
+		                    <div id="click"><img id='s_image' src="{_image}"></div>
+		                    <a href="javascript:;" class="file">更换图片
+		                      <input type="file" id="photo" name="headurl">
+		                    </a>
+		                  </div>
+		             	 <input type="hidden" name="banner_id" id="b_id" value="{_banner_id}">
+		                </div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="pd-id" >位置ID：</label>
+								<input type="text" class="form-control" id="pd-id" disabled="disabled">
+							</div>
+							<div class="form-group">
+								<label for="pd-name" >位置名称：</label>
+								<input type="text" class="form-control" id="pa-name">
+							</div>	
+						</div>					
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+							<button type="submit" class="btn btn-primary" id="save_site">保存</button>
+						</div>
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--广告位置添加-->
+	<div class="modal fade" id="pd-add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="exampleModalLabel">位置管理添加</h4>
+				</div>
+				<div class="modal-body">
+					<form method="post" action="xindex.php?m=common&act=saveImage1" enctype="multipart/form-data" >
+						
+						<div class="col-md-6 index-img1" style="border:1px solid #e5e5e5;">
+		                  <div class="col-md-12">
+		                    <div id="click1"><img src="{_image}"></div>
+		                    <a href="javascript:;" class="file">选择图片
+		                      <input type="file" id="photo1" name="headurl">
+		                    </a>
+		                  </div>
+		                </div>
+
+						<div class="col-md-6">
+							
+							<div class="form-group">
+								<label for="pd-name" >位置名称：</label>
+								<input type="text" class="form-control" id="add_name">
+							</div>	
+						</div>					
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+							<button type="submit" class="btn btn-primary" id="add_site">保存</button>
+						</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!--底部-->
+	{_INCLUDE footer.html}
+
+	<!-- 点击禁用按钮，发送ajax请求更改状态 -->
+	<script type="text/javascript">
+		$(".oprate").click(function() {
+			var banner_id = $(this).attr("data-value");
+			var url = "{_updateSiteStatus}";
+			var url1 = "{_getListSite}";
+			//获取到banner_id,进行ajax请求
+			$.post(url, { banner_id: banner_id }, function(msg) {
+				if(msg == "disable") {
+					msg = "禁用";
+				} else if(msg == 'enable') {
+					msg = "启用"
+				}
+				alert("状态已经" + msg + " ！");
+				location.href = url1;
+			});
+		})
+	</script>
+
+	<!-- 点击编辑将位置的参数进行传递 -->
+	<script type="text/javascript">
+		$(".edit").click(function() {
+			var banner_id = $(this).attr("data-value");
+			var name = $(this).attr("data-name");
+			var banner_image=$(this).attr("data-image");
+			$("#b_id").val(banner_id);
+			$("#s_image").attr("src",banner_image);
+			$("#pd-id").val(banner_id);
+			$("#pa-name").val(name);
+		})
+	</script>
+
+	<!-- 点击保存将位置的信息进行保存 -->
+	<script type="text/javascript">
+		$("#save_site").click(function() {
+			var banner_id = $("#pd-id").val();
+			var name = $("#pa-name").val()
+			var data = { banner_id: banner_id, name: name};
+			var url = "{_updateSiteName}";
+			var url1 = "{_getListSite}";
+			//alert(url);return;
+			$.post(url, data, function(msg) {
+				if(msg == "error") {
+					msg = "失败";
+				} else if(msg == 'success') {
+					msg = "成功"
+				}
+				alert("位置修改" + msg + " ！");
+
+			});
+		})
+	</script>
+
+	<!-- 点击保存将位置的信息进行添加 -->
+	<script type="text/javascript">
+		$("#add_site").click(function() {
+			var status = 1;
+			var name = $("#add_name").val();
+			var data = { status: status, name: name };
+			var url = "{_addSite}";
+			var url1 = "{_getListSite}";
+			$.post(url, data, function(msg) {
+				if(msg == "error") {
+					msg = "失败";
+				} else if(msg == 'success') {
+					msg = "成功"
+				}else{
+					msg="sss";
+				}
+				alert("位置添加" + msg + " ！");
+			});
+
+		})
+	</script>
+
+	<!--图片上传-->
+  <script>
+    document.getElementById('photo').addEventListener('change',function(e){
+    
+    var files = this.files;
+    var img = new Image();
+    var reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onload = function(e){
+      var mb = (e.total/1024)/1024;
+      if(mb>= 2){
+        alert('文件大小大于2M');
+        return;
+      }
+      img.src = this.result;
+      img.style.width ="80%";
+      document.getElementById('click').style.width="100%";
+      document.getElementById('click').style.height="";
+      document.getElementById('click').innerHTML = '';
+      document.getElementById('click').appendChild(img);
+    }
+  });
+  </script>
+
+	<!--图片上传-->
+  <script>
+    document.getElementById('photo1').addEventListener('change',function(e){
+    
+    var files = this.files;
+    var img = new Image();
+    var reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onload = function(e){
+      var mb = (e.total/1024)/1024;
+      if(mb>= 2){
+        alert('文件大小大于2M');
+        return;
+      }
+      img.src = this.result;
+      img.style.width ="80%";
+      document.getElementById('click1').style.width="100%";
+      document.getElementById('click1').style.height="";
+      document.getElementById('click1').innerHTML = '';
+      document.getElementById('click1').appendChild(img);
+    }
+  });
+  </script>

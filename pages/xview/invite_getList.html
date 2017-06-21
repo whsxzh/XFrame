@@ -1,0 +1,114 @@
+  {_INCLUDE header.html}
+  <style type="text/css">
+  	.order-header{background: rgba(0,0,0,0.1);padding: 8px 10px;margin-bottom: 10px;}
+  </style>
+  <div class="content-wrapper">
+  	<!--头部str-->
+    <section class="content-header">
+     	<span style="font-size: 25px;">邀请码管理</span>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">系统管理</a></li>
+        <li class="active">邀请码管理</li>
+      </ol>
+    </section>
+    <!--头部end-->
+    
+    <!--中心内容str-->
+    <section class="content">
+      <div class="row">
+          <div class="box box-auto box-primary">
+            <div class="box-header order-header">
+              <a class="btn btn-main btn-sm" href="{_editurl}">增加邀请码</a>
+            </div>
+            <div class="box-body">
+                <table id="invitecode-tab" class="table table-bordered table-striped">
+                  <thead>
+	                  <tr>
+	                    <th>邀请码</th>
+                      <th>邀请码类型</th>
+	                    <th>所属人</th>
+	                    <th>使用人数</th>
+                      <th>邀请码链接</th>
+                      <th>邀请二维码</th>
+	                    <th>添加时间</th>
+	                    <th>失效时间</th>
+	                    <th>使用弹出网址</th>
+	                    <th>状态</th>
+	                    <th>操作</th>
+	                  </tr>
+                  </thead>
+                  
+                  <tbody>
+                  {_FOREACH data}
+                  <tr>
+                      <td>{_invitecode}</td>
+                      <td>{_IF type=0}普通邀请码 {ELSE} 掌门人 {ENDIF}</td>
+                      <td>{_lastname}({_telephone})</td>
+                      <td>{_times}</td>
+                      <td>{_invite_url}</td>
+                      <td><a href="#" data-toggle="modal" data-target="#tenant-infor" value="{_invite_url}" class="seeimg">查看二维码</a></td>
+                       <td>{_date_added}</td>
+                      <td>{_end_date}</td>
+                      <td>{_url}</td>
+                       <td>{_IF status=1}失效 {ELSE} 有效 {ENDIF}</td>
+                      <td> <a href="xindex.php?m=invite&act=edit&id={_invitecode_id}">编辑</a>
+                      	<a href="xindex.php?m=invite&act=disable&id={_invitecode_id}&status={_status}">{_IF status=1}启用 {ELSE} 禁用 {ENDIF}</a>
+                      </td>
+                      </tr>
+                  {ENDFOR}
+                 </tbody>
+                 
+                </table>          
+              </div>
+
+          </div>
+      </div>
+    </section>
+    <!--中心内容end-->
+    
+  </div>
+
+  <!--二维码图片-->
+<div class="modal fade" id="tenant-infor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">二维码图片</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group" style="text-align:center;" id="showimage">
+           <!--  <img  src="" style="width:100px;height:100px;"> -->
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ {_INCLUDE footer.html}
+  
+<!--邀请码管理-->
+<script>
+    $(function(){
+      
+    $("#invitecode-tab").DataTable();
+
+})
+</script>
+
+<script type="text/javascript">
+  $(".seeimg").click(function(){
+    var data=$(this).attr("value");
+    $("#showimage").html('<img src=http://qr.liantu.com/api.php?el=l&w=200&m=10&text=http://'+data+'/>');
+  });
+</script>
+
+

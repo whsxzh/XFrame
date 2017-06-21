@@ -1,0 +1,786 @@
+ {_INCLUDE header.html}
+<style>
+	input:focus {outline: none;}
+	table {color: white;}
+	.order-header {background: rgba(0, 0, 0, 0.1);padding: 0;padding-top: 8px;}
+	.order-header ul {padding: 0;margin: 0;}
+	.order-header ul li {float: left;text-align: center;background: rgba(0, 0, 0, 0.1);padding: 8px 0;cursor: pointer;color: white;}
+	.order-header ul li.active {background: rgba(0, 0, 0, 0.2);}
+	.order-state a{color: white;}
+	.form-box{position: absolute;top: 30px;width: 90%;background:rgba(255,255,255,0.9);display: none;background-position: 1px solid red;height: 300px;overflow-y: scroll;}
+	.form-control,.form-one,.form-two,.form-three{line-height: 30px;cursor: pointer;}
+	.form-one i,.form-two i,.form-three i{margin:0 30px;padding: 10px;}
+	.form-one{padding-left: 10px;}
+	.form-two{padding-left: 30px;}
+	.form-three{padding-left: 50px;}
+	.form-one:hover,.form-two:hover,.form-three:hover{background: #5897fb;color:white}
+	.form-onebt,.form-three{display: none;}
+</style>
+<!---->
+<!--我的商品库-->
+<div class="content-wrapper" style="padding:0 15px;">
+	<section class="content-header">
+		<span style="font-size: 25px;">我的商品库</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">商品库管理</a>
+			</li>
+			<li class="active">我的商品库</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box">
+				<div class="col-md-12 order-header">
+					<div class="col-md-6 col-xs-12 order-box" style="padding-bottom: 10px;">
+						<ul class="clearfix">
+							<li class="col-md-2 col-xs-4 {_IF get.status=1}active{ENDIF} select_tab" data-id="1">出售中</li>
+							<li class="col-md-2 col-xs-4 {_IF get.status=2}active{ENDIF} select_tab" data-id="2">已售罄</li>
+							<li class="col-md-2 col-xs-4 {_IF get.status=3}active{ENDIF} select_tab" data-id="3">仓库中</li>
+						</ul>
+					</div>
+				</div>
+				<div class="box-header col-md-12 block-no" style="padding-left: 0;">
+					<div class="col-xs-3 col-md-2">
+						<div class="input-group">
+							<!-- /btn-group -->
+							<div class="input-group-btn">
+								<select id="select_name" class="btn dropdown-toggle form-select" data-toggle="dropdown" style="height:30px;" aria-expanded="false" name="customer_group_id">
+									<option value="1" {_IF get.select_name=1}selected{ENDIF}>价格</option>
+									<option value="2" {_IF get.select_name=2}selected{ENDIF}>库存</option>
+									<option value="3" {_IF get.select_name=3}selected{ENDIF}>销量</option>
+									<option value="4" {_IF get.select_name=4}selected{ENDIF}>排序</option>
+								</select>
+
+							</div>
+							<div class="input-group-btn">
+								<select id="select_bijiao" class="btn dropdown-toggle form-select" data-toggle="dropdown" style="height:30px;" aria-expanded="false" name="customer_group_id">
+									<option value="1" {_IF get.select_bijiao=1}selected{ENDIF}>></option>
+									<option value="2" {_IF get.select_bijiao=2}selected{ENDIF}>
+										<</option>
+											<option value="3" {_IF get.select_bijiao=3}selected{ENDIF}>=</option>
+								</select>
+							</div>
+							<input id="num" type="text" value="{_get.num}" class="form-control form-input" placeholder="0" />
+						</div>
+					</div>
+
+					<div class="col-xs-3 col-md-2">
+						<!--<select id="category" class="form-control category form-select" name="customer_group_id">
+							<option value="0">选择商品类别</option>
+							{_FOREACH cat}
+							<option value="{_category_id}" data-id="{_get.category}">{_name}</option>
+							{_FOREACH son}
+							<option value="{_category_id}">➡{_name}</option>
+							{_FOREACH son}
+							<option value="{_category_id}">➡➡{_name}</option>
+							{ENDFOR} {ENDFOR} {ENDFOR}
+						</select>-->
+						<input class="form-control form-input" value="" data-value=""  placeholder="选择商品类别" id="category"/>
+						<div class="form-box">
+							{_FOREACH cat}
+							<div class="form-big">
+								<div class="form-one">
+									<i class="form-one-i">+</i><span data-id="{_category_id}">{_name}</span>
+								</div>
+								{_FOREACH son}
+								<div class="form-onebt">
+									<div class="form-two">
+										<i class="form-two-i">+</i><span data-id="{_category_id}">{_name}</span>
+									</div>
+									{_FOREACH son}
+									<div class="form-three">
+										<i class="form-three-i">-</i><span data-id="{_category_id}">{_name}</span>
+									</div>
+									{ENDFOR}
+								</div>
+								{ENDFOR}
+							</div>
+							{ENDFOR}
+						</div>
+					</div>
+					<div class="col-xs-2  col-md-2">
+						<input id="product_name" type="text" value="{_get.product_name}" class="form-control form-input" name='lastname' placeholder="请输入商品名称">
+					</div>
+					<div class="col-xs-2  col-md-2">
+						<input id="model" type="text" value="{_get.model}" class="form-control form-input" name='firstname' placeholder="请输入商品编号">
+					</div>
+
+					<div class="col-xs-2  col-md-2">
+						<button type="submit" class="btn btn-main btn-sm" id="submit">搜索</button>
+					</div>
+				</div>
+				<div class="box-body">
+				 	<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+						<table id="mygood-tab1" class="table table-bordered table-striped">
+							<tr>
+								<th class="block-no"><a href="{_pageurl}&ob=p.product_id&od={_od}">ID</a></th>
+								<th>商品图片</th>
+								<th>商品名称</th>
+								<th>品牌</th>
+								<th>分类</th>
+								<th><a href="{_pageurl}&ob=p.proxyprice&od={_od}">会员价</a></th>
+								<th>零售价</th>
+								<th><a href="{_pageurl}&ob=p.derate_money&od={_od}">分享减免</th>
+								<th><a href="{_pageurl}&ob=p.return_add_money&od={_od}">佣金</th>
+								<th><a href="{_pageurl}&ob=yongjinrate&od={_od}">佣金比例</a></th>
+								<th><a href="{_pageurl}&ob=sales&od={_od}">总销量</a>／<a href="{_pageurl}&ob=p.point&od={_od}">访问量</a>=<a href="{_pageurl}&ob=zhuanhua&od={_od}">转化率</a></th>
+
+								
+							</tr>
+							<!--</thead>
+							<tbody>-->
+							{_FOREACH dt}
+							<!-- lcb 6-2 add item-xxxx -->
+							<tr id="item-{_product_id}" name="item-{_product_id}">
+								<td class="block-no"><input type="checkbox" name="goods-tb1" value="{_product_id}" class="order-check"><span class="order-number">{_product_id}</span></td>
+
+								<td style="text-align: left;"><img src="{_image}" style="width: 60px;height: 60px;"></td>
+								<td style="text-align: left;word-break: break-all">
+									{_name}
+									{_IF product_item}
+									<div>
+										{_FOREACH product_item}
+										{_product_options}  
+										<!--<a class="btn btn-main btn-xs" href="{_edit_url}">{_product_options}</a>-->
+										{ENDFOR}
+									</div>
+									{ENDIF}
+
+
+								</td>
+								<td>{_bname}</td>
+								<td>{_cname}</td>
+								<td>{_proxyprice}</td>
+								<td>{_price}</td>
+								<td>{_derate_money}</td>
+								<td>{_return_add_money}</td>
+								<td><span id="kc-td">{_yongjinrate}%</span>
+
+								<td>{_sales} ／ {_points} = {_zhuanhua}%</td>
+								
+								
+							</tr>
+							{ENDFOR}
+							<!--</tbody>-->
+						</table>
+						<div class="col-md-12">
+							<!--分页-->
+							
+								
+							<div class="col-md-5 col-sm-8 text-right">
+								<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+									<ul class="pagination">
+										<li class="paginate_button next" id="consumer-tab1_first">
+											<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="首页">|<</a>
+										</li>
+										{_IF firstPage=1}
+										<li class="paginate_button previous" id="consumer-tab1_previous">
+											<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+										</li>
+										{ENDIF}
+										{_FOREACH pages}
+										<li class="paginate_button {_IF active}active {ENDIF}">
+											<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+										</li>
+										{ENDFOR}
+										{_IF is_end_page=1}
+											<li class="paginate_button next" id="consumer-tab1_next">
+												<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+											</li>
+										{ENDIF}
+	
+										<li class="paginate_button next" id="consumer-tab1_end">
+											<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="尾页">>|</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-md-4 col-sm-4" style="color: white;">
+								<div class="col-sm-3" id="consumertab1_info" role="status" aria-live="polite" style="margin-top: 5px;padding-right: 0;">共{_total_page}页,到第</div>
+								<input type="number" class="col-sm-1 form-input" id="page-input" style="margin-top: 2px;padding:0;text-align: center;"/>
+								<div class="col-sm-1" style="margin-top: 5px;">页</div>
+								<div class="col-sm-2"><button class="btn btn-main btn-xs" id="submit-page" style="margin-top: 2px;">确定</button></div>
+							</div>
+						</div>
+						
+						
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+
+
+
+{_INCLUDE footer.html}
+
+<script>
+	$(function() {
+		//跳转页面
+		$('#submit-page').on('click',function(){
+			var val=Math.ceil($('#page-input').val());
+			if(val == '' || val < 0){
+				val = 1;
+			}
+			var url = location.href;
+			var start = url.indexOf("&page=");
+			if(start>0){
+				url = url.substring(0,start);
+			}
+			location.href=url+'&page='+val;
+
+		});
+		
+		
+		//搜索框商品类别选中
+		var id = "{_get.category}";
+		$(".category option").each(function() {
+			if($(this).val() == id) {
+				$(this).attr("selected", true);
+			}
+		});
+
+		var sort_type = "{_get.sort_type}";
+		var sort_span_1 = ['1','2'];
+		var sort_span_2 = ['3','4'];
+		var sort_span_3 = ['5','6'];
+		var sort_span_4 = ['7','8'];
+
+		if($.inArray(sort_type, sort_span_1) >= 0){
+			$("#sort_span_2").html('<a href="javascript:;">—</a>');
+			$("#sort_span_3").html('<a href="javascript:;">—</a>');
+			$("#sort_span_4").html('<a href="javascript:;">—</a>');
+		}else if($.inArray(sort_type, sort_span_2) >= 0){
+			$("#sort_span_1").html('<a href="javascript:;">—</a>');
+			$("#sort_span_3").html('<a href="javascript:;">—</a>');
+			$("#sort_span_4").html('<a href="javascript:;">—</a>');
+		}else if($.inArray(sort_type, sort_span_3) >= 0){
+			$("#sort_span_1").html('<a href="javascript:;">—</a>');
+			$("#sort_span_2").html('<a href="javascript:;">—</a>');
+			$("#sort_span_4").html('<a href="javascript:;">—</a>');
+		}else if($.inArray(sort_type, sort_span_4) >= 0){
+			$("#sort_span_1").html('<a href="javascript:;">—</a>');
+			$("#sort_span_2").html('<a href="javascript:;">—</a>');
+			$("#sort_span_3").html('<a href="javascript:;">—</a>');
+		}else{
+			$("#sort_span_1").html('<a href="javascript:;">—</a>');
+			$("#sort_span_2").html('<a href="javascript:;">—</a>');
+			$("#sort_span_3").html('<a href="javascript:;">—</a>');
+			$("#sort_span_4").html('<a href="javascript:;">—</a>');
+		}
+
+		//删除单个商品
+		$(".del ").click(function() {
+			var url = "{_delPrd_url}";
+			var product_id_array = [];
+			product_id_array.push($(this).attr("data-id"));
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				data: { 'order_check': product_id_array },
+				success: function(msg) {
+					if(msg == 0) {
+						alert("删除成功!");
+					}
+					location.reload();
+				}
+			});
+		});
+
+		//库存排序
+		$("#sort_span_1").click(function(){
+			var url = location.href;
+			var type = $(this).attr("data-id");
+
+			if(url.indexOf("sort_type=") > 0){
+				if(type == 1){
+					url = url.replace("sort_type=1","sort_type=2");
+				}else if(type == 2){
+					url = url.replace("sort_type=2","sort_type=0");
+				}else{
+					url = url.replace("sort_type="+type,"sort_type=1");
+				}
+			}else{
+				url += "&sort_type=1";
+			}
+			location.href = url;
+		});
+
+		//销量排序
+		$("#sort_span_2").click(function(){
+			var url = location.href;
+			var type = $(this).attr("data-id");
+
+			if(url.indexOf("sort_type=") > 0){
+				if(type == 3){
+					url = url.replace("sort_type=3","sort_type=4");
+				}else if(type == 4){
+					url = url.replace("sort_type=4","sort_type=0");
+				}else{
+					url = url.replace("sort_type="+type,"sort_type=3");
+				}
+			}else{
+				url += "&sort_type=3";
+			}
+			location.href = url;
+		});
+
+		//访问量排序
+		$("#sort_span_3").click(function(){
+			var url = location.href;
+			var type = $(this).attr("data-id");
+
+			if(url.indexOf("sort_type=") > 0){
+				if(type == 5){
+					url = url.replace("sort_type=5","sort_type=6");
+				}else if(type == 6){
+					url = url.replace("sort_type=6","sort_type=0");
+				}else{
+					url = url.replace("sort_type="+type,"sort_type=5");
+				}
+			}else{
+				url += "&sort_type=5";
+			}
+			location.href = url;
+		});
+
+		//排序
+		$("#sort_order").click(function(){
+			var url = location.href;
+			var type = $("#sort_span_4").attr("data-id");
+
+			if(url.indexOf("sort_type=") > 0){
+				if(type == 7){
+					url = url.replace("sort_type=7","sort_type=8");
+				}else if(type == 8){
+					url = url.replace("sort_type=8","sort_type=0");
+				}else{
+					url = url.replace("sort_type="+type,"sort_type=7");
+				}
+			}else{
+				url += "&sort_type=7";
+			}
+			location.href = url;
+		});
+
+		$(".kc-input1 ").click(function() {
+			var kc_td = $("#kc-td").text();
+			$(".old-kc").val(kc_td);
+		});
+
+		$(".show_prd").click(function() {
+			var url = "{_showprd_url}";
+			var id = $(this).attr("data-id");
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				data: { 'product_id': id },
+				success: function(msg) {
+					$("#tuiguang_url").text("商品链接:" + msg['url']);
+				}
+			})
+		});
+
+		$(".add_quantity").click(function() {
+			var url = "{_addQuantityList_url}";
+			var id = $(this).attr("data-id");
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				data: { 'product_id': id },
+				success: function(msg) {
+					//					$("#tuiguang_url").text("商品链接:"+msg['url']);
+					var html = '<input type="hidden" id="product" value="' + id + '"><tr>' +
+						'<th>属性</th>' +
+						'<th>库存</th>' +
+						'<th>进货</th>' +
+						'</tr>';
+					for(var i = 0, len = msg.length; i < len; i++) {
+						html += '<tr>' +
+							'<td class="item_option">' + msg[i].option + '</td>' +
+							'<td class="item_quantity">' + msg[i].quantity + '</td>' +
+							'<td><input type="text" value="" class="numbe-tj-kc add_item_quantity" data-id="' + msg[i].product_item_id + '" placeholder="0"></td>' +
+							'</tr>';
+					}
+					$("#kucun_table").html(html);
+				}
+			})
+		});
+
+		$(".add_up").click(function() {
+			var url = '{_addQuantity_url}';
+			var type = $(this).attr('data-id');
+			var product_id = $("#product").val();
+			var quantity = [];
+			var product_item_id = [];
+			$(".add_item_quantity").each(function() {
+				product_item_id.push($(this).attr('data-id'));
+				if($(this).val() == '') {
+					quantity.push(0);
+				} else {
+					quantity.push($(this).val());
+				}
+
+			});
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				data: { 'product_id': product_id, 'type': type, 'product_item_id': product_item_id, 'quantity': quantity },
+				success: function(msg) {
+					$("#add-kc").modal('hide');
+					location.reload();
+				}
+			})
+		});
+
+		$(".select_tab").click(function() {
+			var status = $(this).attr('data-id');
+			var url = location.href;
+			var end = url.indexOf('&status=');
+			if(end > 0) {
+				url = url.substr(0, end);
+			}
+
+			location.href = url + "&status=" + status;
+		});
+
+		$("#submit").click(function() {
+			var url = "xindex.php?m=product&act=prodViewList";
+			var status = "{_get.status}";
+			var link = '';
+			var price_zz = /^\d+(\.\d{1,2})?$/; //两位小数以内的正则
+			var select_name = $("#select_name").val();
+			var select_bijiao = $("#select_bijiao").val();
+			var num = $("#num").val();
+			var category = $("#category").attr('data-value');
+			var product_name = $("#product_name").val().replace("+", "%2B");
+			var model = $("#model").val();
+
+			url += "&status=" + status;
+
+			if(select_name == 1) {
+				status = '价格';
+			} else if(select_name == 2) {
+				status = '库存'
+			} else if(select_name == 3) {
+				status = '销量'
+			} else if(select_name == 4) {
+				status = '排序'
+			}
+
+			if(num != '' && !price_zz.test(num)) {
+				alert(status + "有误！请输入两位以内的小数或整数");
+			}
+
+			if(num != '' && price_zz.test(num)) {
+				link = "&select_name=" + select_name + "&select_bijiao=" + select_bijiao + "&num=" + num;
+			}
+			if(category > 0) {
+				link += "&category=" + category;
+			}
+			if(product_name != '') {
+				link += "&product_name=" + product_name;
+			}
+			if(model != '') {
+				link += "&model=" + model;
+			}
+			url = url + link;
+			location.href = url;
+		});
+
+		$(".goods-check2").click(function() {
+			if(this.checked) {
+				$("input[name='goods-tb1']").each(function() {
+					$(this).prop("checked", true);
+					$(this).attr("checked", true);
+				});
+			} else {
+				$("input[name='goods-tb1']").each(function() {
+
+					$(this).removeAttr("checked", false);
+
+				});
+			}
+		});
+
+		$(".edit_status").click(function() {
+			var url = "{_shelvea_url}";
+			var status = "{_get.status}";
+			var type = 2;
+			if(status == 3) {
+				type = 1;
+			}
+			var product_id_array = [];
+			$("input[name='goods-tb1']:checked").each(function() {
+				product_id_array.push($(this).val());
+			});
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				data: { 'order_check': product_id_array, 'type': type },
+				success: function() {
+					location.reload();
+				}
+			});
+		});
+
+		$(".like_prd").click(function() {
+			var url = "{_addLikePrd_url}";
+			var product_id_array = [];
+			$("input[name='goods-tb1']:checked").each(function() {
+				product_id_array.push($(this).val());
+			});
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				data: { 'order_check': product_id_array },
+				success: function(msg) {
+					if(msg == 0) {
+						alert("加入猜你喜欢成功!");
+					}
+					location.reload();
+				}
+			});
+		});
+
+		$(".del_prd").click(function() {
+			var url = "{_delPrd_url}";
+			var product_id_array = [];
+			$("input[name='goods-tb1']:checked").each(function() {
+				product_id_array.push($(this).val());
+			});
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				data: { 'order_check': product_id_array },
+				success: function(msg) {
+					if(msg == 0) {
+						alert("删除成功!");
+					}
+					location.reload();
+				}
+			});
+		});
+
+		$(".change_sort").change(function() {
+			var url = "{_changeSort_url}";
+			var product_id = $(this).attr('data-id');
+			var sort_order = $(this).val();
+
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				data: { 'product_id': product_id, 'sort_order': sort_order },
+				success: function() {}
+			});
+		});
+	});
+
+	//添加上架只能是正整数
+	$(function() {
+		var inp = $('.numbe-tj-kc');
+		inp.blur(function() {
+			var inpVal = inp.val();
+			console.log(11);
+			if(!isNaN(inpVal) && inpVal > 0) {
+
+			} else {
+				alert('请输入正整数')
+			}
+		})
+	})
+
+	//表格切换
+	$(function() {
+		$("#order-header li").click(function() {
+			var index = $(this).index();
+			console.log(index);
+			$("#order-header li").eq(index).addClass("order-ul").siblings().removeClass("order-ul");
+			$(".order-tab .box-body").eq(index).show();
+			$(".order-tab .box-body").eq(index).siblings().hide();
+		})
+
+		//		$("#mygood-tab1").DataTable();
+		//		$("#mygood-tab2").DataTable();
+		//		$("#mygood-tab3").DataTable();
+	})
+
+	//1.出售中 全选删除
+	$(function() {
+
+		$(".goods-btn1-delect").click(function() {
+
+			$("input[name='goods-tb1']:checked").each(function() { // 遍历选中的checkbox
+				n = $(this).parents("tr").index() + 1; // 获取checkbox所在行的顺序
+
+				$("#mygood-tab1").find("tr:eq(" + n + ")").remove();
+
+			});
+		})
+	})
+
+	$(function() {
+		$(".goods-check1").click(function() {
+			if(this.checked) {
+				$("input[name='goods-tb1']").each(function() {
+
+					$(this).prop("checked", true);
+					$(this).attr("checked", true);
+
+				});
+
+			} else {
+				$("input[name='goods-tb1']").each(function() {
+
+					$(this).removeAttr("checked", false);
+
+				});
+
+			}
+		});
+	})
+
+	//2.已售罄 全选删除
+	$(function() {
+
+		$(".goods-btn2-delect").click(function() {
+
+			$("input[name='goods-tb2']:checked").each(function() { // 遍历选中的checkbox
+				n = $(this).parents("tr").index() + 1; // 获取checkbox所在行的顺序
+				$("#mygood-tab2").find("tr:eq(" + n + ")").remove();
+
+			});
+		})
+	})
+
+	$(function() {
+		$(".goods-check2").click(function() {
+			if(this.checked) {
+				$("input[name='goods-tb2']").each(function() {
+
+					$(this).prop("checked", true);
+					$(this).attr("checked", true);
+
+				});
+
+			} else {
+				$("input[name='goods-tb2']").each(function() {
+
+					$(this).removeAttr("checked", false);
+
+				});
+
+			}
+		});
+	})
+
+	//3.仓库中 全选删除
+	$(function() {
+
+		$(".goods-btn3-delect").click(function() {
+
+			$("input[name='goods-tb3']:checked").each(function() { // 遍历选中的checkbox
+				n = $(this).parents("tr").index() + 1; // 获取checkbox所在行的顺序
+				$("#mygood-tab3").find("tr:eq(" + n + ")").remove();
+
+			});
+		})
+	})
+
+	$(function() {
+		$(".goods-check3").click(function() {
+			if(this.checked) {
+				$("input[name='goods-tb3']").each(function() {
+
+					$(this).prop("checked", true);
+					$(this).attr("checked", true);
+
+				});
+
+			} else {
+				$("input[name='goods-tb3']").each(function() {
+
+					$(this).removeAttr("checked", false);
+
+				});
+
+			}
+		});
+	})
+</script>
+<script type="text/javascript">
+	$(function(){
+		$(document).on('click',function(){
+			$('.form-box').hide();
+		});
+		
+		$('#category').on('click',function(event){
+			//取消事件冒泡  
+			event.stopPropagation();
+			$('.form-box').show();
+		});
+		
+		//树状图
+		//第一排收缩
+		$(document).on('click','.form-one-i',function(event){
+			//取消事件冒泡  
+			event.stopPropagation();
+			$(this).parent().parent().find('.form-onebt').toggle();
+			if($(this).parent().parent().find('.form-onebt').is(":hidden")){
+				$(this).parent().find('i').html('+');
+//				$(this).parent().parent().siblings().find('.form-onebt').hide();
+			}else{
+				$(this).parent().find('i').html('-');
+			}
+		});
+		//第二排收缩
+		$(document).on('click','.form-two-i',function(event){
+			//取消事件冒泡  
+			event.stopPropagation();
+			$(this).parent().parent().find('.form-three').toggle();
+			if($(this).parent().parent().find('.form-three').is(":hidden")){
+				$(this).parent().parent().find('i').html('+');
+			}else{
+				$(this).parent().parent().find('i').html('-');
+			}
+		});
+		
+		$('.form-one').each(function(one){
+			$(this).find('span').on('click',function(){
+				var categoryid=$(this).attr('data-id');
+				$('#category').attr('data-value',categoryid);
+				$('#category').val($(this).text());
+			});
+		});
+		$('.form-two').each(function(one){
+			$(this).find('span').on('click',function(){
+				var categoryid=$(this).attr('data-id');
+				$('#category').attr('data-value',categoryid);
+				$('#category').val($(this).text());
+			});
+		});
+		$('.form-three').each(function(one){
+			$(this).find('span').on('click',function(){
+				var categoryid=$(this).attr('data-id');
+				$('#category').attr('data-value',categoryid);
+				$('#category').val($(this).text());
+			});
+		});
+	});
+</script>

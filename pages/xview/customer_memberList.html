@@ -1,0 +1,282 @@
+ {_INCLUDE header.html}
+<!--会员管理-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">会员管理</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">用户管理</a>
+			</li>
+			<li class="active">会员管理</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box" style="background:rgba(0,0,0,0.2);border: none;">
+				<div class="order-tab">
+					<div class="row">
+						<div class="box-body block-no" id="box-body">
+							<form action="xindex.php?m=customer&act=memberList" method="get">
+								<input type="hidden" name="m" value="customer">
+								<input type="hidden" name="act" value="memberList">
+								<div class="col-xs-2 col-md-2">
+									<select class="form-control form-select" name="proxy_status">
+										<option value="2">会员类型</option>
+										<option value="0">普通会员</option>
+										<option value="1">企业会员</option>
+									</select>
+								</div>
+								<div class="col-xs-2 col-md-2">
+									<select class="form-control form-select" name="sort_type">
+										<option value="0">排序</option>
+										<option value="1">总销量升序</option>
+										<option value="2">总销量降序</option>
+										<option value="3">总收入升序</option>
+										<option value="4">总收入降序</option>
+										<option value="5">时间升序</option>
+										<option value="6">时间降序</option>
+									</select>
+								</div>
+								<div class="col-xs-2  col-md-2">
+									<input type="text" class="form-control form-input" name='firstname' placeholder="请输入用户昵称">
+								</div>
+								<div class="col-xs-2  col-md-2">
+									<input type="text" class="form-control form-input" name='telephone' placeholder="请输入账号">
+								</div>
+								<div class="col-xs-2  col-md-2">
+									<input type="text" class="form-control form-input" name='invitecode' placeholder="请输入所属邀请码">
+								</div>
+								<div class="col-xs-2  col-md-2">
+									<button type="submit" class="btn btn-main btn-sm">搜索</button>
+								</div>
+							</form>
+						</div>
+					</div>
+					
+						
+						
+					<!-- 管理 -->
+					<div class="box-body">
+						<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+							<table id="tent-tab1" class="table table-bordered table-striped">
+								<tr>
+									<th class="block-no">会员ID</th>
+									<th>昵称</th>
+									<th>账号</th>
+									<th>总销量</th>
+									<th>总收入</th>
+									<th>账户余额</th>
+									<th class="block-no">所属代理昵称</th>
+									<th>所属邀请码</th>
+									<th>成为会员时间</th>
+									<th>用户类型</th>
+									<th class="block-no">操作</th>
+								</tr>
+								{_FOREACH data}
+								<tr>
+									<td class="block-no">{_customer_id}</td>
+									<td style="color:#2080ff;">{_firstname}</td>
+									<td>{_telephone}</td>
+									<td>{_sale_num}</td>
+									<td style="color: #e4dc71;">{_sale_money}</td>
+									<td>{_balance}</td>
+									<td class="block-no">{_agentname}</td>
+									<td>{_huiyuan_code}</td>
+									<td>{_proxy_time}</td>
+									<td class="h_{_customer_id}" style="color: #e4dc71;">{_huiyuan_type}</td>
+									<td class="agent-btn block-no">
+										<a href="{_money_url}" class="btn btn-xs btn-main">资金明细</a>
+										{_IF pid>0}
+										<a href="javascript:;" class="btn btn-xs btn-main" data-toggle="modal" data-target="#agent-infor" onclick="daili({_customer_id})" id="d_{_customer_id}" item="{_pid}">代理信息</a>
+										{ELSE}
+										<a href="javascript:;" class="btn btn-xs" data-target="#agent-infor">代理信息</a>
+										{ENDIF}
+										<a href="javascript:;" onclick="stop({_customer_id})" class="s_{_customer_id} btn btn-xs btn-main" item="{_status}">{_status_type}</a>
+										<a href="javascript:;" onclick="changtype({_customer_id})" class="c_{_customer_id} btn btn-xs btn-main" item="{_proxy_status}">{_change_type}</a>
+									</td>
+								</tr>
+								{ENDFOR}
+							</table>
+							<!--分页-->
+							<div class="col-md-12">
+								<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+									<ul class="pagination">
+										<li class="paginate_button previous disabled" id="consumer-tab1_previous">
+											<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+										</li>
+										{_FOREACH pages}
+										<li class="paginate_button {_IF active}active {ENDIF}">
+											<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+										</li>
+										{ENDFOR}
+										<li class="paginate_button next" id="consumer-tab1_next">
+											<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /.管理 -->
+				</div>
+			</div>
+		</div>
+
+	</section>
+
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+</div>
+
+<!--代理信息弹框-->
+<div class="modal fade" id="agent-infor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">代理信息</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="recipient-name" class="">真实姓名</label>
+						<input type="text" class="form-control" id="realname" disabled>
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="">昵称:</label>
+						<input type="text" class="form-control" id="nickname" disabled>
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="">联系方式:</label>
+						<input type="text" class="form-control" id="tel" disabled>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+
+</html>
+
+<!--代理-->
+<script>
+	$(function() {
+		// $("#tent-tab1").DataTable();
+		$("#tent-delect").click(function() {
+			$("input[name='tent-check']:checked").each(function() { // 遍历选中的checkbox
+				n = $(this).parents("tr").index() + 1; // 获取checkbox所在行的顺序
+				$("#tent-tab1").find("tr:eq(" + n + ")").remove();
+			});
+		})
+		//表格全选
+		$(function() {
+			$(".tent-all").click(function() {
+				if(this.checked) {
+					$("input[name='tent-check']").each(function() {
+						$(this).prop("checked", true);
+						$(this).attr("checked", true);
+					});
+				} else {
+					$("input[name='tent-check']").each(function() {
+						$(this).removeAttr("checked", false);
+					});
+				}
+			});
+		})
+
+	})
+</script>
+<!--**********修改会员类型************-->
+<script type="text/javascript">
+	function changtype(cid) {
+		var type = $('.c_' + cid).attr('item');
+		var url = "{_change_type_url}";
+		$.ajax({
+			type: "post",
+			url: url,
+			data: {
+				type: type,
+				cid: cid,
+			},
+			// dataType:"json",
+			success: function(msg) {
+				if(msg == 1) {
+					if(type == 1) {
+						$('.c_' + cid).attr('item', 0);
+						$('.h_' + cid).html('普通会员');
+						$('.c_' + cid).html('转为企业会员');
+					} else {
+						$('.c_' + cid).attr('item', 1);
+						$('.h_' + cid).html('企业会员');
+						$('.c_' + cid).html('转为普通会员');
+					}
+				} else {
+					alert("修改失败！");
+				}
+			}
+		})
+	}
+</script>
+<!--**********修改会员类型************-->
+
+<!--**********是否禁用************-->
+<script type="text/javascript">
+	function stop(cid) {
+		var type = $('.s_' + cid).attr('item');
+		var url = "{_forbidden_url}";
+		$.ajax({
+			type: "post",
+			url: url,
+			data: {
+				type: type,
+				cid: cid,
+			},
+			// dataType:"json",
+			success: function(msg) {
+				if(msg == 1) {
+					if(type == 1) {
+						$('.s_' + cid).attr('item', 0);
+						$('.s_' + cid).html('启用');
+					} else {
+						$('.s_' + cid).attr('item', 1);
+						$('.s_' + cid).html('禁用');
+					}
+				} else {
+					alert("修改失败！");
+				}
+			}
+		})
+	}
+</script>
+<!--**********是否禁用************-->
+<!--**********代理信息************-->
+<script type="text/javascript">
+	function daili(id) {
+		var url = "{_agent_info_url}";
+		var pid = $('#d_' + id).attr('item');
+		if(pid != '') {
+			$.ajax({
+				type: "post",
+				url: url,
+				data: { pid: pid },
+				dataType: "json",
+				success: function(msg) {
+					console.log(msg);
+					$('#realname').val(msg.lastname);
+					$('#nickname').val(msg.firstname);
+					$('#tel').val(msg.telephone);
+
+				}
+			})
+		}
+	}
+</script>
+<!--**********代理信息************-->

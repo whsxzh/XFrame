@@ -1,0 +1,83 @@
+   {_INCLUDE header.html}
+
+  <div class="content-wrapper">
+    <section class="content-header">
+      <h1>邀请码</h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">邀请码</a></li>
+        <li class="active">邀请码</li>
+      </ol>
+    </section>
+   
+    <section class="content">
+      <div class="row">     	
+        <div class="box box-primary">
+   
+            <div class="order-tab">
+	            <!-- 内容 -->
+	            <div class="box-body">
+	              <table id="number-tab1" class="table table-bordered table-striped">
+	                <thead>
+	                <tr>
+	                  <th>邀请码</th>
+	                  <th>所属人</th>
+	                  <th>使用人数</th>
+	                  <th>添加时间</th>
+	                  <th>失效时间</th>
+	                  <th>使用弹出网址</th>
+	                  <th>状态</th>
+	                  <th>操作</th>
+	                </tr>
+	                </thead>
+	                
+	                <tbody>
+	                {_FOREACH data}
+                  <tr>
+                      <td>{_invitecode}</td>
+                      <td>{_lastname}({_telephone})</td>
+                      <td>{_times}</td>
+                       <td>{_date_added}</td>
+                      <td>{_end_date}</td>
+                      <td>{_url}</td>
+                       <td>{_IF status=1}失效 {ELSE} 有效 {ENDIF}</td>
+                      <td> <a href="xindex.php?m=invite&act=edit&id={_invitecode_id}">编辑</a> <a href="xindex.php?m=invite&act=disable&id={_invitecode_id}&status={_status}">禁用</a></td>
+                      </tr>
+                  {ENDFOR}
+	               <tr>
+	                  <td>HG001</td>
+	                  <td>张三</td>
+	                  <td>10</td>
+	                  <td>2017-02-01 12:00</td>
+	                  <td>2017-02-01 12:00</td>
+	                  <td>www.baidu.com</td>
+	                  <td>有效</td>
+	                  <td class="tent-btn">
+	                  	<a href="#">编辑</a>
+	                  	<a href="#">禁用</a>
+	                  </td>
+	                </tr>
+	                
+	               </tbody>
+	              </table>
+	              
+	            </div>
+	            <!-- /. -->
+	         
+            </div>
+         
+        </div>
+      </div>
+  
+    </section>
+    
+  </div>
+
+{_INCLUDE footer.html}
+
+<script>
+$(function(){
+	$("#number-tab1").DataTable();
+})
+
+</script>

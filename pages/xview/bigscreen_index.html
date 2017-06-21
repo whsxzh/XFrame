@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="view/stylesheet/js/jquery.min.js"></script>
+    <script src="view/stylesheet/js/echarts.min.js"></script>
+    <script src="view/stylesheet/js/china.js"></script>
+</head>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+
+
+    .share_num {
+        width: 25rem;
+        padding: 2% 3% 0;
+        position: fixed;
+        background: transparent;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+
+
+    .share_num .box {
+        width: 10vw;
+        height: 9rem;
+        margin: .2vw;
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+
+
+    .share_num .box .title {
+        color: #fff;
+        background: rgba(0, 0, 0, 0.3);
+        font-size: .8rem;
+        text-align: center;
+        padding: .5rem;
+    }
+
+
+
+    .share_num .box .num_count {
+        display: flex;
+        justify-content: center;
+        height: 6.5rem;
+        align-items: center;
+    }
+
+
+
+    .share_num .box .num_count .count {
+        color: #fff;
+        border: 1px solid #b6b153;
+        border-radius: 500rem;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 5rem;
+        width: 5rem
+    }
+
+
+
+    .footer {
+        width: 25rem;
+        color: #fff;
+        padding: 2% 3% 0;
+        position: fixed;
+        font-size: .9rem;
+        z-index: 1;
+        bottom: 1.2rem;
+    }
+
+
+
+    .notice {
+        position: fixed;
+        color: #fa926f;
+        background: rgba(0, 0, 0, 0.65);
+        right: -15rem;
+        top: 4.3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 15rem;
+        height: 3rem;
+        border-radius: 3rem 0 0 3rem;
+        font-size: .9rem;
+        z-index: 1;
+    }
+</style>
+
+<body>
+    <div class="map">
+
+        <div class="share_num">
+            <div class="box">
+                <div class="title">订单金额{_unit}</div>
+                <div class="num_count">
+                    <div class="count">
+                        {_total_order_money}
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <div class="title">返利金额{_unit1}</div>
+                <div class="num_count">
+                    <div class="count">
+                        {_total_money}
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <div class="title">订单数量(单)</div>
+                <div class="num_count">
+                    <div class="count">
+                        {_total_order_num}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="main" style="width: 100vw;height:100vh;"></div>
+        <div class="footer">商业模式：BBC模式，合作共赢。
+            <button id="testClick">Click</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        var allData = {
+            "citys": {_city},
+            "moveLines": {_moveline},
+        };
+
+        option = {
+            backgroundColor: '#404a59',
+            title: {
+                text: '',
+                left: 'center',
+                textStyle: {
+                    color: '#fff'
+                }
+            },
+            legend: {
+                show: false,
+                orient: 'vertical',
+                top: 'bottom',
+                left: 'right',
+                data: ['地点', '线路'],
+                textStyle: {
+                    color: '#fff'
+                }
+            },
+            geo: {
+                map: 'china',
+                label: {
+                    emphasis: {
+                        show: false
+                    }
+                },
+                roam: true,
+                itemStyle: {
+                    normal: {
+                        areaColor: '#323c48',
+                        borderColor: '#404a59'
+                    },
+                    emphasis: {
+                        areaColor: '#2a333d'
+                    }
+                }
+            },
+            series: [{
+                name: '地点',
+                type: 'effectScatter',
+                coordinateSystem: 'geo',
+                zlevel: 2,
+                rippleEffect: {
+                    brushType: 'stroke'
+                },
+                label: {
+                    emphasis: {
+                        show: true,
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                symbolSize: 2,
+                showEffectOn: 'render',
+                itemStyle: {
+                    normal: {
+                        color: '#46bee9'
+                    }
+                },
+                data: allData.citys
+            }, {
+                name: '线路',
+                type: 'lines',
+                coordinateSystem: 'geo',
+                zlevel: 2,
+                large: true,
+                effect: {
+                    show: true,
+                    constantSpeed: 30,
+                    symbol: 'pin',
+                    symbolSize: 3,
+                    trailLength: 0,
+                },
+                lineStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#F58158'
+                        }, {
+                            offset: 1,
+                            color: '#3db1fa'
+                        }], false),
+                        width: 1,
+                        opacity: 0.7,
+                        curveness: 0.1
+                    }
+                },
+                data: allData.moveLines
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+
+        $("#testClick").click(function () {
+            allData.citys.push({
+                "name": "襄阳",
+                "value": [110.8200413, 31.929278, 2],
+                "symbolSize": 8,
+                "itemStyle": {
+                    "normal": {
+                        "color": "#3db1fa"
+                    }
+                }
+            })
+
+            allData.moveLines.push({
+                "fromName": "杭州",
+                "toName": "襄阳",
+                "coords": [
+                    [120.09, 30.28],
+                    [110.8200413, 31.929278]
+                ]
+            });
+            myChart.setOption(option);
+            // setTimeout(function () {
+            //     allData.citys.push({
+            //         "name": "南充",
+            //         "value": [105.9596907, 30.770807, 2],
+            //         "symbolSize": 3,
+            //         "itemStyle": {
+            //             "normal": {
+            //                 "color": "#F58158"
+            //             }
+            //         }
+            //     })
+            //     allData.moveLines.push({
+            //         "fromName": "襄阳",
+            //         "toName": "南充",
+            //         "coords": [
+            //             [110.8200413, 31.929278],
+            //             [105.9596907, 30.770807]
+            //         ]
+            //     });
+            //     myChart.setOption(option);
+            // }, 1500)
+
+            var timestamp = Date.parse(new Date());
+            $('body').append('<embed id="sound' + timestamp +
+                '" style="position: absolute" hidden="true"  src="view/music/1482.mp3" />').append(
+                ' <div class="notice" id="notice' + timestamp +
+                '"><span style="color: #fff">最新分享购买：</span><span>获取返利5元</span></div>')
+            $(".notice").animate({
+                "right": "+=15rem"
+            }, "slow").delay(800).animate({
+                "top": "-=7.3rem",
+                opacity: 0.1,
+                width: '10rem',
+                fontSize: '.5rem'
+            }, "slow");
+
+            setTimeout(
+                function () {
+                    $("#notice" + timestamp + "").remove();
+                    $("#sound" + timestamp + "").remove();
+                }, 2000);
+
+        })
+       //定时请求获取最新返利
+        function getNeworder(){
+            var url = "{_ajax_url}";
+            $.ajax({
+                type:"post",
+                url:url,
+                // data:{},
+                dataType:"json",
+                success:function(msg){  
+                    console.log(msg);
+                    if(msg==1){
+                        console.log("没有新返利订单");
+                    }else{
+                        for(var i=0;i<msg.moveline.length;i++){
+                            // console.log(msg.moveline[i].fanli_amount);
+                            var fanli_amount = msg.moveline[i].fanli_amount;        //返利金额
+
+                            var add_moveline = JSON.stringify(msg.moveline[i]);
+                            var add_city = JSON.stringify(msg.city[i]);
+                            var add_moveline = eval('('+add_moveline+')');
+                            var add_city = eval('('+add_city+')');
+
+                            allData.citys.push(add_city);
+                            allData.moveLines.push(add_moveline);
+                            myChart.setOption(option);
+
+                            var timestamp = Date.parse(new Date());
+                            $('body').append('<embed id="sound' + timestamp +
+                                '" style="position: absolute" hidden="true"  src="view/music/1482.mp3" />').append(
+                                ' <div class="notice" id="notice' + timestamp +
+                                '"><span style="color: #fff">最新分享购买：</span><span>获取返利'+fanli_amount+'元</span></div>')
+                            $(".notice").animate({
+                                "right": "+=15rem"
+                            }, "slow").delay(800).animate({
+                                "top": "-=7.3rem",
+                                opacity: 0.1,
+                                width: '10rem',
+                                fontSize: '.5rem'
+                            }, "slow");
+
+                            setTimeout(
+                                function () {
+                                    $("#notice" + timestamp + "").remove();
+                                    $("#sound" + timestamp + "").remove();
+                                }, 2000);
+                                        }
+                                    }
+
+                                }
+
+            })
+        }
+        // setInterval("getNeworder()",5000);
+        
+    </script>
+    <script type="text/javascript">
+
+
+    </script>
+</body>
+
+</html>

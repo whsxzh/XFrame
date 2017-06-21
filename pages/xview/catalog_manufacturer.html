@@ -1,0 +1,93 @@
+  {_INCLUDE header.html}
+  <style type="text/css">
+#spec-tab1_paginate{text-align: right;}
+.order-header{background: rgba(0,0,0,0.1);padding: 8px 0;margin-bottom: 10px;}
+.order-header ul{padding: 0; margin: 0;}
+.order-header ul li{float: left;text-align: center;background: rgba(0,0,0,0.1);padding: 8px 0;color: white;cursor: pointer;}
+.order-header ul li.active{background: rgba(0,0,0,0.2);}
+  </style>
+  <div class="content-wrapper">
+    <!--头部str-->
+    <section class="content-header">
+      <span style="font-size: 25px;">品牌管理</span>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li><a href="#">CMS内容管理</a></li>
+        <li class="active">品牌管理</li>
+      </ol>
+    </section>
+    <!--头部end-->
+    
+    <!--中心内容str-->
+    <section class="content">
+      <div class="row">
+	        <div class="box box-primary index-box">
+	          <div class="col-md-12 order-header block-no">
+							<div class="col-md-2">
+								<a href="{_editurl}" class="btn btn-main btn-sm" id="chaxun">新增品牌</a>
+							</div>
+					</div>
+			           
+            <table id="brand-tab1" class="table table-bordered table-striped">
+              <!--<thead>-->
+                <tr>  
+                  <th>品牌id</th>
+                  <th>品牌</th>
+                  <th class="block-no">操作</th>
+                </tr>
+              <!--</thead>
+              <tbody>-->
+                {_IF man} {_FOREACH man}
+	                <tr>       
+	                  <td>{_id}</td>
+	                  <td class="brand-name">{_name}</td>
+	                  <td class="brand-btn block-no">
+	                  	<a href="{_editurl}&id={_id}" class="btn btn-main btn-xs">编辑</a>
+	                  	<a href="{_delurl}&id={_id}" class="brand-delect btn btn-main btn-xs">删除</a>
+	                  </td>
+	                </tr>
+                {ENDFOR}
+                {ELSE}
+					<tr><td colspan="11" >没有数据</td></tr>
+				{ENDIF}
+              <!--</tbody>-->
+            </table>
+ 						<!--分页-->
+						<div class="col-md-12" style="margin-top: 15px;">
+							<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+								<ul class="pagination">
+									<li class="paginate_button next" id="consumer-tab1_first">
+										<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">首页</a>
+									</li>
+									{_IF firstPage=1}
+									<li class="paginate_button previous" id="consumer-tab1_previous">
+										<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+									</li>
+									{ENDIF}
+									{_FOREACH pages}
+									<li class="paginate_button {_IF active}active {ENDIF}">
+										<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+									</li>
+									{ENDFOR}
+									{_IF is_end_page=1}
+										<li class="paginate_button next" id="consumer-tab1_next">
+											<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+										</li>
+									{ENDIF}
+
+									<li class="paginate_button next" id="consumer-tab1_end">
+										<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">尾页</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+	        </div>
+	    </div>  
+    </section> 
+    <!--/中心内容str-->
+    
+  </div>
+
+  <!--底部-->
+ {_INCLUDE footer.html}
+ 

@@ -1,0 +1,217 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+ 	.phone-box img{width: 100%;}
+ 	.yyzz-box img{height: 200px;width: 100%;}
+ 	#photo{position: absolute; top: 0;width: 100%;height: 100%;opacity: 0;}
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		color: white;
+		cursor: pointer;
+	}
+	
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	
+	.order-btn {
+		margin-top: 10px;
+	}
+ </style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">个人认证</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">我的板块</a>
+			</li>
+			<li class="active">开通（个人）</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box" style="border: none;">
+				<!--中心内容-->
+				<div class="row">
+					<div class="col-md-12">
+							<div class="col-md-12 order-header">
+								<div class="col-md-11 col-xs-12 order-box">
+									<ul class="clearfix">
+										<li class="col-md-2 col-xs-6">商户</li>
+										<li class="col-md-2 col-xs-6 active">个人</li>
+									</ul>
+								</div>
+								<div class="col-md-1 col-xs-12" style="padding-left: 0">
+									<button type="button" class="btn btn-main btn-sm" onclick="history.go(-1)">返回</button>
+								</div>
+							</div>
+							
+							
+							<div class="tab-content" style="margin-top: 5px;">
+								<div class="row">
+									<div class="col-md-12">
+										<form class="form-horizontal" method="post" enctype="multipart/form-data">
+							              <div class="col-md-12">
+							              	<div class="box-body col-md-5">
+								                <div class="form-group">
+								                  <label for="person_name" class="col-sm-2 control-label">姓名</label>
+								                  <div class="col-sm-10">
+								                    <input type="text" class="form-control form-input" id="person_name" name="principal_name" placeholder="姓名" value="{_personal_certificate.merchant_name}">
+								                  </div>
+								                </div>
+								                <div class="form-group">
+								                  <label for="person_tel" class="col-sm-2 control-label">电话</label>
+								                  <div class="col-sm-10">
+								                    <input type="text" class="form-control form-input" id="person_tel" name="principal_tel" placeholder="电话" value="{_personal_certificate.principal_tel}">
+								                  </div>
+								                </div>
+								                <div class="form-group">
+								                  <label for="person_sfz" class="col-sm-2 control-label">身份证</label>
+								                  <div class="col-sm-10">
+								                    <input type="text" class="form-control form-input" id="person_sfz" name="industrial_commercial_num" placeholder="身份证" value="{_personal_certificate.industrial_commercial_num}">
+								                  </div>
+								                </div>
+								              </div>
+											<div class="col-md-3 col-sm-offset-2 yyzz-box">
+												<div id="clicks"><img src="{_personal_certificate.merchant_business_icense_img}"></div>
+												<input type="file" id="photo" name="plate_img">
+												<div style="line-height: 50px;color: white;">注：（验证个人身份证照）</div>
+											</div>
+							              </div>
+							              <!-- /.box-body -->
+							              <div class="box-footer" style="border: none;background: none;margin-bottom: 10px;">
+							                {_IF personal_certificate.is_checked=0}<a class="btn btn-main" id="next-step" style="margin-left: 40px;">确认</a>{ENDIF}
+							                {_IF personal_certificate.is_checked=0}<a class="btn btn-main" id="certificate-deny" style="margin-left: 40px;">取消</a>{ENDIF}
+							                {_IF personal_certificate.is_checked=-1}<a class="btn btn-main" id="next-step" style="margin-left: 40px;">确认</a>{ENDIF}
+							                {_IF personal_certificate.is_checked=-1}<a class="btn btn-main" id="certificate-deny" style="margin-left: 40px;">取消</a>{ENDIF}
+							              </div>
+							            </form>
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	</div>
+
+	<!--底部-->
+	{_INCLUDE footer.html}
+</div>
+<script>
+	$(function() {
+		//下一步
+		$('#next-step').on('click',function(){
+			var pname=$('#person_name').val();
+			var ptel=$('#person_tel').val();
+			var psfz=$('#person_sfz').val();
+			if(pname==""){
+				$('#person_name').focus();
+				return false;
+			}else if(ptel=="" || !(/^1[34578]\d{9}$/.test(ptel))){
+				$('#person_tel').focus();
+				return false;
+			}else if(psfz=="" || !(/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(psfz))){
+				$('#person_sfz').focus();
+				return false;
+			}else if(photo==""){
+				alert('请上传营业执照');
+				return false;
+			}
+			
+		});
+	})
+
+	$(function() {
+		// 确认
+		$('#next-step').on('click',function(){
+			var certificateUrl = "{_certificateUrl}";
+			var merchant_id = "{_personal_certificate.merchant_id}";
+			if (confirm("通过吗？\n\n请确认！")==true){
+				$.ajax({
+					url: certificateUrl,
+					type: 'post',
+					dataType: 'json',
+					data: { 'merchant_id':merchant_id },
+					success: function (data){
+				        	console.log(data.msg);
+				        	window.location = "{_checkPlateListUrl}";
+			        },
+			        error:function(){
+			            alert("请求失败");
+			        }
+				});
+				return true;
+			}else{
+				return false;
+			}
+		});
+
+		// 取消
+		$('#certificate-deny').on('click',function(){
+			var unCertificateUrl = "{_unCertificateUrl}";
+			var merchant_id = "{_personal_certificate.merchant_id}";
+			if (confirm("取消吗？\n\n请确认！")==true){
+				$.ajax({
+					url: unCertificateUrl,
+					type: 'post',
+					dataType: 'json',
+					data: { 'merchant_id':merchant_id },
+					success: function (data){
+				        	console.log(data.msg);
+				        	window.location = "{_checkPlateListUrl}";
+			        },
+			        error:function(){
+			            alert("请求失败");
+			        }
+				});
+				return true;
+			}else{
+				return false;
+			}
+		});
+	})
+</script>
+<!--图片上传-->
+<script>
+	document.getElementById('photo').addEventListener('change', function(e) {
+		var files = this.files;
+		var img = new Image();
+		var reader = new FileReader();
+		reader.readAsDataURL(files[0]);
+		reader.onload = function(e) {
+			var mb = (e.total / 1024) / 1024;
+			if(mb >= 2) {
+				alert('文件大小大于2M');
+				return;
+			}
+			img.src = this.result;
+			img.style.width = "100%";
+			document.getElementById('clicks').style.width = "100%";
+			document.getElementById('clicks').style.height = "";
+			document.getElementById('clicks').innerHTML = '';
+			document.getElementById('clicks').appendChild(img);
+		}
+	});
+</script>
+</body>
+
+</html>

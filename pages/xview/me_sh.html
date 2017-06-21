@@ -1,0 +1,136 @@
+ {_INCLUDE header.html}
+
+<!--内容-->
+<div class="content-wrapper" style="padding:0 15px;">
+	<section class="content-header">
+		<span style="font-size: 25px;">审核管理</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">CMS管理</a>
+			</li>
+			<li class="active">商户板块</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<!--中心内容-->
+				<div class="row">
+					<div class="col-md-12 col-xs-12">
+						<div class="box-body">
+							<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+								<table id="order-tab1" class="table table-bordered table-striped">
+									<tr>
+										<th>图片</th>
+										<th>所有商户</th>
+										<th>活动标题</th>
+										<th>链接类型</th>
+										<th>商家类型</th>
+										<th>状态</th>
+										<th>当前状态</th>
+										<th>操作</th>
+									</tr>
+									<tr>
+										<td><img src="" alt=""  style="width: 80px;height: 60px;"/></td>
+										<td>Data</td>
+										<td>Data</td>
+										<td>Data</td>
+										<td>Data</td>
+										<td>Data</td>
+										<td>Data</td>
+										<td>
+											<a href="#" class="btn btn-main btn-xs">编辑活动商品</a>
+											<button class="btn btn-main btn-xs">编辑</button>
+											<button class="btn btn-main btn-xs">禁用</button>
+										</td>
+									</tr>
+								</table>
+								
+								<div class="row">
+									<!--分页-->
+									<div class="col-md-12" style="margin-top: 15px;">
+										<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+											<ul class="pagination">
+												<li class="paginate_button previous " id="consumer-tab1_previous">
+													<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+												</li>
+
+												{_FOREACH pages}
+												<li class="paginate_button {_IF active}active {ENDIF}">
+													<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+												</li>
+												{ENDFOR}
+
+												<li class="paginate_button next" id="consumer-tab1_next">
+													<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+												</li>
+
+											</ul>
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+<!-- 点击禁用按钮，发送ajax请求更改状态 -->
+<script type="text/javascript">
+	$(".oprate").click(function() {
+		var banner_image_id = $(this).attr("data-value");
+		var url = "{_updateAdStatus}";
+		var url1 = "{_homepage}";
+		$.post(url, { banner_image_id: banner_image_id }, function(msg) {
+			if(msg == "disable") {
+				msg = "禁用";
+			} else if(msg == 'enable') {
+				msg = "启用"
+			}
+			alert("状态已经" + msg + " ！");
+			location.href = url1;
+		});
+	})
+</script>
+
+<!-- 点击上升，排序上升 -->
+<script type="text/javascript">
+	$(".add_sort").click(function() {
+		var banner_image_id = $(this).attr("data-value");
+		var data = { banner_image_id: banner_image_id, type: "add" }
+		var url = "{_updateAdSort}";
+		var url1 = "{_homepage}";
+		$.post(url, data, function(msg) {
+
+			location.href = url1;
+		});
+
+	});
+</script>
+
+<!-- 点击下降，排序下降 -->
+<script type="text/javascript">
+	$(".reduce_sort").click(function() {
+		var banner_image_id = $(this).attr("data-value");
+		var data = { banner_image_id: banner_image_id, type: "reduce" }
+		var url = "{_updateAdSort}";
+		var url1 = "{_homepage}";
+		$.post(url, data, function(msg) {
+			location.href = url1;
+		});
+
+	});
+</script>

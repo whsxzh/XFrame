@@ -1,0 +1,278 @@
+ {_INCLUDE header.html}
+<link href="view/assets/AdminLTE/css/star-rating.css" media="all" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="view/stylesheet/css/laydate.css" />
+<link rel="stylesheet" type="text/css" href="view/stylesheet/css/css.css" />
+<link rel="stylesheet" type="text/css" href="view/layer/skin/layer.css" />
+<link rel="stylesheet" type="text/css" href="./view/assets/css/bootstrap-datetimepicker.min.css" />
+<style type="text/css">
+/*评价详情*/
+.farming-btn{margin-bottom: 15px;}
+.label-success,.label-primary,.label-default,.label-info,.label-danger,.label-warning{display: none;}
+.container-fild {position: relative;width: 100%;height: 180px;border: 1px solid #d2d6de;}
+#upLoad{position: absolute;width: 150px;height: 100px;top: 50%;left: 50%;margin-left: -75px;margin-top: -50px;text-align: center;}
+.upLoad_btn {width: 90px;height: 35px;line-height: 35px;background-color: #367fa9;color: #fff;border-radius: 10px;cursor: pointer;}
+#upLoad span{line-height: 40px;}
+#img_con li{text-align: center;list-style: none;width: 150px;height: 120px;border: 1px solid #999;float: left;margin: 20px;position: relative;}
+#img_con li span{float: left;width: 100%;height: 40px;line-height: 60px;margin-top: 110px;color:#333;}
+.upLoad{float: left;width: 150px;height: 120px;background-color: #eee;margin: 20px;font-size: 150px;line-height: 110px; color: #fff; text-align: center;font-weight: 100;margin-top: 35px;}
+.rating-xs  {font-size: 1.5em;}     
+.order-header {background: rgba(0, 0, 0, 0.1);padding: 8px;margin-bottom: 10px;}
+	
+</style>
+<!--中心内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">刷单评价</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="{_goods_url}">刷单</a>
+			</li>
+			<li class="active">刷单评价</li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="col-md-12 order-header text-right">
+					<button class="btn btn-main btn-xs" id="goback">返回</button>
+				</div>
+				<form action="" method="post" id="form02" enctype="mutipart/form-data">
+					<div class="box-body">
+						<div class="form-group">
+							<label class="control-label">评价</label>
+							<textarea class="form-control form-input" rows="3" name="text" placeholder="主人很懒什么都没有留下" value="" id="appraise-text"></textarea>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">星级</label>
+							<input id="input-star" value="5" type="number" name="rating" class="rating" min=0 max=5 step=1 data-size="xs">
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">评论时间</label>
+							<input type="text" name="remark_time" class="form-control form-input" id='datetimepicker6'>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">上传图片</label>
+						</div>
+
+						<div class="container-fild">
+							<div id="upLoad" data-url="{_upimg_url}">
+								<label class="fild-label">
+							            <div class="upLoad_btn">上传图片</div>
+							            <span>按住ctrl可多选</span>
+							            <input type="file" class="myfile" name="image" multiple="true" onchange="upload(this)" style="display:none;">
+							        </label>
+							</div>
+
+							<ul id="img_con"></ul>
+						</div>
+					</div>
+
+				</form>
+				<div class="row">
+					<div class="col-md-12 text-right" style="margin: 10px 0;">
+						<span class="btn btn-primary btn-sm" id="sub-btn">提交</span>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+</div>
+<!--中心内容end-->
+
+<!--底部-->
+<footer class="main-footer">
+	<div class="pull-right hidden-xs">
+		<b>Version</b> 2.3.7
+	</div>
+	<strong>Copyright &copy; 2016 <a href="http://iwant-u.com" target="_blank">杭州盛世东方网络科技有限公司</a>.</strong> All rights reserved.
+</footer>
+
+</div>
+<script type="text/javascript" src="view/stylesheet/js/laydate.js"></script>
+<script src="view/assets/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="view/assets/AdminLTE/bootstrap/js/bootstrap.min.js"></script>
+<script src="view/assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="view/assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="view/assets/AdminLTE/dist/js/app.min.js"></script>
+<script src="view/assets/AdminLTE/dist/js/demo.js"></script>
+<script src="view/assets/AdminLTE/js/star-rating.js" type="text/javascript"></script>
+<script type="text/javascript" src="view/layer/layer.js"></script>
+
+</body>
+
+</html>
+<script src="./view/assets/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		// $('.container-fild').css('padding-top','50px');
+	});
+</script>
+
+<script>
+	//评价星星
+	jQuery(document).ready(function() {
+
+		$(".rating-kv").rating();
+
+	});
+</script>
+<!--图片上传-->
+
+<script type="text/javascript">
+	function upload(obj) {
+		var file = obj.files;
+		var formdata = new FormData();
+		var sum1 = obj.files.length;
+		var url = $('#upLoad').attr('data-url');
+
+		var sum = $("#img_con li").length;
+		var str = "";
+		var type = "";
+		if(type == "JPEG" || type == "PNG" || type == "JPG") {
+			layer.msg('上传图片类型错误', { offset: 't', time: 2000, anim: 6 });
+			return false;
+		} else if(sum >= 3) {
+			layer.msg('最多可上传3张图片', { offset: 't', time: 2000, anim: 6 });
+			return false;
+		} else if(sum1 > 3) {
+			layer.msg('最多可上传3张图片', { offset: 't', time: 2000, anim: 6 });
+			return false;
+		}
+		for(var i = 0; i < sum1; i++) {
+			formdata.append("Filedata[]", file[i]);
+		}
+		$.ajax({
+			type: "post",
+			url: url,
+			data: formdata,
+			processData: false,
+			contentType: false,
+			dataType: "json",
+			success: function(msg) {
+				if(msg == 5) {
+					layer.msg('上传失败！', { offset: 't', time: 2000, anim: 6 });
+				} else {
+					var sum = $("#img_con li").length;
+					if(sum > 0) {
+						// alert(sum);
+						for(var i = 0; i < sum1; i++) {
+							var url = window.URL.createObjectURL(obj.files[i]);
+							var sum = Math.random();
+							var sum = sum.toString();
+							var sum = sum.substr(2, 8);
+							var sum = '1' + sum;
+							str += "<li class='del_" + sum + "' style='background:url(" + url + ") no-repeat center;background-size:contain;margin-top:30px;'><div style='position:absolute;top:-20px;right:0;color:red;'  onclick='delimg(" + sum + ")'>删除</div><span><input class='cs_" + sum + "' style='height:20px;' name='image[]' type='hidden' value=" + msg[i] + " /></span></li>";
+						}
+						str += '<label class="fild-label"><div class="upLoad" >+</div><input type="file"  class="myfile" multiple="true" onchange="upload(this)" style="display:none;"></label>';
+						// $("#upLoad").remove();
+						$(".fild-label").remove();
+						$("#img_con").append(str);
+					} else {
+						for(var i = 0; i < sum1; i++) {
+							var url = window.URL.createObjectURL(obj.files[i]);
+							var name = obj.files[i].name;
+							str += "<li class='del_" + i + "' style='background:url(" + url + ") no-repeat center;background-size:contain;margin-top:30px;'><div style='position:absolute;top:-20px;right:0;color:red;'  onclick='delimg(" + i + ")'>删除</div><span><input class='cs_" + i + "' style='height:20px;' name='image[]' type='hidden' value=" + msg[i] + " /></span></li>";
+						}
+						str += '<label class="fild-label"><div class="upLoad" >+</div><input type="file"  class="myfile" multiple="true" onchange="upload(this)" style="display:none;"></label>';
+						// $("#upLoad").remove();
+						$(".fild-label").remove();
+						$("#img_con").append(str);
+					}
+
+				}
+			}
+
+		})
+
+	}
+
+	//删除图片
+	function delimg(i) {
+		$('.cs_' + i).val('');
+		$('.del_' + i).remove();
+	}
+</script>
+
+<script type="text/javascript">
+	$('#goback').click(function() {
+		window.history.go(-1);
+	})
+</script>
+<script type="text/javascript" language=JavaScript charset="UTF-8">
+	document.onkeydown = function(event) {
+		var e = event || window.event || arguments.callee.caller.arguments[0];
+		if(e && e.keyCode == 13) { // enter 键
+			var href = window.location.href;
+			var appraise_text = $("#appraise-text").val();
+			if(appraise_text == '') {
+				layer.msg('评价内容不能为空', { offset: 't', time: 2000, anim: 6 });
+				return false;
+			}
+			if(appraise_text.length > 80) {
+				layer.msg('评价内容不能超过80个字', { offset: 't', time: 2000, anim: 6 });
+				return false;
+			}
+			var sum = $("#img_con li").length;
+			if(sum > 3) {
+				layer.msg('最多可上传3张图片', { offset: 't', time: 2000, anim: 6 });
+				return false;
+			}
+			return false;
+			$('#form02').attr('action', href);
+			$('#form02').submit();
+		}
+	};
+	$('#sub-btn').click(function(event) {
+		var href = window.location.href;
+		var appraise_text = $("#appraise-text").val();
+
+		if(appraise_text == '') {
+			layer.msg('评价内容不能为空', { offset: 't', time: 2000, anim: 6 });
+			return false;
+		}
+		if(appraise_text.length > 80) {
+			layer.msg('评价内容不能超过80个字', { offset: 't', time: 2000, anim: 6 });
+			return false;
+		}
+		var sum = $("#img_con li").length;
+		if(sum > 3) {
+			layer.msg('最多可上传3张图片', { offset: 't', time: 2000, anim: 6 });
+			return false;
+		}
+
+		$('#form02').attr('action', href);
+		$('#form02').submit();
+
+	})
+</script>
+<script>
+	var start = {
+		elem: '#start',
+		format: 'YYYY/MM/DD hh:mm:ss',
+		min: '2016-06-16 23:59:59', //设定最小日期为当前日期
+		max: laydate.now(), //最大日期
+		istime: true,
+		istoday: false,
+		choose: function(datas) {
+			end.min = datas; //开始日选好后，重置结束日的最小日期
+			end.start = datas //将结束日的初始值设定为开始日
+		}
+	};
+
+	laydate(start);
+</script>
+<script>
+	// $('#datepicker').datepicker({
+	//   autoclose: true
+	// });
+	$('#datetimepicker6').datetimepicker();
+</script>

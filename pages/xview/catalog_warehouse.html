@@ -1,0 +1,101 @@
+ {_INCLUDE header.html}
+<style>
+#spec-tab1_paginate{text-align: right;}
+.order-header{background: rgba(0,0,0,0.1);padding: 8px 0;margin-bottom: 10px;}
+.order-header ul{padding: 0; margin: 0;}
+.order-header ul li{float: left;text-align: center;background: rgba(0,0,0,0.1);padding: 8px 0;color: white;cursor: pointer;}
+.order-header ul li.active{background: rgba(0,0,0,0.2);}
+</style>
+<div class="content-wrapper">
+	<!--头部str-->
+	<section class="content-header">
+		<span style="font-size: 25px;">货仓管理</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">CMS内容管理</a>
+			</li>
+			<li class="active">货仓管理</li>
+		</ol>
+	</section>
+	<!--头部end-->
+
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="col-md-12 order-header block-no">
+					<form action="{_goods_url}" method="get" id="form01">
+						<div class="col-md-2">
+							<a href="{_hediturl}" class="btn btn-main btn-sm" id="chaxun">新增货仓</a>
+						</div>
+					</form>
+				</div>
+
+				<div class="box-body">
+					<table id="spec-tab1" class="table table-bordered table-striped">
+						<!--<thead>-->
+						<tr>
+							<th style="display:none">编号</th>
+							<th>货仓名称</th>
+							<th>是否需要实名认证</th>
+							<th class="block-no">操作</th>
+						</tr>
+						<!--</thead>
+	                <tbody>-->
+						{_IF house} {_FOREACH house}
+						<tr>
+							<td class="fre-num" style="display:none">{_id}</td>
+							<td class="fre-name">{_name}</td>
+							<td class="fre-needauth">{_IF needauth=1}需要 {ELSE} 不需要 {ENDIF}</td>
+							<td class="fre-btn block-no">
+								<a href="{_hediturl}&id={_id}" class="btn btn-main btn-xs">编辑</a>
+								<a href="{_hdelurl}&id={_id}" class="btn btn-main btn-xs">删除</a>
+							</td>
+						</tr>
+						{ENDFOR} {ELSE}
+						<tr>
+							<td colspan="11">没有数据</td>
+						</tr>
+						{ENDIF}
+						<!--</tbody>-->
+					</table>
+					<!--分页-->
+					<div class="col-md-12" style="margin-top: 15px;">
+						<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+							<ul class="pagination">
+								<li class="paginate_button previous " id="consumer-tab1_previous">
+									<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+								</li>
+
+								{_FOREACH pages}
+								<li class="paginate_button {_IF active}active {ENDIF}">
+									<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+								</li>
+								{ENDFOR}
+
+								<li class="paginate_button next" id="consumer-tab1_next">
+									<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+								</li>
+
+							</ul>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+	<!--/中心内容end-->
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+<script>
+	$(function() {
+		//  表格插件
+		$("#fre-tab1").DataTable();
+	})
+</script>

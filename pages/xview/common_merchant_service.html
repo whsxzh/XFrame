@@ -1,0 +1,92 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+    #tent-tab1_filter label{display: none !important;}
+    .order-input1,.order-input2{width: 40%;border: none; border:1px solid #d2d6de;padding: 0 10px;line-height: 30px;}
+    .order-input2{margin-left: 5px;}
+    .daterangepicker{width: 32%;}
+	#spec-tab1_paginate{text-align: right;}
+	.order-header{background: rgba(0,0,0,0.1);padding: 8px 0;margin-bottom: 10px;}
+	.order-header ul{padding: 0; margin: 0;}
+	.order-header ul li{float: left;text-align: center;background: rgba(0,0,0,0.1);padding: 8px 0;color: white;cursor: pointer;}
+	.order-header ul li.active{background: rgba(0,0,0,0.2);}
+	.control-label{color: #000000;}
+  </style>
+<!--商户管理-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">客服管理</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">cms管理</a>
+			</li>
+			<li class="active">客服管理</li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="col-md-12 order-header">
+					<div class="col-md-2">
+						<input type="text" class="form-control form-input" id="" name="" value="{_telephone}"/>
+					</div>
+					<div class="col-md-2">
+						<a id="tent-delect" data-toggle="modal" data-target="#add-active" class="btn btn-main btn-sm" id="chaxun">修改</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</div>
+<!--商户信息弹框 添加-->
+<div class="modal fade" id="add-active" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">修改客服电话</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">客服电话</label>
+						<input type="text" class="form-control" id="add_name"  value="{_telephone}">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-primary add_name" id="save">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+<script type="text/javascript">
+
+	$("#save").click(function(){
+		var url="{_url}";
+		var telephone=$("#add_name").val();
+		$.ajax({
+			url:url,
+			datatype:"json",
+			type:"post",
+			data:{telephone:telephone},
+			success:function(msg){
+				if(msg=="success"){
+					alert("修改成功");
+					window.location.reload();
+				}
+			}
+		})
+	})
+
+
+</script>

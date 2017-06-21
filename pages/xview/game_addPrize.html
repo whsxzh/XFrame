@@ -1,0 +1,293 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+ 	.box-footer{background: none;border: none;}
+ 	 #coupon_box,#red_box{display: none;}
+ </style>
+<!--普通用户管理-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">{_IF addData}新增奖品 {ELSE} 编辑奖品{ENDIF}</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href=""><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">{_IF addData}新增奖品 {ELSE} 编辑奖品{ENDIF}</a>
+			</li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="row">
+			<div class="box">
+				<!--<div class="box-header with-border">
+					<h3 class="box-title">新增奖品</h3>
+				</div>-->
+				{_IF addData}
+				<div class="box-body box-auto">
+					<form class="form-horizontal" id="addForm" method="post" action="{_addUrl}" onsubmit="return check()">
+						<input type="hidden" name="invitecode_id" value="{_addData.invitecode_id}">
+						<input type="hidden" name="luckdraw_description_id" value="{_luckdraw_description_id}">
+						<input type="hidden" name="product_id" value="{_prizeGetGoods.productId}">
+						<input type="hidden" name="coupon_id" value="{_prizeGetCoupon.couponId}">
+						<div class="box-body">
+							<div class="form-group">
+								<label for="inputEmail3" class="col-md-1 control-label">选择奖品</label>
+								<div class="col-md-11">
+									<select name="type" class="form-control form-select select_box">
+										<option value="0" class="goods" {_IF savePrizeTempData.type=0} selected="selected" {ENDIF}>商品</option>
+										<option value="1" class="coupon" {_IF savePrizeTempData.type=1} selected="selected" {ENDIF}>优惠券</option>
+										<option value="2" class="red_packet">支付宝红包</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group" id="goods_box">
+								<label  for="prize_name" class="col-md-1 control-label">商品名称</label>
+								<div class="col-md-11">
+									<input type="text" style="color: #000" value="{_prizeGetGoods.productName}" id="prize_name" name="" class="form-control form-input" placeholder="点击选择商品" readonly >
+								</div>
+							</div>
+							<div class="form-group" id="coupon_box">
+								<label for="" class="col-md-1 control-label">优惠券名称</label>
+								<div class="col-md-11">
+									<input type="text"  style="color: #000" value="{_prizeGetCoupon.couponName}" id="coupon_name" name="" class="form-control form-input" placeholder="点击选择优惠券" readonly >
+								</div>
+							</div>
+							<div class="form-group" id="red_box">
+								<label for="" class="col-md-1 control-label">支付宝红包</label>
+								<div class="col-md-11"><input type="text" value="" id="red_number" name="red_packet" class="form-control form-input" placeholder="请输入红包金额" ></div>
+							</div>
+							<div class="form-group">
+								<label for="prize_number" class="col-md-1 control-label">奖品数量</label>
+								<div class="col-md-11"><input type="text" name="quantity" value="{_savePrizeTempData.quantity}" id="prize_number" class="form-control form-input" placeholder="请输入奖品数量" ></div>
+							</div>
+							<div class="form-group">
+								<label for="prize_level" class="col-md-1 control-label">奖品等级</label>
+								<div class="col-md-11"><input type="text" name="rank" value="{_savePrizeTempData.rank}" id="prize_level" class="form-control form-input" placeholder="请输入奖品等级" ></div>
+							</div>
+							<div class="form-group">
+								<label for="prize_chance" class="col-md-1 control-label">奖品概率</label>
+								<div class="col-md-11"><input type="text" name="probability" value="{_savePrizeTempData.probability}" id="prize_chance" class="form-control form-input" placeholder="请输入奖品概率" ></div>
+							</div>
+							
+						</div>
+		
+						<div class="box-footer">
+							<div style="float:right">
+								<button type="submit" class="btn btn-main btn-xs pull-left" id='sub'>保存</button>
+								<button type="button" class="btn btn-default btn-xs pull-left" style="margin-left:30px;" onclick="history.back();">返回</button>
+							</div>
+						</div>
+						<input type='hidden' value='{_page}'></input>
+					</form>
+				</div>
+
+				{ELSE}
+				<div class="box-body box-auto">
+					<form class="form-horizontal" method="post" action="{_addUrl}" onsubmit="return checkEdit()">
+						<input type="hidden" name="id" value="{_editData.id}">
+						<input type="hidden" name="luck_draw_id" value="{_editData.luckdraw_description_id}">
+						<input type="hidden" name="type" value="{_editData.type}">
+						<div class="box-body">
+							{_IF editData.type=0}
+							<div class="form-group" id="goods_box" style="display: block">
+								<label  for="" class="col-md-1 control-label">商品名称</label>
+								<div class="col-md-11"><input type="text" value="{_productName}" id="prize_name" name="productName"  style="color:#000; " class="form-control form-input"  readonly ></div>
+							</div>
+							{ENDIF}
+
+							{_IF editData.type=1}
+							<div class="form-group" id="coupon_box" style="display: block">
+								<label for="" class="col-md-1 control-label">优惠券名称</label>
+								<div class="col-md-11"><input type="text" value="{_couponName}" id="coupon_name" name="couponName"   style="color:#000; "class="form-control form-input" readonly ></div>
+							</div>
+							{ENDIF}
+
+							{_IF editData.type=2}
+							<div class="form-group" id="red_box" style="display: block">
+								<label for="" class="col-md-1 control-label">支付宝红包</label>
+								<div class="col-md-11"><input type="text" value="{_editData.red_packet}" id="red_number" name="red_packet"  style="color:#000; " class="form-control form-input" placeholder="请输入红包金额" ></div>
+							</div>
+							{ENDIF}
+
+							<div class="form-group">
+								<label for="" class="col-md-1 control-label">奖品数量</label>
+								<div class="col-md-11"><input type="text" value="{_editData.quantity}" id="prize_number" name="quantity" class="form-control form-input" placeholder="请输入奖品数量" ></div>
+							</div>
+							<div class="form-group">
+								<label for="" class="col-md-1 control-label">奖品等级</label>
+								<div class="col-md-11"><input type="text" value="{_editData.rank}" id="prize_level" name="rank" class="form-control form-input" placeholder="请输入奖品等级" ></div>
+							</div>
+							<div class="form-group">
+								<label for="" class="col-md-1 control-label">奖品概率</label>
+								<div class="col-md-11"><input type="text" value="{_editData.probability}" id="prize_chance" name="probability" class="form-control form-input" placeholder="请输入奖品概率" ></div>
+							</div>
+
+						</div>
+
+						<div class="box-footer">
+							<div style="float:right">
+								<button type="submit" class="btn btn-main btn-xs pull-left" id='sub'>保存</button>
+								<button type="button" class="btn btn-default btn-xs pull-left" style="margin-left:30px;" onclick="history.back();">返回</button>
+							</div>
+						</div>
+						<input type='hidden' value='{_page}'></input>
+					</form>
+				</div>
+				{ENDIF}
+			</div>
+		</div>
+	</section>
+
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+</body>
+
+</html>
+<script type="text/javascript">
+	function check() {
+		var rank = $('input[name="rank"]').val();
+		if(rank == '') {
+			alert("奖品等级必须填写！");
+			return false;
+		}
+        var quantity = $('input[name="quantity"]').val();
+        if(quantity == '') {
+            alert("奖品数量必须填写！");
+            return false;
+        }
+        var probability = $('input[name="probability"]').val();
+        if(probability == '' || probability<1 || probability>100) {
+            alert("奖品概率必须填写，并且只能是0到100之间的数字！");
+            return false;
+        }
+        if($(".red_packet").is(":selected") && '' == $('input[name="red_packet"]').val()){
+            alert("红包类型的奖品，金额必须填写！");
+            return false;
+		}else if($(".goods").is(":selected") && '' == $('input[name="product_id"]').val()){
+            alert("商品类型的奖品，必须选择商品！");
+            return false;
+        }else if($(".coupon").is(":selected") && '' == $('input[name="coupon_id"]').val()){
+            alert("优惠券类型的奖品，必须选择优惠券！");
+            return false;
+        }
+		return true;
+	}
+
+    function checkcheckEdit() {
+        var rank = $('input[name="rank"]').val();
+        if(rank == '') {
+            alert("奖品等级必须填写！");
+            return false;
+        }
+        var quantity = $('input[name="quantity"]').val();
+        if(quantity == '') {
+            alert("奖品数量必须填写！");
+            return false;
+        }
+        var probability = $('input[name="probability"]').val();
+        if(probability == '' || probability<1 || probability>100) {
+            alert("奖品概率必须填写，并且只能是0到100之间的数字！");
+            return false;
+        }
+        if($("input[name='type']").val()==0 && '' == $('input[name="red_packet"]').val()){
+            alert("红包类型的奖品，金额必须填写！");
+            return false;
+        }else if($("input[name='type']").val()==1 && '' == $('input[name="productName"]').val()){
+            alert("商品类型的奖品，必须选择商品！");
+            return false;
+        }else if($("input[name='type']").val()==2 && '' == $('input[name="couponName"]').val()){
+            alert("优惠券类型的奖品，必须选择优惠券！");
+            return false;
+        }
+        return true;
+    }
+
+    function escape2Html(str) {
+        var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+        return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+    }
+	$(function(){
+
+		$('.select_box').on('change',function(){
+			if($(".goods").is(":selected")){
+				$('#goods_box').show();
+				$('#red_box').hide();
+				$('#coupon_box').hide();
+				//location.href= escape2Html('{_getGoodsUrl}');
+			}else if($(".coupon").is(":selected")){
+				$('#goods_box').hide();
+				$('#red_box').hide();
+				$('#coupon_box').show();
+                //location.href= escape2Html('{_getCouponUrl}');
+			}else if($(".red_packet").is(":selected")){
+				$('#goods_box').hide();
+				$('#red_box').show();
+				$('#coupon_box').hide();
+			}
+		});
+        // $(".coupon").attr('selected','selected');
+		var prizeTypeTemp = {_IF savePrizeTempData.type} {_savePrizeTempData.type} {ELSE} '' {ENDIF};
+		if(prizeTypeTemp == 1){
+            $('#goods_box').hide();
+            $('#red_box').hide();
+            $('#coupon_box').show();
+		}
+
+		 $('#addForm #coupon_name').on('click', function () {
+             var coupon_id = $('input[name="coupon_id"]').val();
+             if(coupon_id && !confirm('已经选择了优惠券，需要重新选择吗？')){
+                 return false;
+             }
+		     $.post(
+                 '{_savePrizeTempDataUrl}',
+				 {
+				     probability:$('input[name="probability"]').val(),
+                     rank:$('input[name="rank"]').val(),
+                     quantity:$('input[name="quantity"]').val(),
+                     luckdraw_description_id:$('input[name="luckdraw_description_id"]').val(),
+                     invitecode_id:$('input[name="invitecode_id"]').val(),
+                     type:1,
+					 opType:'saveTempData'
+				 },
+				 function (json) {
+					 console.log(json);
+                     if(0 == json.retcode){
+                         location.href = escape2Html('{_getCouponUrl}');
+                     }
+                 },
+				 'json'
+			 );
+         });
+
+        $('#addForm #prize_name').on('click', function () {
+            var product_id = $('input[name="product_id"]').val();
+            if(product_id && !confirm('已经选择了商品，需要重新选择吗？')){
+				return false;
+			}
+            $.post(
+                '{_savePrizeTempDataUrl}',
+                {
+                    probability:$('input[name="probability"]').val(),
+                    rank:$('input[name="rank"]').val(),
+                    quantity:$('input[name="quantity"]').val(),
+                    luckdraw_description_id:$('input[name="luckdraw_description_id"]').val(),
+                    invitecode_id:$('input[name="invitecode_id"]').val(),
+                    type:0,
+                    opType:'saveTempData'
+                },
+                function (json) {
+                    console.log(json);
+                    if(0 == json.retcode){
+                        location.href = escape2Html('{_getGoodsUrl}');
+					}
+                },
+                'json'
+            );
+        });
+
+	});
+</script>
+

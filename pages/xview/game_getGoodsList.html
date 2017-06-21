@@ -1,0 +1,222 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+    .order-header {
+        background: rgba(0, 0, 0, 0.1);
+        padding: 8px 0;
+        margin-bottom: 10px;
+    }
+</style>
+<!--我的商品库-->
+<div class="content-wrapper">
+    <section class="content-header">
+        <span style="font-size: 25px;">选择商品</span>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">大转盘&翻牌子管理</a></li>
+            <li class="active">选择商品</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="box box-primary">
+                <!--头部-->
+                <div class="col-md-12 col-xs-12 order-header block-no">
+                    <!--search new -->
+                    <div class="col-md-2 col-xs-6">
+                        <input type="text" class="form-control form-input" value="{_searchName}" name='name'
+                               id="goodsName"
+                               placeholder="请输入商品名称">
+                    </div>
+                    <div class="col-md-2 col-xs-2">
+                        <button type="button" class="btn btn-main btn-sm search_order" id="search">搜索</button>
+                    </div>
+                    <div class="col-md-8 col-xs-2 text-right">
+                        <button type="submit" class="btn btn-main btn-sm" id="save_goods">保存</button>
+                    </div>
+                </div>
+
+                <div class="order-tab">
+                    <div class="box-body">
+                        <div class="box-auto">
+                            <table id="mygood-tab2" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>商品id</th>
+                                    <th>商品图片</th>
+                                    <th>商品名称</th>
+                                    <th>商品品牌</th>
+                                    <th>会员价格</th>
+                                    <th>零售价</th>
+                                    <th>市场价</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {_FOREACH dt}
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="goods-tb2" value="{_product_id}"
+                                               data-value="{_name}" class="order-check" id="product_{_product_id}">
+                                    </td>
+                                    <td>{_product_id}</td>
+                                    <td><span class="order-number"><img src='{_image}' width="80"> </span></td>
+                                    <td>{_name}</td>
+                                    <td>{_bname}</td>
+                                    <td>{_proxyprice}</td>
+                                    <td>{_price}</td>
+                                    <td>{_marketprice}</td>
+                                </tr>
+                                {ENDFOR}
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="dataTables_info" id="consumer-tab1_info" role="status"
+                                         aria-live="polite">共5页
+                                    </div>
+                                </div>
+                                <!--分页-->
+                                <div class="col-sm-7 text-right">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+                                        <ul class="pagination">
+                                            <li class="paginate_button next" id="consumer-tab1_first">
+                                                <a href="{_pageurl}&page=1" aria-controls="consumer-tab1"
+                                                   data-dt-idx="3" tabindex="0">首页</a>
+                                            </li>
+                                            {_IF firstPage=1}
+                                            <li class="paginate_button previous" id="consumer-tab1_previous">
+                                                <a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1"
+                                                   data-dt-idx="0" tabindex="0">上一页</a>
+                                            </li>
+                                            {ENDIF}
+                                            {_FOREACH pages}
+                                            <li class="paginate_button {_IF active}active {ENDIF}">
+                                                <a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1"
+                                                   tabindex="0">{_text}</a>
+                                            </li>
+                                            {ENDFOR}
+                                            {_IF is_end_page=1}
+                                            <li class="paginate_button next" id="consumer-tab1_next">
+                                                <a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1"
+                                                   data-dt-idx="3" tabindex="0">下一页</a>
+                                            </li>
+                                            {ENDIF}
+                                            <li class="paginate_button next" id="consumer-tab1_end">
+                                                <a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1"
+                                                   data-dt-idx="3" tabindex="0">尾页</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.2-->
+                    <!--<div class="row">
+                        <div class="col-md-4 col-xs-12 order-btn">
+                            <div><input type="checkbox" value="" id="" class="goods-check2">全选</div>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{_INCLUDE footer.html}
+<!-- 商品搜索 -->
+<script type="text/javascript">
+    $('#search').click(function (msg) {
+        var goodsName = $('#goodsName').val();
+        var url = "{_getGoodsList}";
+        location.href = url + "&name=" + goodsName;
+    });
+</script>
+<!-- 商品保存跳转 -->
+<script type="text/javascript">
+    /*$('#save_goods').click(function (msg) {
+     var obj = document.getElementsByName('goods-tb2');
+     var s = '';
+     for (var i = 0; i < obj.length; i++) {
+     if (obj[i].checked) {
+     s += obj[i].value + ','; //如果选中，将value添加到变量s中
+     }
+     }
+     ss = s.split(",");
+     if (ss.length - 1 > 1) {
+     alert("只能选择一个商品");
+     return;
+     }
+     if (ss.length - 1 == 0) {
+     alert("请先选择一个商品");
+     return;
+     }
+     var url = "{_addAd}";
+     location.href = url + "&shangpin=" + s;
+
+     });*/
+</script>
+<script>
+    /*$(function () {
+     $(".goods-check2").click(function () {
+     if (this.checked) {
+     $("input[name='goods-tb2']").each(function () {
+     $(this).prop("checked", true);
+     $(this).attr("checked", true);
+     });
+     } else {
+     $("input[name='goods-tb2']").each(function () {
+     $(this).removeAttr("checked", false);
+     });
+
+     }
+     });
+     });*/
+    $(function () {
+        $(".order-check").click(function () {
+            var that = this;
+            $("input[name='goods-tb2']").each(function () {
+                this.checked = false;
+            });
+            that.checked = true;
+            // alert(that.value);
+        });
+
+        $('#save_goods').click(function (msg) {
+            var obj = document.getElementsByName('goods-tb2');
+            var s = '';
+            for (var i = 0; i < obj.length; i++) {
+                if (obj[i].checked) {
+                    s += obj[i].value + ','; //如果选中，将value添加到变量s中
+                }
+            }
+            ss = s.split(",");
+            if (ss.length - 1 > 1) {
+                alert("只能选择一个商品");
+                return;
+            }
+            if (ss.length - 1 == 0) {
+                alert("请先选择一个商品");
+                return;
+            }
+            //s.replace(',', '')
+            var url = "{_getGoodsList}";
+            //location.href = url + "&shangpin=" + s;
+            var productName = $('#product_' + s.replace(',', '')).attr('data-value');
+            $.post(
+                url,
+                {opType: 'getGoods', productId: s.replace(',', ''), productName: productName},
+                function (json) {
+                    if (0 == json.retcode) {
+                        location.href = '{_backAddPrizeUrl}&from=getGoods&luckDrawId=' + json['data']['luckdraw_description_id'];
+                    } else {
+                        alert(json.msg);
+                    }
+                },
+                'json'
+            );
+
+        });
+    });
+
+
+</script>

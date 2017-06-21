@@ -1,0 +1,76 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+	table tr td:nth-child(2){text-align: left;}
+</style>
+<!--订单管理内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">物流详情</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">物流列表</a>
+			</li>
+			<li class="active">物流详情</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div style="padding: 20px;margin-bottom: 20px;margin-top: 10px;">
+					<div class="order-jy-header clearfix">
+						<div class="col-md-2 col-xs-3" style="padding-left: 0;"><img src="{_image}" style="width: 150px;height: 150px;"></div>
+						<div class="col-md-10 col-xs-9 order-font1" style="color: white;">
+							<p class="order-jy-content">
+								<span>{_name}</span>
+								<!-- <span class="grey">未付款</span> -->
+								<span class="order-goback"><button type="button" class="btn btn-primary btn-sm fr" onclick="history.go(-1)"/> 返回 </button></span>
+							</p>
+							<p class="order-jy-p">
+								<span>原价:　<i class=" f20">{_marketprice}元</i></span>
+								<span>出售价:　<i class=" f20">{_price}元</i></span>
+								<span>运费：<i class=" f20">{_freight}元</i></span>
+							</p>
+						</div>
+
+					</div>
+					<div class="order-jy-content clearfix ">
+						<table  class="table table-bordered table-striped" style="width: 100%;margin-top: 15px;" id="order-tab1">
+							<tr>
+								<th>代理</th>
+								<td><span>{_firstname}</span></td>
+							</tr>
+							<tr>
+								<th>收货信息</th>
+								<td>
+									<span>姓名：{_shipping_firstname}</span><br>
+									<span>电话：{_s_telphone}</span><br>
+									<span>地址：{_s_address}</span>
+								</td>
+							</tr>
+							<tr>
+								<th>物流信息</th>
+
+								<td class="express-td">
+
+									{_IF data} {_FOREACH data }
+									<span>时间：{_time}</span><br>
+									<span>到达：{_context}</span><br> {ENDFOR} {ELSE}
+									<span>暂无信息或参数有误</span> {ENDIF}
+								</td>
+
+							</tr>
+
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}

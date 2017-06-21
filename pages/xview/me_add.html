@@ -1,0 +1,208 @@
+ {_INCLUDE header.html}
+<link rel="stylesheet" type="text/css" href="view/assets/AdminLTE/dist/css/jquery.treemenu.css" />
+<style>
+	.dropdown-btn {
+		margin-left: -22px;
+		background: none;
+		border: none;
+		line-height: 30px;
+		font-size: 10px;
+	}
+	
+	#fenlei-input {
+		border: 1px solid #ccc;
+		padding-left: 15px;
+	}
+	/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+	
+	::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+	/*定义滚动条轨道 内阴影+圆角*/
+	
+	::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		border-radius: 10px;
+	}
+	/*定义滑块 内阴影+圆角*/
+	
+	::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+		background-color: #F1F1EC;
+	}
+	
+	button:focus,
+	input:focus {
+		outline: none;
+	}
+	
+	.banner-input1,
+	.banner-input2 {
+		margin-right: 10%;
+	}
+	/*tree*/
+	
+	.tree {
+		border: 1px solid #d2d6de;
+		margin-left: 110px;
+		margin-top: 10px;
+		width: 345px;
+	}
+	
+	.tree li a {
+		color: #999;
+		font-size: 16px;
+	}
+	label{color: white;}
+	
+</style>
+<!--中心内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">申请我的板块</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="{_meIndexUrl}">我的板块</a>
+			</li>
+			<li class="active">申请我的板块</li>
+		</ol>
+	</section>
+	<section class="content">
+	<div class="row">
+
+			<div class="box box-primary">
+				<!--中心内容-->
+				<div class="row">
+					<div class="col-md-3 col-xs-12"><img src="img/phone.png" style="width: 100%;"></div>
+
+					<div class="index-right-tab">
+
+						<!--右侧内容-->
+						<form method="post" enctype="multipart/form-data" onsubmit="return sendAjax()">
+						<div class="col-md-9 col-xs-12">
+							<div class="col-md-12"><button id="plate_back" class="btn btn-main btn-sm index-bj-back " onclick="javascript:history.back()">返回</button></div>
+							<div class="col-md-12 index-img1">
+								<div class="col-md-12">
+									<div id="click"><img src="{_image}"></div>
+									<a href="javascript:;" class="file btn btn-main">上传图片
+										<input type="file" id="photo" name="plate_img">
+									</a>
+								</div>
+							</div>
+
+							<div class="col-md-12">
+								<div class="col-md-8">
+									<div class="index-group clearfix">
+										<label for="">活动标题：</label>
+										<input type="text" class="form-control form-input" placeholder="请输入标题名称" value='{_name}' id='name' style="height:34px;" name="plate_name">
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-12">
+								<div class="col-md-8">
+									<div class="index-group clearfix">
+										<label for="">选择商品方式：</label><!-- <label>您的板块商品来源</label> -->
+										<select class="form-control form-select" id="banner-select" name="prdlink_type">
+											<option>请选择</option>
+											<option value="嗨企推荐" data-value="0" selected="selected">嗨企推荐</option>
+											<option value="自行选择" data-value="1">自行选择</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-12" style="margin: 15px 0;">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>是否开通上传商品功能： </label>
+										<input type="radio" name="is_upload_products" id="optionsRadios1" value="1" checked style="margin-left: 5%">
+										<label for="optionsRadios1">开通</label>
+										<input type="radio" name="is_upload_products" id="optionsRadios2" value="0" style="margin-left: 5%;">
+										<label for="optionsRadios2">不开通</label>
+										<div style="color: white;">注：（开通后可以在平台售卖自己的商品，需支付保证金，开通后撤销可申请退款）</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<button type="submit" class="btn btn-main banner-save" style="margin-left: 10px;" id='submit'>保存</button>
+							</div>
+						</div>
+						</form>
+					</div>
+
+				</div>
+
+			</div>
+</div>
+</section></div>
+
+	<!--底部-->
+	{_INCLUDE footer.html}
+
+	</div>
+
+	</body>
+
+	</html>
+
+
+	</script>
+
+	<!-- 点击保存，提交ajax请求 -->
+	<script type="text/javascript">
+		function sendAjax() {
+			//获取到页面中的信息
+			var photo = $('#photo').val();
+			var name = $("#name").val();
+			var way=$('#banner-select option:selected').val();
+			var open=$('input[name="is_upload_products"]:checked').val();
+			if(photo==""){
+				alert('请上传图片！');
+				return false;
+			}else if(name==""){
+				alert('请输入标题！');
+				return false;
+			}else if(way==""){
+				alert('请选择商品方式！');
+				return false;
+			}
+		}
+	</script>
+	</script>
+	<!--图片上传-->
+	<script>
+		document.getElementById('photo').addEventListener('change', function(e) {
+			var files = this.files;
+			var img = new Image();
+			var reader = new FileReader();
+			reader.readAsDataURL(files[0]);
+			reader.onload = function(e) {
+				var mb = (e.total / 1024) / 1024;
+				if(mb >= 2) {
+					alert('文件大小大于2M');
+					return;
+				}
+				img.src = this.result;
+				img.style.width = "80%";
+				document.getElementById('click').style.width = "100%";
+				document.getElementById('click').style.height = "";
+				document.getElementById('click').innerHTML = '';
+				document.getElementById('click').appendChild(img);
+			}
+		});
+	</script>
+
+	<script type="text/javascript">
+	// 返回修改
+	$(function(){
+		$.("#plate_back").click(function(){
+			window.location.go(-1);
+		})
+	})
+	</script>

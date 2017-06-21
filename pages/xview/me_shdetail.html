@@ -1,0 +1,121 @@
+ {_INCLUDE header.html}
+<style>
+	input:focus {
+		outline: none;
+	}
+	
+	table {
+		color: white;
+	}
+	
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding-top: 8px;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		cursor: pointer;
+		color: white;
+	}
+	
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	.order-state a{color: white;}
+</style>
+<!--我的商品库-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">商户操作审核详情</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">商品库管理</a>
+			</li>
+			<li class="active">我的商品库</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="col-md-12 order-header">
+					<div class="order-box" style="padding-bottom: 10px;">
+						<ul class="clearfix">
+							<li class="col-md-1 col-xs-3 active" data-id="1">所有审核</li>
+							<li class="col-md-1 col-xs-3" data-id="2">待审核</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="active tab-pane box-auto" id="activity">
+					<table id="mygood-tab1" class="table table-bordered table-striped">
+						<tr>
+							<th>改动位置</th>
+							<th>申请时间</th>
+							<th>图片</th>
+							<th>具体改动</th>
+							<th>状态</th>
+							<th>详情</th>
+							<th>操作</th>
+						</tr>
+						<tr>
+							<td>哈哈哒</td>
+							<td>哈哈哒</td>
+							<td><img src="" alt="" style="width: 80px;height: 60px;"/></td>
+							<td>哈哈哒</td>
+							<td>哈哈哒</td>
+							<td><a href="#">哈哈哒</a></td>
+							<td>
+								<button class="btn btn-main btn-xs">商品列表</button>
+								<button class="btn btn-main btn-xs">禁用</button>
+							</td>
+						</tr>
+					</table>
+					<div class="row">
+						<div class="col-md-12" style="margin-bottom: 10px;">
+							<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+								<ul class="pagination">
+									<li class="paginate_button previous disabled" id="example2_previous">
+										<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">上一页</a>
+									</li>
+									<li class="paginate_button active">
+										<a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0">1</a>
+									</li>
+									<li class="paginate_button ">
+										<a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0">2</a>
+									</li>
+									<li class="paginate_button next" id="example2_next">
+										<a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0">下一页</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+			</div>
+
+		</div>
+		</div>
+	</section>
+</div>
+
+ {_INCLUDE footer.html}
+
+<script type="text/javascript">
+	$(function(){
+		$('.order-box ul li').on('click',function(){
+			$(this).addClass('active').siblings().removeClass('active');
+		});
+	});
+</script>

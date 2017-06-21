@@ -1,0 +1,326 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		color: white;
+		cursor: pointer;
+	}
+	
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	
+	.order-btn {
+		margin-top: 10px;
+	}
+</style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">商品库</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">我的板块</a>
+			</li>
+			<li class="active">商品库</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box" style="border: none;">
+				<!--中心内容-->
+				<div class="col-md-12 order-header">
+					<div class="col-md-10 col-xs-8 order-box">
+						<ul class="clearfix">
+							<a href="{_meEditProductUrl}&plate_id={_plate_info.plate_id}">
+								<li class="col-md-2 col-xs-4">活动商品({_count})</li>
+							</a>
+							<a href="{_meGetPlatformProductsUrl}&plate_id={_plate_info.plate_id}">
+								<li class="col-md-2 col-xs-4">商品库</li>
+							</a>
+							<li class="col-md-2 col-xs-4 active">我的商品</li>
+						</ul>
+					</div>
+					<div class="col-md-2 col-xs-4 block-no" style="padding-left: 0">
+						<div class="col-md-6 col-xs-6">
+							<a type="submit" class="btn btn-main btn-sm" href="{_productAddIndexUrl}">上传商品</a>
+						</div>
+						<div class="col-md-6 col-xs-6">
+							<button type="submit" class="btn btn-main btn-sm" onclick="history.go(-1)">返回</button>
+						</div>
+					</div>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<div class="box-auto">
+							<table id="order-tab1" class="table table-bordered table-striped">
+								<tr role="row">
+									<th>图片</th>
+									<th>商品名称</th>
+									<th>价格</th>
+									<th>会员价格</th>
+									<th>编号</th>
+									<th>库存</th>
+									<th>总销量</th>
+									<th>商品状态</th>
+									<th class="block-no">操作</th>
+								</tr>
+								{_FOREACH myProducts}
+								<tr role="row" class="odd">
+									<td><img src="{_image}" style="width: 50px;height: 50px;" /></td>
+									<td>{_name}</td>
+									<td>{_price}</td>
+									<td>{_proxyprice}</td>
+									<td>{_model}</td>
+									<td>{_quantity}</td>
+									<td>{_sales}</td>
+									<td>{_IF status=0}下架{ENDIF} {_IF status=1}上架{ENDIF}</td>
+									<td class="block-no">
+										<a class="btn btn-main btn-xs" href="xindex.php?m=product&act=editindex&product_id={_product_id}">编辑</a>
+										<button class="btn btn-main btn-xs kc-input1 add_quantity" data-toggle="modal" data-target="#add-kc" data-id="{_product_id}">补充库存</button> {_IF status=0}
+										<a class="btn btn-main btn-xs" title="启用商品" onclick="javascript:return enabledMeProduct({_product_id})">启用</a>{ENDIF} {_IF status=1}
+										<a class="btn btn-main btn-xs" title="禁用商品" onclick="javascript:return forbiddenMeProduct({_product_id})">禁用</a>{ENDIF} {_IF status=1}
+										<a class="btn btn-main btn-xs" title="添加到板块" onclick="javascript:return addPrdInMeFromPlatform({_product_id})">添加</a>{ENDIF}
+									</td>
+								</tr>
+								{ENDFOR} {_IF myProducts=0}
+								<tr role="row" class="odd">
+									<td><span>抱歉，没有您的记录</span></td>
+								</tr>
+								{ENDIF}
+							</table>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+								<ul class="pagination">
+									<li class="paginate_button previous" id="consumer-tab1_previous">
+										<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="首页">|<</a>
+									</li>
+									<li class="paginate_button previous" id="consumer-tab1_previous">
+										{_IF curpage=1}
+										<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+										{ELSE}
+										<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+										{ENDIF}
+									</li>
+									{_FOREACH pages}
+									<li class="paginate_button {_IF active}active {ENDIF}">
+										<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+									</li>
+									{ENDFOR}
+									<li class="paginate_button next" id="consumer-tab1_next">
+										{_IF lastPage=1}
+										<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+										{ELSE}
+										<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+										{ENDIF}										
+									</li>
+									<li class="paginate_button previous" id="consumer-tab1_previous">
+										<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="尾页">>|</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.box-body -->
+			</div>
+
+		</div>
+	</section>
+</div>
+
+<!--补充库存弹框-->
+<div class="modal fade" id="add-kc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">补充库存</h4>
+			</div>
+			<div class="modal-body">
+				<table class="kc-tab" id="kucun_table" style="color: #000000;">
+					<tr>
+						<th>属性</th>
+						<th>库存</th>
+						<th>进货</th>
+					</tr>
+					<tr>
+						<td class="item_option">1111</td>
+						<td class="item_quantity">111</td>
+						<td><input type="text" value="" class="numbe-tj-kc add_quantity"></td>
+					</tr>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary add_up" data-id="1">补充并上架</button>
+				<button type="button" class="btn btn-primary add_up" data-id="2">放入仓库</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--底部-->
+{_INCLUDE footer.html}
+</div>
+<script type="text/javascript">
+	$(function() {
+		//全选
+		$('#chkall').on('click', function() {
+			if(this.checked) {
+				$("input[name='chk']:checkbox").prop("checked", true);
+			} else {
+				$("input[name='chk']:checkbox").prop("checked", false);
+			}
+		});
+
+	});
+
+	// 逐个从商品库中添加到商户的某个板块内
+	function addPrdInMeFromPlatform(product_id) {
+		var addPrdInMeFromPlatformUrl = "{_meAddPrdInMeFromPlatform}";
+		var plate_id = "{_plate_info.plate_id}";
+		if(confirm("请确认添加！") == true) {
+			$.ajax({
+				url: addPrdInMeFromPlatformUrl,
+				type: 'post',
+				data: { plate_id: plate_id, product_id: product_id },
+				dataType: 'json',
+				success: function(data) {
+					alert(data.msg);
+					window.location = "{_meEditProductUrl}&plate_id={_plate_info.plate_id}";
+				},
+				error: function() {
+					alert("请求失败");
+				}
+			});
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// 启用我的某个商品（即上架）
+	function enabledMeProduct(product_id) {
+		var enabledMeProductUrl = "{_enabledMeProductUrl}";
+		if(confirm("确认启用？") == true) {
+			$.ajax({
+				url: enabledMeProductUrl,
+				type: 'post',
+				data: { product_id: product_id },
+				dataType: 'json',
+				success: function(data) {
+					console.log(data.msg);
+					location.reload(true);
+				},
+				error: function() {
+					alert("请求失败");
+				}
+			});
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// 禁用我的某个商品（即上架）
+	function forbiddenMeProduct(product_id) {
+		var forbiddenMeProductUrl = "{_forbiddenMeProductUrl}";
+		if(confirm("确认禁用？") == true) {
+			$.ajax({
+				url: forbiddenMeProductUrl,
+				type: 'post',
+				data: { product_id: product_id },
+				dataType: 'json',
+				success: function(data) {
+					console.log(data.msg);
+					location.reload(true);
+				},
+				error: function() {
+					alert("请求失败");
+				}
+			});
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	$(".kc-input1 ").click(function() {
+		var kc_td = $("#kc-td").text();
+		$(".old-kc").val(kc_td);
+	});
+
+	$(".add_quantity").click(function() {
+			var url = "{_addQuantityList_url}";
+			var id = $(this).attr("data-id");
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				data: { 'product_id': id },
+				success: function(msg) {
+					var html = '<input type="hidden" id="product" value="' + id + '"><tr>' +
+						'<th>属性</th>' +
+						'<th>库存</th>' +
+						'<th>进货</th>' +
+						'</tr>';
+					for(var i = 0, len = msg.length; i < len; i++) {
+						html += '<tr>' +
+							'<td class="item_option">' + msg[i].option + '</td>' +
+							'<td class="item_quantity">' + msg[i].quantity + '</td>' +
+							'<td><input type="text" value="" class="numbe-tj-kc add_item_quantity" data-id="' + msg[i].product_item_id + '" placeholder="0"></td>' +
+							'</tr>';
+					}
+					$("#kucun_table").html(html);
+				}
+			})
+		});
+
+		$(".add_up").click(function() {
+			var url = '{_addQuantity_url}';
+			var type = $(this).attr('data-id');
+			var product_id = $("#product").val();
+			var quantity = [];
+			var product_item_id = [];
+			$(".add_item_quantity").each(function() {
+				product_item_id.push($(this).attr('data-id'));
+				if($(this).val() == '') {
+					quantity.push(0);
+				} else {
+					quantity.push($(this).val());
+				}
+
+			});
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				data: { 'product_id': product_id, 'type': type, 'product_item_id': product_item_id, 'quantity': quantity },
+				success: function(msg) {
+					$("#add-kc").modal('hide');
+					location.reload();
+				}
+			})
+		});
+</script>
+</body>
+
+</html>

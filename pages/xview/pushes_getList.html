@@ -1,0 +1,236 @@
+ {_INCLUDE header.html}
+<style>
+	input:focus {
+		outline: none;
+	}
+	
+	table {
+		color: white;
+	}
+	
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding-top: 8px;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		cursor: pointer;
+		color: white;
+	}
+	
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	.order-state a{color: white;}
+</style>
+<!--我的商品库-->
+<div class="content-wrapper" style="padding:0 15px;">
+	<section class="content-header">
+		<span style="font-size: 25px;">推送列表</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">推送管理</a>
+			</li>
+			<li class="active">推送列表</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+					<div class="col-md-12 order-header" >
+						<div class="col-md-6 col-xs-12 order-box" style="padding-bottom: 10px;">
+							<ul class="clearfix">
+								<a href="{_add_url}"><li class="col-md-2 col-xs-3" data-id="1">推送编辑</li></a>
+								<a href="{_list_url}"><li class="col-md-2 col-xs-3 active" data-id="2">推送列表</li></a>
+							</ul>
+						</div>
+						<div class="block-no col-md-6 col-xs-12" style="margin-top:4px;">
+							<form action="xindex.php?m=pushes&act=getList" method="get">
+								<input type="hidden" name="m" value="pushes">
+								<input type="hidden" name="act" value="getList">
+								<div class="col-xs-5  col-md-5">
+									<input type="text" class="form-control form-input" name='title' value="{_title}" placeholder="请输入推送标题">
+								</div>
+								<div class="col-xs-5  col-md-5  ">
+									<input type="text" class="form-control form-input" name='content' value="{_content}" placeholder="请输入推送内容">
+								</div>
+	
+								<div class="col-xs-2 col-md-2">
+									<button type="submit" class="btn btn-primary btn-sm">搜索</button>
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<div class="box-body">
+				 		<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+							<form action="{_del_url}" method="post" class="deltui">
+							<table id="mygood-tab1" class="table table-bordered table-striped">
+								<tr>
+									<th class="block-no">ID</th>
+									<th>标题</th>
+									<th>内容</th>
+									<th class="block-no">链接</th>
+									<th>对象</th>
+									<th>推送状态</th>
+									<th>推送时间</th>
+									<th>编辑时间</th>
+									<th class="block-no">操作</th>
+								</tr>
+								{_FOREACH pushlist}
+								<tr>
+									<td class="block-no" style="width:60px;"><input type="checkbox" name="tui[]" value="{_push_id}" class="chk_{_push_id}" onclick="xuan()"/>{_push_id}</td>
+									<td>{_title}</td>
+									<td>{_content}</td>
+									<td class="block-no">{_link}</td>
+									<td style="width:80px;">{_object}</td>
+									<td>{_send_status}</td>
+									<td>{_time}</td>
+									<td>{_add_time}</td>
+									<td class="ts-delete block-no">
+										<span class="btn btn-main btn-xs" data-toggle="modal" data-target="#del"  
+										data-index="{_push_id}">删除</span>
+										
+									</td>
+								</tr>
+								{ENDFOR}
+							</table>
+						</form>
+							<div class="row block-no">
+								<div class="col-md-1" style="margin-left:12px;">
+									<input type="checkbox" id="chkall" />
+									<label for="chkall" style="color: white;">全选</label>
+								</div>
+								<div class="col-md-1" style="margin-left:-60px;">
+									<button class="btn btn-default btn-xs" id="pl-del" data-toggle="modal" data-target="#del">批量删除</button>
+								</div>
+								
+							</div>
+
+							
+							<!--分页-->
+								<div class="col-md-12" style="padding-right: 0;margin-top: 10px;">
+									<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+										<ul class="pagination">
+											<li class="paginate_button previous disabled" id="consumer-tab1_previous">
+												<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+											</li>
+		
+											{_FOREACH pages}
+											<li class="paginate_button {_IF active}active {ENDIF}">
+												<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+											</li>
+											{ENDFOR}
+		
+											<li class="paginate_button next" id="consumer-tab1_next">
+												<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+											</li>
+		
+										</ul>
+									</div>
+								</div>
+								<!--分页-->
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<!--确认删除-->
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="del">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content" style="text-align: center;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">提示</h4>
+      </div>
+      
+      <div class="modal-body">
+        <p style="font-size: 14px;">是否删除选中的推送记录？</p>
+      </div>
+      <div class="modal-footer">
+        <a data-id="" class="btn btn-primary" id="delete_sure">确定</a>
+        <a class="btn btn-default" data-dismiss="modal" id="delete_false">取消</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+ {_INCLUDE footer.html}
+
+<script type="text/javascript">
+	$(function(){
+		$('.order-box ul li').on('click',function(){
+			$(this).addClass('active').siblings().removeClass('active');
+		});
+		$("#chkall").on('click',function() {
+			if(this.checked) {
+				$("input[name='tui[]']").each(function() {
+					$(this).prop("checked", true);
+					// $(this).attr("checked", true);
+				});
+			} else {
+				$("input[name='tui[]']").each(function() {
+					$(this).removeAttr("checked", false);
+				});
+			}
+		});
+		
+	});
+</script>
+<!--删除弹框-->
+<script type="text/javascript">
+//点击删除
+$('.ts-delete').click(function(){
+	var push_id = $(this).children().attr('data-index');
+	$('.chk_'+push_id).prop("checked",true);
+
+})
+//取消删除
+$('#delete_false').click(function(){
+	$("input[name='tui[]']").each(function() {
+        $(this).removeAttr("checked",false);  
+	});
+	$('#chkall').removeAttr("checked",false);
+})
+
+//确认删除
+$('#delete_sure').click(function(){
+	$('.deltui').submit();
+})
+//批量删除
+$('#pl-del').click(function(){
+	var all_length = $("input[name='tui[]']").length;
+	var sure_length = $("input[name='tui[]']:checked").length;
+	if(sure_length==0){
+		layer.msg('未选中推送记录！',{offset:'t',time:2000,anim:6});
+		return false;
+	}
+})
+//点击单个复选框
+function xuan(){
+	var all_length = $("input[name='tui[]']").length;
+	var sure_length = $("input[name='tui[]']:checked").length;
+	if(sure_length<all_length){
+		$('#chkall').removeAttr("checked",false);
+	}
+	if(sure_length==all_length){
+		$('#chkall').prop("checked",true);
+	}
+}
+</script>

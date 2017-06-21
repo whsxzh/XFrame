@@ -1,0 +1,67 @@
+ {_INCLUDE header.html}
+<!--内容-->
+<div class="content-wrapper">
+    <section class="content-header">
+        <span style="font-size: 25px;">敏感词管理</span>
+        <ol class="breadcrumb">
+            <li>
+                <a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+            </li>
+            <li>
+                <a href="#">CMS管理</a>
+            </li>
+            <li class="active">敏感词管理</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+        	<div class="box" style="padding: 15px;">
+        	 <div class="form-group">
+                <input type="hidden" name="id" class="sid" value="{_sid}">
+        	 	<textarea name="text" rows="10" cols="" value="" class="form-control form-input" id="text">{_text}</textarea>
+        	 	<div style="margin: 10px 0;color: white;">说明：敏感词之间用空格隔开</div>
+        	 </div> 
+        	 <div class="row">
+        	 	<div class="col-md-12 text-right">
+        	 		<button class="btn btn-main btn-sm" id="save">保存</button>
+        	 	</div>
+        	 </div>
+        </div>
+        </div>
+    </section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+<script type="text/javascript">
+$('#save').click(function(){
+  var url = "{_sen_url}";
+  var text = $('#text').val();
+  var id = $('.sid').val();
+  if(text == ''){
+    layer.msg('敏感词内容不能为空',{offset:'t',time:2000,anim:6});
+    return false;
+  }
+  if(text.length>1000){
+    layer.msg('敏感词内容不能超过1000个字',{offset:'t',time:2000,anim:6});
+    return false;
+  }
+  $.ajax({
+    type:"post",
+    url:url,
+    data:{text:text,id:id},
+    // dataType:json,
+    success:function(msg){
+        if(msg==1){
+            layer.msg('保存成功',{offset:'t',time:2000,anim:6});
+        }else{
+            layer.msg('保存失败',{offset:'t',time:2000,anim:6});
+        }
+    }
+  })
+ 
+})
+
+
+</script>

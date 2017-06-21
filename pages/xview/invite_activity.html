@@ -1,0 +1,103 @@
+ {_INCLUDE header.html}
+<div class="content-wrapper">
+	<!--头部str-->
+	<section class="content-header">
+		<span style="font-size: 25px;">邀请码活动</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">销售管理</a>
+			</li>
+			<li class="active">邀请码活动</li>
+		</ol>
+	</section>
+	<!--头部end-->
+	<!--中心内容str-->
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="row block-no">
+					<div class="box-body" id="box-body">
+						<form action="#" method="get">
+							<div class="col-xs-3  col-md-3">
+								<input type="text" class="form-control form-input" name='firstname' placeholder="请输入用户昵称">
+							</div>
+							<div class="col-xs-3  col-md-3">
+								<input type="text" class="form-control form-input" name='telephone' placeholder="请输入账号">
+							</div>
+							<div class="col-xs-3  col-md-3">
+								<input type="text" class="form-control form-input" name='invitecode' placeholder="请输入所属邀请码">
+							</div>
+							<div class="col-xs-3  col-md-3">
+								<button type="submit" class="btn btn-main btn-sm">搜索</button>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="box-body">
+					<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+						<table id="invitecode-tab" class="table table-bordered table-striped">
+							<!--<thead>-->
+							<tr>
+								<th>中奖单号</th>
+								<th>活动关联邀请码</th>
+								<th>活动奖品</th>
+								<th>中奖者姓名</th>
+								<th>中奖者手机号</th>
+								<th>中奖者地址</th>
+								<th>状态</th>
+								<th>下单时间</th>
+							</tr>
+							<!--</thead>
+                  <tbody>-->
+							{_FOREACH data}
+							<tr>
+								<td>{_id}</td>
+								<td>{_invitecode}</td>
+								<td>{_product_name}</td>
+								<td>{_name}</td>
+								<td>({_telephone})</td>
+								<td>{_address}</td>
+								<td>{_status_name}</td>
+								<td>{_date_added}</td>
+							</tr>
+							{ENDFOR}
+							<!--</tbody>-->
+
+						</table>
+
+						<!--分页-->
+						<div class="col-md-12" style="margin-top: 20px;">
+							<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+								<ul class="pagination">
+									<li class="paginate_button previous disabled" id="example2_previous">
+										<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">上一页</a>
+									</li>
+									<li class="paginate_button active">
+										<a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0">1</a>
+									</li>
+									<li class="paginate_button ">
+										<a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0">2</a>
+									</li>
+									<li class="paginate_button ">
+										<a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0">3</a>
+									</li>
+									<li class="paginate_button next" id="example2_next">
+										<a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0">下一页</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<!--分页-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--中心内容end-->
+
+</div>
+
+{_INCLUDE footer.html}

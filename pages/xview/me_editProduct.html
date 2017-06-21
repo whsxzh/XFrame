@@ -1,0 +1,228 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		color: white;
+		cursor: pointer;
+	}
+	
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	
+	.order-btn {
+		margin-top: 10px;
+	}
+</style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">编辑板块商品</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">我的板块</a>
+			</li>
+			<li class="active">编辑板块商品</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box">
+				<div class="col-md-12 order-header">
+					<div class="col-md-8 col-xs-8 order-box">
+						<ul class="clearfix">
+							<li class="col-md-2 col-xs-6 active">板块商品({_count})</li>
+							<a href="{_meGetPlatformProductsUrl}&plate_id={_plate_info.plate_id}"><li class="col-md-2 col-xs-3">商品库</li></a>
+							{_IF plate_info.is_checked=1}<a href="{_meGetMeProducts}&plate_id={_plate_info.plate_id}"><li class="col-md-2 col-xs-3">我的商品</li></a>{ENDIF}
+						</ul>
+					</div>
+					<div class="col-md-3 col-md-offset-1 col-xs-4 text-right block-no" style="padding-left: 0">
+						<div class="col-xs-8 col-md-10" >
+							<input type="text" class="form-control form-input" value='{_order_id}' placeholder="根据订单编号搜素" id='ordername' class="">
+						</div>
+						<div class="col-md-2 col-xs-4">
+							<button type="submit" class="btn btn-main btn-sm search_order">搜索</button>
+						</div>
+
+					</div>
+				</div>
+				<div class="box-body">
+						<div class="dataTables_wrapper form-inline dt-bootstrap box-hidden box-auto">
+							<table id="order-tab1" class="table table-bordered table-striped">
+								<tr>
+									<th class="block-no">全选</th>
+									<th>图片</th>
+									<th>商品名称</th>
+									<th>价格</th>
+									<th>会员价格</th>
+									<th>编号</th>
+									<th>库存</th>
+									<th>总销量</th>
+									<th>排序权重</th>
+									<th>所属商家</th>
+									<th class="block-no">操作</th>
+								</tr>
+								{_FOREACH recommend_prds}
+								<tr>
+									<td class="block-no"><input type="checkbox" name="product_id" value="{_product_id}"/></td>
+									<td><img src="{_image}" style="width: 50px;height: 50px;" /></td>
+									<td>{_name}</td>
+									<td>{_price}</td>
+									<td>{_proxyprice}</td>
+									<td>{_model}</td>
+									<td>{_quantity}</td>
+									<td>{_sales}</td>
+									<td>{_sort_order}</td>
+									<td>{_merchant_name}</td>
+									<td class="block-no"><a class="btn btn-main del btn-xs" onclick="javascript:return delPlatePrd({_product_id})">删除</a></td>
+								</tr>
+								{ENDFOR}
+							</table>
+							<div class="row">
+									<div class="col-md-3 block-no">
+										<input type="checkbox" value="" id="chkall" class="goods-check1" style="margin-top: 6px;">
+										<label for="chkall" style="margin-left: 15px;color: white;">全选</label>
+										<button class="btn btn-main del btn-xs" id="chk_del" style="margin-left: 20px;">删除</button>
+									</div>
+									<div class="col-md-9">
+										<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+											<ul class="pagination">
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="首页">|<</a>
+												</li>
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													{_IF curpage=1}
+													<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+													{ELSE}
+													<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+													{ENDIF}
+												</li>
+												{_FOREACH pages}
+												<li class="paginate_button {_IF active}active {ENDIF}">
+													<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+												</li>
+												{ENDFOR}
+												<li class="paginate_button next" id="consumer-tab1_next">
+													{_IF lastPage=1}
+													<a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+													{ELSE}
+													<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+													{ENDIF}										
+												</li>
+												<li class="paginate_button previous" id="consumer-tab1_previous">
+													<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="尾页">>|</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+						</div>
+					</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+</div>
+<script type="text/javascript">
+	$(function() {
+		//全选
+		$('#chkall').on('click', function() {
+			if(this.checked) {
+				$("input[name='product_id']:checkbox").prop("checked", true);
+			} else {
+				$("input[name='product_id']:checkbox").prop("checked", false);
+			}
+		});
+
+		//	下面 	删除
+		$('#chk_del').on('click', function() {
+			$("input[name='product_id']:checked").parent().parent().remove();
+		});
+
+		//行删除
+		$('.del').on('click', function() {
+			$(this).parent().parent().remove();
+		});
+		
+		$('.order-box ul li').on('click',function(){
+			$(this).addClass('active').siblings().removeClass('active');
+		});
+	});
+
+
+	// 逐个删除
+	function delPlatePrd(product_id){
+		var delPlatePrdUrl = "{_meDelPlatePrdUrl}";
+		var plate_id = "{_plate_info.plate_id}";
+	 	if (confirm("您真的确定要删除吗？\n\n请确认！")==true){
+	 		$.ajax({
+		        url: delPlatePrdUrl,
+		        type: 'post',
+		        data: {plate_id:plate_id,product_id:product_id},
+		        dataType: 'json',
+		        success: function (data){
+		        	console.log(data.msg);
+		        	location.reload(true);
+		        },
+		        error:function(){
+		            alert("请求失败");
+		        }
+	    	});
+	    	return true;
+	 	}else{
+	  		return false;
+	 	} 
+	}
+
+	// 批量从商户的某个板块内删除商品
+	$("#chk_del").click(function() {
+		var meDelPlatePrdsUrl = "{_meDelPlatePrdsUrl}";
+		var plate_id = "{_plate_info.plate_id}";
+		var product_id_array = [];
+		$("input[name='product_id']:checked").each(function() {
+			product_id_array.push($(this).val());
+		});
+		if (confirm("您真的确定要删除吗？\n\n请确认！")==true){
+			$.ajax({
+				url: meDelPlatePrdsUrl,
+				type: 'post',
+				dataType: 'json',
+				data: { 'product_id_array': product_id_array, 'plate_id': plate_id },
+				success: function (data){
+			        	console.log(data.msg);
+			        	location.reload(true);
+		        },
+		        error:function(){
+		            alert("请求失败");
+		        }
+			});		
+			return true;
+		}else{
+			return false;
+		}
+	});
+	
+</script>
+</body>
+
+</html>

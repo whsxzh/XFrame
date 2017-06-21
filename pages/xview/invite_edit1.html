@@ -1,0 +1,119 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, 
+                                     initial-scale=1.0, 
+                                     maximum-scale=1.0, 
+                                     user-scalable=no">
+
+<link href="view/stylesheet/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style type="text/css">
+	
+	body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #333333;
+  background-color: #ffffff;
+}
+
+a:hover,
+a:focus {
+  color: #2a6496;
+  text-decoration: underline;
+}
+
+a:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+.container {
+   padding-right: 15px;
+   padding-left: 15px;
+   margin-right: auto;
+   margin-left: auto;
+}
+
+.container:before,
+.container:after {
+  display: table;
+  content: " ";
+}
+
+.container:after {
+  clear: both;
+}
+
+/*@media (min-width: 768px) {
+   .container {
+      width: 750px;
+}*/
+
+.breadcrumb > li + li:before {
+    color: #CCCCCC;
+    content: "/ ";
+    padding: 0 5px;
+}
+
+
+
+</style>
+<body>
+	
+<div class="container">
+    <div class="row">
+    	<ol class="breadcrumb">
+    	<li><a href="#">首页</a></li>
+    	<li><a href="#">营销管理</a></li>
+    	<li class="active">邀请码管理</li>
+    	</ol>
+    </div>
+
+    <div class="row">
+    	<form class="form-horizontal" role="form" method="post" action="xindex.php?m=invite&act=getList">
+        <div class="form-group">
+          <label for="invitecode" class="col-sm-2 control-label">邀请码</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="invitecode" name="invitecode" placeholder="邀请码" value="{_invitecode}">
+
+            <input type="hidden" name="invitecode_id" value="{_invitecode_id}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="telephone" class="col-sm-2 control-label">电话</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="telephone" name='telephone' placeholder="电话" value="{_telephone}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="url" class="col-sm-2 control-label">弹出网址</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="url" name="url" placeholder="弹出网址" value="{_url}">
+          </div>
+        </div>
+         <div class="form-group">
+          <label for="end_date" class="col-sm-2 control-label">有效期</label>
+          <div class="col-sm-10" >
+            <input type="date" class="form-control" id="end_date" name="end_date" placeholder="有效期" value="{_end_date}">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">保存</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+
+</div>	
+
+ <script src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+      <!-- 包括所有已编译的插件 -->
+ <script src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

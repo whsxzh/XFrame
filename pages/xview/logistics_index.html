@@ -1,0 +1,196 @@
+ {_INCLUDE header.html}
+<!--物流列表内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">商品物流列表</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">物流管理</a>
+			</li>
+			<li class="active">商品物流列表</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="order-tab">
+					<div class="row">
+						<div class="box-body block-no" id="box-body">
+							<form action="xindex.php?m=logistics&act=index" method="get">
+								<input type="hidden" name="m" value="logistics">
+								<input type="hidden" name="act" value="index">
+
+								<div class="col-xs-2  col-md-2">
+									<input type="text" class="form-control form-input" name='order_id' value="{_order_id}" placeholder="请输入订单号">
+								</div>
+								<div class="col-xs-2  col-md-2">
+									<input type="text" class="form-control form-input" name='name' value="{_name}" placeholder="请输入商品名称">
+								</div>
+
+								<div class="col-xs-2  col-md-2">
+									<input type="text" class="form-control form-input" name='ship_order_no' value="{_ship_order_no}" placeholder="请输入快递单号">
+								</div>
+								<div class="col-xs-2  col-md-2">
+									<input type="text" name="ship_date" class="form-control form-input" value="{_ship_date}" id="datepicker" placeholder="请选择发货时间">
+								</div>
+
+								<div class="col-xs-2  col-md-2">
+									<button type="submit" class="btn btn-main btn-sm">搜索</button>
+								</div>
+							</form>
+						</div>
+
+					</div>
+					<!-- /.表格1 -->
+					<div class="box-body">
+					 	<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+							<table id="express-tab1" class="table table-bordered table-striped">
+								<tr>
+									<th>订单号</th>
+									<th>商品名称</th>
+									<th>物流公司</th>
+									<th>快递单号</th>
+									<th>发货时间</th>
+									<th class="block-no">操作</th>
+								</tr>
+								{_FOREACH orderinfo}
+								<tr>
+									<td>{_order_id}</td>
+									<td>{_name}</td>
+									<td>{_com}</td>
+									<td>{_ship_order_no}</td>
+									<td>{_ship_date}</td>
+									<td class="express-btn block-no">
+										<a href="xindex.php?m=logistics&act=expressDetails&com={_ali_code}&nu={_ship_order_no}&oid={_order_id}&pro_id={_product_id}" class="btn btn-main btn-xs">物流详情</a>
+										<button type="button" data-item="{_order_status_id}" item="{_ship_order_no}" data="{_ship_id}" class="btn btn-main btn-xs" onclick='edit({_order_id})' id="o_{_order_id}" data-toggle="modal" data-target="#express-number">编辑快递单号</button>
+									</td>
+								</tr>
+								{ENDFOR}
+							</table>
+							<!--分页-->
+							<div class="col-md-12 text-right" style="margin-top: 10px;padding-right: 0;">
+								<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+									<ul class="pagination">
+										<li class="paginate_button previous disabled" id="consumer-tab1_previous">
+											<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+										</li>
+										{_FOREACH pages}
+										<li class="paginate_button {_IF active}active {ENDIF}">
+											<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+										</li>
+										{ENDFOR}
+										<li class="paginate_button next" id="consumer-tab1_next">
+											<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<!--分页-->
+						</div>
+					</div>
+					<!-- /.物流管理-->
+				</div>
+			</div>
+		</div>
+	</section>
+	</div>
+
+	<!--底部-->
+	{_INCLUDE footer.html}
+
+</div>
+<!-- 保存提示 modal -->
+<div class="save-modal-content">
+	<div class="save-modal-body" style="text-align: center;"></div>
+</div>
+
+<!-- 编辑快递单号-modal -->
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="express-number">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="">编辑快递单号</h4>
+			</div>
+
+			<div class="modal-body">
+				<form action="{_form_url}" method="post" id="form01">
+					<select name="ship_id" id="selector" class="form-control express-input">
+						{_FOREACH companys}
+						<option value="{_id}">{_com}</option>
+						{ENDFOR}
+					</select>
+					<select name="ship_id1" id="selector1" class="form-control express-input" style="display:none">
+						{_FOREACH companys}
+						<option value="{_id}">{_com}</option>
+						{ENDFOR}
+					</select>
+					<br>
+					<input type="text" value="" id="ship_no" name="ship_order_no" class="form-control express-input" placeholder="请输入快递单号">
+					<input type="hidden" value="" id="ship_no1" name="ship_order_no1" class="form-control express-input" placeholder="请输入快递单号">
+					<input type="hidden" value="" id="orderid" name="order_id" class="form-control express-input">
+					<input type="hidden" value="" id="order_status_id" name="order_status_id" class="form-control express-input">
+				</form>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-primary" id="express-save">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+
+</html>
+
+<script>
+	$("#express-save").click(function() {
+		var ship_com = $('#selector').val();
+		var ship_no = $("#ship_no").val();
+		if(ship_com == null) {
+			layer.msg('请选择快递公司', { offset: 't', time: 2000, anim: 6 });
+			return false;
+		}
+		if(ship_no == '') {
+			layer.msg('请填写快递单号', { offset: 't', time: 2000, anim: 6 });
+			return false;
+		}
+		$('#form01').submit();
+	})
+</script>
+<script type="text/javascript">
+	function edit(id) {
+		var ship_no = $('#o_' + id).attr('item');
+		var com = $('#o_' + id).attr('data');
+		var o_status_id = $('#o_' + id).attr('data-item');
+
+		if(ship_no != '') {
+			$('#ship_no').val(ship_no);
+			$('#ship_no1').val(ship_no);
+		} else {
+			$('#ship_no1').val('');
+			$('#ship_no').val('');
+		}
+		if(com != '') {
+			$("#selector").val(com);
+			$("#selector1").val(com);
+		} else {
+			$("#selector").val('');
+			$("#selector1").val('');
+		}
+		$('#orderid').val(id);
+		$('#order_status_id').val(o_status_id);
+
+	}
+</script>
+
+<script>
+	$('#datepicker').datepicker({
+		autoclose: true
+	});
+</script>

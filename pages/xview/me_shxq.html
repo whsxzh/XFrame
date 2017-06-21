@@ -1,0 +1,153 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+ 	.phone-box img{width: 100%;}
+ 	.yyzz-box img{height: 200px;width: 100%;}
+ 	#photo{position: absolute; top: 0;width: 100%;height: 100%;opacity: 0;}
+	.order-header {background: rgba(0, 0, 0, 0.1);padding: 8px 0;margin-bottom: 10px;}
+	.order-header ul {padding: 0;margin: 0;}
+	.order-header ul li {float: left;text-align: center;background: rgba(0, 0, 0, 0.1);padding: 8px 0;color: white;cursor: pointer;}
+	.order-header ul li.active {background: rgba(0, 0, 0, 0.2);}
+	.order-btn {margin-top: 10px;}
+ </style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">商户</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">我的板块</a>
+			</li>
+			<li class="active">商户详情</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box" style="border: none;">
+				<!--中心内容-->
+				<div class="row">
+					<div class="col-md-12" style="padding: 10px 0;">					
+						<form class="form-horizontal" action="#" method="post">
+			              <div class="col-md-12">
+			              	<div class="box-body col-md-5">
+				                <div class="form-group">
+				                  <label for="person_name" class="col-sm-2 control-label">公司名称</label>
+				                  <div class="col-sm-10">
+				                    <input type="text" class="form-control form-input" id="gsname" placeholder="公司名称">
+				                  </div>
+				                </div>
+				                <div class="form-group">
+				                  <label for="person_tel" class="col-sm-2 control-label">公司地址</label>
+				                  <div class="col-sm-10">
+				                    <input type="text" class="form-control form-input" id="gsaddress" placeholder="公司地址">
+				                  </div>
+				                </div>
+				                <div class="form-group">
+				                  <label for="person_sfz" class="col-sm-2 control-label">公司电话</label>
+				                  <div class="col-sm-10">
+				                    <input type="text" class="form-control form-input" id="gstel" placeholder="公司电话">
+				                  </div>
+				                </div>
+				                <div class="form-group">
+				                  <label for="person_sfz" class="col-sm-2 control-label">工商号</label>
+				                  <div class="col-sm-10">
+				                    <input type="text" class="form-control form-input" id="gsgsh" placeholder="工商号">
+				                  </div>
+				                </div>
+				                <div class="form-group">
+				                  <label for="person_sfz" class="col-sm-2 control-label">负责人</label>
+				                  <div class="col-sm-10">
+				                    <input type="text" class="form-control form-input" id="gsfzr" placeholder="负责人">
+				                  </div>
+				                </div>
+				                <div class="form-group">
+				                  <label for="person_sfz" class="col-sm-2 control-label">负责人电话</label>
+				                  <div class="col-sm-10">
+				                    <input type="text" class="form-control form-input" id="gsfzrtel" placeholder="负责人电话">
+				                  </div>
+				                </div>
+				              </div>
+							<div class="col-md-3 col-sm-offset-2 yyzz-box">
+								<div id="clicks"><img src="{_image}"></div>
+								<input type="file" id="photo">
+								<div style="line-height: 50px;color: white;">注：（点击上传身份照片）</div>
+							</div>
+			              </div>
+			              <!-- /.box-body -->
+			              <div class="box-footer" style="border: none;background: none;margin-bottom: 10px;">
+			                <button type="button" class="btn btn-main" id="next-step" style="margin-left: 40px;">下一步</button>
+			              </div>
+			            </form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	</div>
+
+	<!--底部-->
+	{_INCLUDE footer.html}
+</div>
+<script>
+	$(function() {
+		//下一步
+		$('#next-step').on('click',function(){
+			var name=$('#gsname').val();
+			var address=$('#gsaddress').val();
+			var tel=$('#gstel').val();
+			var gsh=$('#gsgsh').val();
+			var fzr=$('#gsrzr').val();
+			var fzrtel=$('#gsfzrtel').val();
+			if(name==""){
+				$('#gsname').focus();
+				return false;
+			}else if(address==""){
+				$('#gsaddress').focus();
+				return false;
+			}else if(tel=="" || !(/^1[34578]\d{9}$/.test(tel))){
+				$('#gstel').focus();
+				return false;
+			}else if(gsh==""){
+				$('#gsgsh').focus();
+				return false;
+			}else if(fzr==""){
+				$('#gsfzr').focus();
+				return false;
+			}else if(fzrtel=="" || !(/^1[34578]\d{9}$/.test(fzrtel))){
+				$('#gsfzrtel').focus();
+				return false;
+			}else if(photo==""){
+				alert('请上传营业执照');
+				return false;
+			}
+			
+		});
+	})
+</script>
+<!--图片上传-->
+<script>
+	document.getElementById('photo').addEventListener('change', function(e) {
+		var files = this.files;
+		var img = new Image();
+		var reader = new FileReader();
+		reader.readAsDataURL(files[0]);
+		reader.onload = function(e) {
+			var mb = (e.total / 1024) / 1024;
+			if(mb >= 2) {
+				alert('文件大小大于2M');
+				return;
+			}
+			img.src = this.result;
+			img.style.width = "100%";
+			document.getElementById('clicks').style.width = "100%";
+			document.getElementById('clicks').style.height = "";
+			document.getElementById('clicks').innerHTML = '';
+			document.getElementById('clicks').appendChild(img);
+		}
+	});
+</script>
+</body>
+
+</html>

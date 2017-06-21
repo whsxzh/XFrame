@@ -1,0 +1,100 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+ 	.phone-box img{width: 100%;}
+ 	.yyzz-box img{height: 200px;width: 100%;}
+ 	#photo{position: absolute; top: 0;width: 100%;height: 100%;opacity: 0;}
+ 	.zfb-btn,.wx-btn{border: 1px solid #CCCCCC;text-align: center;line-height: 30px;cursor: pointer;}
+ 	.form-group input[name='zfway']:checked + label{content: '';border: 1px solid #3c8dbc;}
+ 	.order-header {background: rgba(0, 0, 0, 0.1);padding: 8px 0;margin-bottom: 10px;}
+	.order-header ul {padding: 0;margin: 0;}
+	.order-header ul li {float: left;text-align: center;background: rgba(0, 0, 0, 0.1);padding: 8px 0;color: white;cursor: pointer;}
+	.order-header ul li.active {background: rgba(0, 0, 0, 0.2);}
+ </style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">账号支付</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">我的板块</a>
+			</li>
+			<li class="active">账号支付</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+
+			<div class="col-xs-12">
+				<div class="box" style="border: none;">
+					<!--中心内容-->
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-12 order-header">
+								<div class="col-md-11 col-xs-12 order-box">
+									<ul class="clearfix">
+										<li class="col-md-2 col-xs-6">扫码支付</li>
+										<li class="col-md-2 col-xs-6 active">账号支付</li>
+									</ul>
+								</div>
+								<div class="col-md-1 col-xs-12" style="padding-left: 0">
+									<button type="button" class="btn btn-main btn-sm" onclick="history.go(-1)">返回</button>
+								</div>
+							</div>
+							<div class="tab-content" style="margin-top: 15px;">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group col-md-1 col-xs-6">
+											<input type="radio" id="zfb" name="zfway" checked="checked" value="支付宝" style="display: none;">
+											<label for="zfb" class="col-md-12 zfb-btn">支付宝</label>
+										</div>
+										<div class="form-group col-md-1 col-xs-6">
+											<input type="radio" id="wx" name="zfway" value="微信" style="display: none;">
+											<label for="wx" class="col-md-12 wx-btn">微信</label>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group col-md-12">
+											<input type="text" class="form-control form-input" id="zfname" placeholder="账号"/>
+										</div>
+										<div class="form-group col-md-12">
+											<input type="password" class="form-control form-input" id="zfpwd" placeholder="密码"/>
+										</div>
+									</div>
+								</div>
+								<div class="box-footer" style="border: none;background: no-repeat;">
+									<button type="button" class="btn btn-main btn-sm" id="next-step" style="margin-left: 7px;">下一步</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</section>
+	</div>
+
+	<!--底部-->
+	{_INCLUDE footer.html}
+</div>
+<script type="text/javascript">
+	$(function(){
+		//下一步
+		$('#next-step').on('click',function(){
+			var zfway=$('input[name="zfway"]:checked').val();
+			var zfname=$('#zfname').val();
+			var zfpwd=$('#zfpwd').val();
+			if(zfname==""){
+				$('#zfname').focus();
+				return false;
+			}else if(zfpwd==""){
+				$('#zfpwd').focus();
+				return false;
+			}
+		});
+	});
+</script>
+</body>
+
+</html>

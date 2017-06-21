@@ -1,0 +1,342 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+	.tg-box ul{margin-left: 25px;padding-bottom: 8px;}
+	.tg-box ul li{float: left;line-height: 35px;padding:0 30px;margin-top: 5px;background: rgba(0, 0, 0, 0.1);}
+	.tg-box ul li:nth-child(1){margin-left: -50px;}
+	.tg-box ul li a{color: white;}
+	.save-modal-body{width: 200px;text-align: center;font-size: 14px;height: 80px;background: #FFFFFF;z-index: 11111;position: absolute;top: 30%;left: 50%; line-height: 80px;}
+	.save-modal-content{position: fixed;top: 0;right: 0;bottom: 0;left: 0;z-index: 1050;overflow: hidden; -webkit-overflow-scrolling: touch;outline: 0;
+	background: rgba(0,0,0,0.3);display: none;}      
+	.order-header ,.tg-box{background: rgba(0, 0, 0, 0.1);padding: 8px 0 0 0;}
+	.order-header ul {padding: 0;margin: 0;}
+	.order-header ul li {float: left;text-align: center;background: rgba(0, 0, 0, 0.1);padding: 8px 0;color: white;cursor: pointer;}
+	.order-header ul li.active,.tg-box ul li.active {background: rgba(0, 0, 0, 0.2);}
+	.order-btn {margin-top: 60px;padding-left: 25px;}
+</style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">团购商品管理</span>
+		<ol class="breadcrumb">
+			<li class="active">
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">CMS内容管理</a>
+			</li>
+			<li>团购管理</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box">
+				<!--中心内容-->
+				<div class="row">
+					<div class="col-md-12">
+						<div class="col-md-12 order-header">
+							<div class="col-md-6 col-xs-12 order-box">
+								<ul class="clearfix">
+									<li class="col-md-2 col-xs-6" onclick="location.href='{_onsale}'">全部商品</li>
+									<li class="col-md-2 col-xs-6 active" onclick="location.href='{_getlist}'">团购商品</li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="tab-content">
+							<div class="tg-box">
+								<ul>
+									<li {_IF status=1}class="active" {ENDIF}>
+										<a href="{_getlist}&status=1">进行中</a>
+									</li>
+									<li {_IF status=2}class="active" {ENDIF}>
+										<a href="{_getlist}&status=2">已结束</a>
+									</li>
+									<li {_IF status=3}class="active" {ENDIF}>
+										<a href="{_getlist}&status=3">已关闭</a>
+									</li>
+									<div style="clear: both;"></div>
+								</ul>
+							</div>
+							<div class="box-body">
+								<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+									<table id="index-tab2" class="table table-bordered table-striped">
+										<!--<thead>-->
+										<tr>
+											<th>编号</th>
+											<th>名称</th>
+											<th>规格</th>
+											<th>团购价格</th>
+											<th>成团规模(人)</th>
+											<th>开团量</th>
+											<th>开团订单量</th>
+											<th>是否开团免单</th>
+											<th>开团时间</th>
+											<th>结束时间</th>
+											<th>状态</th>
+											<th class="block-no">操作</th>
+										</tr>
+										<!--</thead>
+														<tbody>-->
+										{_IF groupby} {_FOREACH groupby}
+										<tr>
+											<td><input type="checkbox" name="tent-check" value="{_group_id}" class="order-check"><img src="{_groupimage}" alt="" style="width: 40px;margin-left: 5px; height: 40px;margin-right: 5%;" /></td>
+											<td><span>{_groupname}</span></td>
+											<td>{_groupoption}</td>
+											<td>{_groupprice}元</td>
+											<td>{_groupnum}</td>
+											<td>{_group_total}</td>
+											<td>{_group_order_total}</td>
+											<th>{_IF is_open_free=1}是{ENDIF} {_IF is_open_free=0}否{ENDIF}
+											</th>
+											<td>{_start_time}</td>
+											<td>{_end_time}</td>
+											<th>{_IF group_status=1}进行中{ENDIF} {_IF group_status=2}已结束{ENDIF} {_IF group_status=3}已关闭{ENDIF} {_IF is_start=0}未开始{ENDIF}
+											</th>
+											<td class="sale-btn block-no">
+												{_IF group_status=1}
+												<a href="javascript:void(0);" data-id="{_group_id}" data-toggle="modal" data-target="#pd-edit" class="btn btn-main btn-xs closegroup">关闭</a>
+												{ENDIF} {_IF group_status=2}
+												<a href="javascript:void(0);" data-id="{_group_id}" data-toggle="modal" data-target="#pd-edit" class="btn btn-main btn-xs closegroup">关闭</a>
+												{ENDIF}
+												<a href="xindex.php?m=groupbuy&act=detail&id={_group_id}&product_id={_product_id}"  class="btn btn-main btn-xs deletegroup">编辑</a>
+												<a href="javascript:void(0);" data-id="{_group_id}" data-toggle="modal" data-target="#pd-edit1" class="btn btn-main btn-xs deletegroup">删除</a>
+											</td>
+										</tr>
+										{ENDFOR} {ELSE}
+										<tr>
+											<td colspan="11">没有数据</td>
+										</tr>
+										{ENDIF}
+										<!--</tbody>-->
+									</table>
+									{_IF status=1}
+									<div class="row">
+										<div class="col-md-4 col-xs-4 order-btn block-no">
+											<div>
+												<input type="checkbox" value="" id="" class="tent-all">&nbsp;&nbsp;
+												<button class="btn btn-default" data-toggle="modal" data-target="#pd-edit" id="tent-delect">关闭选择的商品</button>
+											</div>
+										</div>
+										<!--分页-->
+										<div class="col-md-8 col-xs-8" style="margin-top: 20px;">
+											<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+												<ul class="pagination">
+													<li class="paginate_button previous" id="consumer-tab1_previous">
+														<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+													</li>
+
+													{_FOREACH pages}
+													<li class="paginate_button {_IF active}active {ENDIF}">
+														<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+													</li>
+													{ENDFOR}
+
+													<li class="paginate_button next" id="consumer-tab1_next">
+														<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									{ENDIF} {_IF status=2}
+									<div class="row">
+										<div class="col-md-4 col-xs-4 order-btn">
+											<div>
+												<input type="checkbox" value="" id="" class="tent-all">&nbsp;&nbsp;
+												<button class="btn btn-default" data-toggle="modal" data-target="#pd-edit" id="tent-delect">关闭选择的商品</button>
+											</div>
+										</div>
+										<!--分页-->
+										<!-- <div class="col-md-8 col-xs-8" style="margin-top: 20px;">
+											<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+												<ul class="pagination">
+													<li class="paginate_button previous disabled" id="example2_previous">
+														<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">上一页</a>
+													</li>
+													<li class="paginate_button active">
+														<a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0">1</a>
+													</li>
+													<li class="paginate_button ">
+														<a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0">2</a>
+													</li>
+													<li class="paginate_button ">
+														<a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0">3</a>
+													</li>
+													<li class="paginate_button next" id="example2_next">
+														<a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0">下一页</a>
+													</li>
+												</ul>
+											</div>
+										</div> -->
+									</div>
+									{ENDIF}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<!--结束-->
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="pd-edit">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content" style="text-align: center;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">提示</h4>
+			</div>
+
+			<div class="modal-body">
+				<p style="font-size: 14px;">确认要结束选中的团购活动吗？</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" data-id="" class="btn btn-primary sure_close">确定</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+<!--结束-->
+
+<!--删除-->
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="pd-edit1">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content" style="text-align: center;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">提示</h4>
+			</div>
+
+			<div class="modal-body">
+				<p style="font-size: 14px;">确认要删除选中的团购活动吗？</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" data-id="" class="btn btn-primary sure_delete">确定</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+<!-- 保存提示 modal -->
+<div class="save-modal-content" style="display: none;">
+	<div class="save-modal-body" style="text-align: center;"></div>
+</div>
+<!--底部-->
+{_INCLUDE footer.html}
+<script>
+	$(function() {
+		//Date range picker  框架自带
+		$('#reservation').daterangepicker();
+		$(".sure_close").click(function() {
+			var str = "";
+			$("[name='tent-check'][checked]").each(function() {
+				str += $(this).val() + ",";
+			});
+			var str = str.substring(0, str.length - 1);
+			if(str) {
+				str = str;
+			} else {
+				str = $(this).attr("data-id");
+			}
+			sendajax(str);
+		});
+		$(".sure_delete").click(function() {
+			var groupid = $(this).attr("data-id");
+			var url = "{_deleteGroup}";
+			$.ajax({
+				url: url,
+				type: 'post',
+				data: { groupid: groupid },
+				dataType: 'json',
+				success: function(data) {
+					displaynone();
+					$("#pd-edit1").hide();
+					$(".save-modal-body").html(data.msg);
+					timeout();
+				},
+				error: function() {
+					displaynone();
+					$("#pd-edit1").hide();
+					$(".save-modal-body").html("请求失败");
+					timeout();
+				}
+			});
+		});
+
+		$(".deletegroup").click(function() {
+			var groupid = $(this).attr("data-id");
+			$(".sure_delete").attr("data-id", groupid);
+		});
+		$(".closegroup").click(function() {
+			var groupid = $(this).attr("data-id");
+			$(".sure_close").attr("data-id", groupid);
+		});
+
+		function sendajax(groupid) {
+			var url = "{_closeGroup}";
+			$.ajax({
+				url: url,
+				type: 'post',
+				data: { groupid: groupid },
+				dataType: 'json',
+				success: function(data) {
+					displaynone();
+					$(".save-modal-body").html(data.msg);
+					timeout();
+				},
+				error: function() {
+					displaynone();
+					$(".save-modal-body").html("请求失败");
+					timeout();
+				}
+			});
+		}
+
+		function displaynone() {
+			$(".save-modal-content").show()
+			$("#modal-backdrop").hide();
+			$("#pd-edit").hide();
+		}
+		//隐藏提示
+		function timeout() {
+			setTimeout(function() {
+				$('.save-modal-content').hide();
+				location.reload();
+			}, 2000);
+		}
+
+		//			$("#index-tab1").DataTable();
+		//			$("#index-tab2").DataTable();
+	})
+</script>
+<script type="text/javascript">
+	//表格全选
+	$(function() {
+		$(".tent-all").click(function() {
+			if(this.checked) {
+				$("input[name='tent-check']").each(function() {
+					$(this).prop("checked", true);
+					$(this).attr("checked", true);
+				});
+			} else {
+				$("input[name='tent-check']").each(function() {
+					$(this).removeAttr("checked", false);
+				});
+			}
+		});
+		//表格单选
+		$(".order-check").click(function() {
+			if(this.checked) {
+				$(this).prop("checked", true);
+				$(this).attr("checked", true);
+			} else {
+				$(this).removeAttr("checked", false);
+			}
+		});
+	})
+</script>

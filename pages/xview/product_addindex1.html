@@ -1,0 +1,485 @@
+	{_INCLUDE header.html}
+	<script type="text/javascript" charset="utf-8" src="view/javascript/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" charset="utf-8" src="view/javascript/ueditor/ueditor.all.min.js"> </script>
+	<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+	<script type="text/javascript" charset="utf-8" src="view/javascript/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+	<style>
+		.Editor-editor{background-color: white;}
+	</style>
+	<!--新添加我的商品库-->
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>新添加我的商品库</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+				<li><a href="#">商品库管理</a></li>
+				<li class="active">新添加我的商品库</li>
+			</ol>
+		</section>
+    
+    <!--中心内容 -->
+    	<section class="content">
+
+    		<div class="row">
+				<!--基础信息-->
+				<form action="{_url}" id="post_sub" method="post" enctype="multipart/form-data">
+					<div class="col-md-12">
+
+		        		<div class="nav-tabs-custom">
+		        			<!--头部ul str-->
+		        			<ul class="nav nav-tabs">
+								<li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true">基础信息</a></li>
+								<li class=""><a href="#settings" data-toggle="tab" aria-expanded="false">商品信息</a></li>
+								<li class=""><a href="#settings1" data-toggle="tab" aria-expanded="false">商品图片</a></li>
+								<li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">库存与价格</a></li>
+							</ul>
+		        			<!--头部ul end-->
+		        		</div>
+		        		<!--内容str-->
+		       
+		        		<div class="tab-content">
+							<!--1.基础信息-->
+							<div class="active tab-pane" id="activity">
+								<div class="box-body">
+									<div class="form-group">
+										<label>商品分类</label>
+										<select class="form-control" style="width: 100%;" id="basic-select1" name="category">
+											<option value="0"></option>
+											{_FOREACH category}
+											<option value="{_category_id}">{_name}</option>
+												{_FOREACH son}
+												<option value="{_category_id}">&nbsp;&nbsp;&nbsp;&nbsp;{_name}</option>
+													{_FOREACH son}
+														<option value="{_category_id}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{_name}</option>
+													{ENDFOR}
+											  {ENDFOR}
+										  {ENDFOR}
+										</select>
+									</div>
+									<div class="form-group">
+										<label>商品品牌</label>
+										<select class="form-control" style="width: 100%;" id="basic-select2" name="manufacturer">
+											<option value="0"></option>
+											{_FOREACH manufacturer}
+											<option value="{_manufacturer_id}">{_name}</option>
+											{ENDFOR}
+										</select>
+									</div>
+									<div class="form-group">
+										<label>所属仓库</label>
+										<select class="form-control" style="width: 100%;" id="basic-select3" name="warehouse">
+											<option value="0"></option>
+											{_FOREACH warehouse}
+											<option value="{_warehouse_id}">{_name}</option>
+											{ENDFOR}
+										</select>
+									 </div>
+								</div>
+
+							</div>
+
+							<!--4.库存与价格 -->
+							<div class="tab-pane" id="timeline">
+								<div class="box-body">
+									<p>选择商品规格组合<span style="color: #CCCCCC;">（若没有商品规格请先添加商品规格）</span></p>
+
+									<!--有商品规格-->
+									<div class="good-guige goods-radio">
+										<input type="radio" name="is_option" id="spec_yes" value="1" checked><label>有商品规格</label>
+										<button type="button" class="btn btn-primary btn-sm add-spec" id="goods-basic" data-value='1'>添加 </button>
+										<div class="gg-box">
+											<div class="col-md-12 guige-box">
+												<div class="col-md-3"><label for="guige">商品规格</label><input type="text" class="guige" id="guige" name="option[]"></div>
+												<div class="col-md-1 guige-img">
+													<div id="preview_img1"></div>
+													<input type="file" class="option_image"  onchange="preview_img(this,preview_img1)" name="optionselect[]"/>
+												</div>
+												<div class="col-md-7 guige-rightbox">
+													<label for="kucun">库存</label><input type="number" class="kucun" id="kucun" min='1' name="option_kucun[]">
+													<label for="price">价格</label><input type="number" class="price" id="price" min='0' name="option_price[]">
+													<label for="dl-price">代理价</label><input type="number" class="dl-price" id="dl-price" min='0' name="option_proxy_price[]">
+												</div>
+												<div class="col-md-1 guige-delbox">
+													<button type="button" class="btn btn-primary btn-sm del-spec">删除</button>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<!--无商品规格-->
+									<div class="good-guige goods-radio">
+										<input type="radio" name="is_option" id="spec_no" value="0"><label>无商品规格</label>
+										<div class="form-group kucun_no" style="margin-top: 10px;">
+											  <label for="inputEmail3" class="control-label">库存数量:</label>
+											  <div><input type="number" min="1" class="form-control" id="inputEmail3" name="kucun"></div>
+										</div>
+									</div>
+
+								</div>
+
+								<!-- <div class="row add-goods">
+									<button type="button" class="btn btn-primary btn-sm " id="goods-stock">添加 </button>
+								</div> -->
+
+							</div>
+
+							<!--2.商品信息-->
+							<div class="tab-pane" id="settings">
+								<div class="box-body">
+
+									<div class="form-group">
+										<label>商品编号</label>
+										<input type="text" name="model" mix="0" class="form-control goods-number" id="model" placeholder="请输入商品的编号">
+									</div>
+
+									<div class="form-group">
+										<input type="checkbox" name="is_show" class="minimal" checked>&nbsp;&nbsp;
+										<label>公开销售(公开销售能够让其他商户推广)</label>
+									</div>
+
+									<div class="form-group">
+										<label>商品名称</label>
+										<input type="text" name="product_name" class="form-control goods-name" id="product_name" placeholder="请输入商品的名称">
+									</div>
+
+									<div class="form-group">
+										<label>商品排序</label>
+										<input type="number" name="product_sort_order" class="form-control goods-name" id="product_sort_order" placeholder="请输入商品的名称">
+									</div>
+
+									<div class="form-group">
+										<label>商品现价</label>
+										<div class="input-group">
+											<input type="number" name="product_price" id="product_price" min="0" class="form-control goods-price1" placeholder="请输入商品的价格" >
+											<span class="input-group-addon">.00</span>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label>市场价</label>
+										<div class="input-group">
+											<input type="number" name="product_market_price" id="product_market_price" min="0" class="form-control goods-price2" placeholder="请输入商品的市场价" >
+											<span class="input-group-addon">.00</span>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label>代理价</label>
+										<div class="input-group">
+											<input type="number" name="product_proxy_price" id="product_proxy_price" min="0" class="form-control goods-price3" placeholder="请输入商品的代理价" >
+											<span class="input-group-addon">.00</span>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label>分享减免</label>
+										<div class="input-group">
+											<input type="number" name="product_derate_money" id="product_derate_money" min="0" class="form-control goods-price3" placeholder="请输入分享减免金额" >
+											<span class="input-group-addon">.00</span>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label>返利</label>
+										<div class="input-group">
+											<input type="number" name="product_return_money" id="product_return_money" min="0" class="form-control goods-price3" placeholder="请输入商品的返利金额" >
+											<span class="input-group-addon">.00</span>
+										</div>
+									</div>
+
+									<div class="form-group add-file-box clearfix">
+										<label>商品图片(建议尺寸：640*640像素)</label>
+										<div id="preview1">
+											<img id="imghead" width=100 height=100 border=0 />
+										</div>
+										<input type="file" name="image" onchange="previewImage(this)" id="add-goods-file"/>
+									</div>
+
+									<div class="form-group" id="goods-infor">
+										<label >开售时间</label><br/>
+										<input type="radio" name="is_sale" class="minimal-red" checked>&nbsp;&nbsp;<span>立即开售</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<input type="radio" name="is_sale" class="minimal-red" >&nbsp;&nbsp;<span>放入商品库</span>
+									</div>
+
+									<div class="form-group">
+										<label>关键词</label><br/>
+										<textarea name="keyword" id="keyword" rows="" cols="" class="keyword-text"></textarea>
+									</div>
+
+									<div class="form-group">
+										<label>商品描述(注：商品描述不能超过100字,还剩100字)</label><br/>
+										<textarea name="product_description" id="product_description" rows="" cols="" class="keyword-text"></textarea>
+									</div>
+
+								</div>
+
+							</div>
+
+						   <!--3.商品图片-->
+							<div class="tab-pane" id="settings1">
+								<div class="box-body">
+									<div class="form-group">
+										<p>最多可添加8张图片，建议图片尺寸750*720，支持JPG/PNG/JPEG，大小应小于500K</p>
+
+										<!--图片-->
+										<div class="add_box">
+											<div class="demo" style="height:130px; overflow: hidden;">
+												<div class="upload_choose" style="float: left;">
+													<input id="fileImage" type="file" size="30" name="fileselect[]" multiple style="width: 100%; height: 100%; opacity: 0;" />
+												</div>
+												<span id="preview" class="upload_preview"></span>
+											</div>
+											<!--图片上传-->
+										</div>
+
+										<div class="form-group">
+											<label>商品详情图文</label> <br/>
+											<div class="container-fluid">
+												<div class="row">
+													<div class="col-lg-12 nopadding">
+														<textarea id="editor" style="width:1024px;height:350px;" name="description"></textarea>
+													</div>
+												</div>
+											</div>
+											<!--<textarea name="description" id="description" rows="" cols="" style="width: 100%;height: 300px;">商品详情</textarea>-->
+										</div>
+
+									</div>
+
+								</div>
+								<!-- <div class="row add-goods">
+									<button type="button" class="btn btn-primary btn-sm " id="goods-add">添加 </button>
+								</div> -->
+							</div>
+
+							<!--内容end-->
+							<div class="row add-goods">
+								<button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#pd-edit" id="save">保存 </button>
+							</div>
+
+						</div>
+					</div>
+	    		</form>
+        
+    		</div>
+
+		</section>
+		<!-- /.中心内容 -->
+    
+	</div>
+
+	<!--底部-->
+{_INCLUDE footer.html}
+
+	<script type="text/javascript">
+
+		//实例化编辑器
+		//建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+		var ue = UE.getEditor('editor');
+
+
+
+	</script>
+
+<script>
+	//表单提交
+	$("#save").click(function(){
+		var kucun_zz = /^[1-9]\d*$/;
+		var price_zz = /^\d+(\.\d{1,2})?$/;
+
+		var category= $("#basic-select1").val();
+		var manufacturer=$("#basic-select2").val();
+		var warehouse=$("#basic-select3").val();
+		var goods_bh = $.trim($(".goods-number").val());
+	    var goods_name = $.trim($(".goods-name").val());
+	    var price = $(".goods-price1").val();
+	    var market_price = $(".goods-price2").val();
+	    var proxy_price = $(".goods-price3").val();
+	    var img = $("#add-goods-file").val();
+		var keyword = $.trim($("#keyword").val());
+		var fileImage = $("#fileImage").val();
+		var guige = $('input:radio:checked').val();
+		var product_derate_money = $("#product_derate_money").val();
+		var product_return_money = $("#product_return_money").val();
+
+		if(category == 0) {
+		 	alert("商品分类不能为空!");
+		 	return false;
+		}else if (manufacturer == 0) {
+		 	alert("商品品牌不能为空!");
+		 	return false;
+		}else if (warehouse == 0) {
+		 	alert("所属货仓不能为空!");
+		 	return false;
+		}else if(goods_bh == ''){
+	     	alert("编号不能为空且为正整数")
+	     	return false;
+		}else if(goods_name == ''){
+	     	alert("商品名称不能为空")
+	     	return false;
+	    }else if(price == '' || market_price == '' || proxy_price == ''){
+	     	alert("现价、市场价、代理价不能为空");
+	     	return false;
+	    }else if(!price_zz.test(price)){
+			 alert("商品现价有误");
+			 return false;
+		}else if(!price_zz.test(market_price)){
+			 alert("商品市场价有误");
+			 return false;
+		}else if(!price_zz.test(proxy_price)){
+			 alert("商品代理价有误");
+			 return false;
+		}else if(market_price < price){
+			alert("现价不能大于市场价");
+			return false;
+	    }else if(price < proxy_price){
+			alert("代理价不能大于现价");
+			return false;
+	    }else if(product_derate_money != '' && !price_zz.test(product_derate_money)){
+			alert("分享减免价格有误");
+			return false;
+		}else if(product_return_money != '' && !price_zz.test(product_return_money)){
+			alert("返利价格有误");
+			return false;
+		}else if(img == ''){
+			alert("商品图片不能为空");
+			return false;
+	    }else if(keyword == ''){
+			alert("关键词不能为空");
+			return false;
+ 		}else if(fileImage == ''){
+			alert("商品轮播图不能为空");
+			return false;
+		}
+
+
+		if(guige == 1){
+			var status = "";
+			$(".dl-price").each(function(){
+				var proxy_price = $(this).val();
+				if(!price_zz.test(proxy_price)){
+					status = "代理价";
+
+				}
+			});
+			$(".price").each(function(){
+				var price = $(this).val();
+				if(!price_zz.test(price)){
+					status = "价格";
+				}
+			});
+
+
+			$(".kucun").each(function(){
+				var kucun = $(this).val();
+				if(!kucun_zz.test(kucun)){
+					status = "库存";
+				}
+			});
+
+			$(".option_image").each(function(){
+				var option_image = $(this).val();
+				if(option_image == ''){
+					status = "图片";
+				}
+			});
+			$(".guige").each(function(){
+				var guige = $(this).val();
+				if(guige == ''){
+					status = "编写";
+				}
+			});
+			if(status != ''){
+				alert("规格的"+status+"有误");
+				return false;
+			}
+		}else{
+			var kucun = $("#inputEmail3").val();
+			if(!kucun_zz.test(kucun)){
+//				status = "库存1";
+				alert("规格的库存有误");
+				return false;
+			}
+		}
+	});
+
+	 
+	//多选框样式
+	$(document).ready(function(){
+	  $('input').iCheck({
+	    checkboxClass: 'icheckbox_flat-blue',
+	    radioClass: 'iradio_flat-blue '
+	  });
+	});
+
+</script>
+
+<!--<script>
+	//有无商品规格
+	$(function(){
+		$(".goods-radio #spec_yes").click(function(){
+			console.log(111);
+			$("#spec_yes").attr("checked");
+			$("#no-good").hide();
+			$("#good-select").show();
+		})
+		
+			$(".goods-radio #spec_no").click(function(){
+				$("#spec_no").attr("checked");
+				$("#no-good").show();
+				$("#good-select").hide();
+		})
+			
+	})
+</script>-->
+
+<script type="text/javascript">
+		$(document).on('click','.del-spec',function(){
+			$(this).parent().parent().remove();
+		});
+		$(document).on('click','.add-spec',function(){
+			var index = $(this).attr('data-value');
+			var addindex=index*1+1;
+
+			var aa='<div class="col-md-12 guige-box">'+
+	                	'<div class="col-md-3"><label for="guige">商品规格</label><input type="text" class="guige" id="guige" name="option[]"></div>'+
+	                	'<div class="col-md-1 guige-img">'+
+	                		'<div id="preview_img'+addindex+'"></div>'+
+							'<input type="file" class="option_image" onchange="preview_img(this,preview_img'+addindex+')" name="optionselect[]" />'+
+	                	'</div>'+
+	                	'<div class="col-md-7 guige-rightbox">'+
+	                		'<label for="kucun">库存</label><input type="text" class="kucun" name="option_kucun[]">'+
+	                		'<label for="price">价格</label><input type="text" class="price" name="option_price[]">'+
+	                		'<label for="dl-price">代理价</label><input type="text" class="dl-price" name="option_proxy_price[]">'+
+	                	'</div>'+
+	                	'<div class="col-md-1 guige-delbox">'+
+	                		'<button type="button" class="btn btn-primary btn-sm del-spec">删除</button>'+
+	                	'</div>'+
+
+	               '</div>';
+			$('.gg-box').parent().append(aa);
+
+			$(this).attr('data-value',addindex);
+		});
+</script>
+
+
+
+
+		
+<script type="text/javascript">
+	function preview_img(file,id) {
+		var prevDiv = id;
+		if(file.files && file.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(evt) {
+				prevDiv.innerHTML = '<img src="' + evt.target.result + '" />';
+			}
+			reader.readAsDataURL(file.files[0]);
+		} else {
+			prevDiv.innerHTML = '<div class="img" style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src=\'' + file.value + '\'"></div>';
+		}
+	}
+</script>

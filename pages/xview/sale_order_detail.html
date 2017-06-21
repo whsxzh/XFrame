@@ -1,0 +1,300 @@
+ {_INCLUDE header.html}
+<style>
+	.save-modal-body {
+		width: 200px;
+		text-align: center;
+		font-size: 14px;
+		height: 80px;
+		background: #FFFFFF;
+		z-index: 11111;
+		position: absolute;
+		top: 30%;
+		left: 50%;
+		line-height: 80px;
+	}
+	
+	.save-modal-content {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 1050;
+		overflow: hidden;
+		-webkit-overflow-scrolling: touch;
+		outline: 0;
+		background: rgba(0, 0, 0, 0.3);
+		display: none;
+	}
+	table tr td:nth-child(2){text-align: left;}
+</style>
+<!--订单管理内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">订单详情</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">订单管理</a>
+			</li>
+			<li class="active">订单详情</li>
+		</ol>
+	</section>
+	<section class="content" style="padding-top: 0;">
+		<div class="row">
+			<div class="box box-primary">
+					<div style="padding: 20px;margin-bottom: 20px;margin-top: 10px;">
+						<div class="order-jy-header clearfix">
+							<div class="col-md-1" style="padding-left: 0;"><img src="{_image}" style="width: 150px;height: 150px;"></div>
+							<div class="col-md-11 order-font1" style="color: white;">
+								<p class="order-jy-content">
+									<span>{_name}</span>
+									<span class="grey">{_status} {_IF return_status=1}【{_return_value}】	{ENDIF} </span> {_IF order_info}<span style="color:#e4dc71;"> {_order_info}</span> {ENDIF}
+									{_IF group_info} 
+										{_group_info}  
+											{_IF is_open_free=1}
+												<span style="color:red;"> 团购免单 
+												</span>
+										{ENDIF} 
+									{ENDIF}
+								</p>
+								<p class="order-jy-p">
+									<span>{_IF optionname!=""}{_optionname}:{_optionvalue}{ELSE}N无规格{ENDIF}</span>
+									<span>购买数量:{_o_quantity}</span>
+									<span>运费：{_freight}</span>
+									<span>返利/每件:{_return_add_money}元</span>
+									<span>分享减免:{_derate_money}元({_share_content})</span>
+									<button type="button" class="btn btn-primary btn-xs fr" onclick="history.go(-1);" />返回 </button>
+								</p>
+								<p class="order-jy-p">
+									<span>市场价:{_marketprice}</span>
+									<span>会员价：{_proxyprice}</span>
+									<span>现价：{_now_price}</span>
+									<span>订单价：{_take_down_money} ({_customer_info})</span>
+									<span>改价:{_total}</span> {_IF takedownprice=1}
+									<button type="button" class="btn btn-primary  btn-small" data-toggle="modal" data-target="#exampleModal">拍下改价</button> {ENDIF}
+								</p>
+								<p class="order-jy-p">
+									<span style="color: red;">实际支付:{_order_pay_money}</span>
+								</p>
+								{_IF is_balance=1}
+								<p class="order-jy-p">
+									<span>使用余额支付:{_balance_money}</span>
+								</p>
+								{ENDIF}
+								{_IF coupon_id=0}
+								{ELSE}
+									<p class="order-jy-p">
+										<span>使用优惠券:{_coupon_discount}元</span>
+									</p>
+								{ENDIF}
+								{_IF group_price}
+									<p class="order-jy-p">
+										<span>团购价:{_group_price}元({_group_numer}人团)</span>
+									</p>
+								{ENDIF}
+								{_IF sale_price}
+									<p class="order-jy-p">
+										<span>秒杀价:{_sale_price}元</span>
+									</p>
+								{ENDIF}
+							</div>
+			
+						</div>
+						<div class="order-tab clearfix">
+							<table border="" cellspacing="" cellpadding="" style="width: 100%;margin-top: 15px;" id="order-tab1" class="table table-bordered table-striped">
+								{_IF return_status=1}
+								<tr>
+									<th>退款信息</th>
+									<td>
+										{_FOREACH return_msg} 时间：{_processdate} {_info}<br/> {ENDFOR}
+									</td>
+								</tr>
+								{ENDIF}
+								<tr>
+									<th>订单号</th>
+									<td>{_order_id} (支付单号：{_order_num})  &nbsp;&nbsp;&nbsp;&nbsp;
+									{_IF common_arr_count} 相同 {_common_arr_count} 个支付单号订单：
+									<a href="xindex.php?m=sale&act=order_detail&order={_common_arr_order}"  target="_blanck">{_common_arr_order}</a>
+									{ENDIF}</td>
+								</tr>
+								{_IF orderout}
+								<tr>
+									<th>分享订单</th>
+									<td>
+										分享者：{_orderout.share_name}&nbsp;&nbsp;&nbsp;&nbsp;差价：{_orderout.differenceprice}&nbsp;&nbsp;&nbsp;&nbsp;分享时间：{_orderout.data_added}
+									</td>
+								</tr>
+								{ENDIF}
+								<tr>
+									<th>商品编号</th>
+									<td>{_model} (<a target="blanck" href="xindex.php?m=product&act=editIndex&product_id={_product_id}">商品id：{_product_id}</a>)</td>
+								</tr>
+								<tr>
+									<th>支付方式</th>
+									<td>{_payment_method}</td>
+								</tr>
+								<tr>
+									<th>商品销量</th>
+									<td>{_sales}</td>
+								</tr>
+								<tr>
+									<th>购买人</th>
+									<td>{_firstname} {_tel} (余额:{_customer_balance}，可提现余额:{_customer_availabe_balance})</td>
+								</tr>
+								<tr>
+									<th>实名认证</th>
+									<td>{_lastname} {_card}</td>
+								</tr>
+								<tr>
+									<th>所属代理</th>
+									<td>{_parent_name} {_parent_telephone}  {_invitecode}</td>
+								</tr>
+								<tr>
+									<th>返利人</th>
+									<td>{_parent_name} {_parent_telephone}</td>
+								</tr>
+								<tr>
+									<th>收货信息</th>
+									<td>
+										<p>姓名：{_my_buyer} </p>
+										<p>电话：{_my_phone}</p>
+										<p>地址：{_my_address}</p>
+									</td>
+								</tr>
+								{_IF customer_transaction}
+								<tr>
+									<th>资金变化记录</th>
+									<td>
+										{_FOREACH customer_transaction}
+										<p> 
+										资金类型：{_type_info}&nbsp;&nbsp;&nbsp;&nbsp; 
+										凭证编号：{_pingzhen}&nbsp;&nbsp;&nbsp;&nbsp; 
+										凭证类型：{_pingzhen_type_info}&nbsp;&nbsp;&nbsp;&nbsp; 
+										余额变化：{_balance_change}&nbsp;&nbsp;&nbsp;&nbsp; 
+										可提现余额变化：{_availabe_balance_change}&nbsp;&nbsp;&nbsp;&nbsp; {_type_info}之后的余额：{_last_balance}&nbsp;&nbsp;&nbsp;&nbsp; {_type_info}之后的可提现余额：{_last_availabe_balance} &nbsp;&nbsp;&nbsp;&nbsp;
+										操作时间：{_date_added}&nbsp;&nbsp;&nbsp;&nbsp;
+										用户昵称：{_firstname}&nbsp;&nbsp;&nbsp;&nbsp;
+										操作备注：{_description}&nbsp;&nbsp;&nbsp;&nbsp;
+										 </p>
+										{ENDFOR}
+									</td>
+								</tr>
+								{ENDIF}
+
+								{_IF order_history}
+								<tr>
+									<th>订单操作记录</th>
+									<td>
+										{_FOREACH order_history}
+										<p>操作历史编号：{_order_history_id}&nbsp;&nbsp;&nbsp;&nbsp; 订单编号：{_order_id}&nbsp;&nbsp;&nbsp;&nbsp; 操作状态编号：{_order_status_id}&nbsp;&nbsp;&nbsp;&nbsp; 操作备注：{_comment}&nbsp;&nbsp;&nbsp;&nbsp; 操作时间：{_date_added} </p>
+										{ENDFOR}
+									</td>
+								</tr>
+								{ENDIF}
+								<tr>
+									<th>物流信息</th>
+									<td class="order-table-td" style="position: relative;" id="order-kd">
+										{_shipcommo}<br> {_ship_order_no}
+										<br> {_IF wuliu} {_FOREACH wuliu}
+										<span>时间：{_time}</span><br>
+										<span>到达：{_context}</span><br> {ENDFOR} {ELSE} 暂无物流 {ENDIF}
+								</tr>
+							</table>
+							
+							  <!--<table id="order-tab1">
+	                <tr>
+	                  <td>订单号</td>
+	                  <td>商品名称</td>
+	                </tr>
+	              </table>-->
+	              
+						
+						</div>
+					</div>
+
+				</div>
+		</div>
+
+	</section>
+
+</div>
+
+<!--弹框2-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">修改价格</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">购买价:</label>
+						<input type="text" readonly="true" class="form-control" id="recipient-name" value="{_take_down_money}">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">改价:</label>
+						<input type="number" min='0' class="form-control" id="change-name" value="">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-primary pay_order" data-value="{_order_id}">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 保存提示 modal -->
+<div class="save-modal-content" style="{_IF none=1}display: block;{ELSE}display: none;{ENDIF}">
+	<div class="save-modal-body" style="text-align: center;">订单信息错误</div>
+</div>
+
+<!-- 底部 -->
+{_INCLUDE footer.html}
+
+<script>
+	$(function() {
+		$(".pay_order").click(function() {
+			var url = "{_takeDownPrice}";
+			var order = $(this).attr("data-value");
+			$.ajax({
+				url: url,
+				type: 'post',
+				data: { order: order, price: $("#change-name").val() },
+				dataType: 'json',
+				success: function(data) {
+					$('.save-modal-content').show();
+					$(".save-modal-body").html(data.msg);
+					setTimeout(function() {
+						$('.save-modal-content').hide();
+						$(".fade").hide();
+						location.reload();
+					}, 2000);
+				},
+				error: function() {
+					$('.save-modal-content').show();
+					$(".save-modal-body").html("请求失败");
+					setTimeout(function() {
+						$('.save-modal-content').hide();
+						$(".fade").hide();
+						location.reload();
+					}, 2000);
+				}
+			});
+		});
+
+		{_IF none = 1}
+		setTimeout(function() {
+			$('.save-modal-content').hide();
+			$(".fade").hide();
+			history.back();
+		}, 2000);
+		{ENDIF}
+	})
+</script>

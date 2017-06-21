@@ -1,0 +1,360 @@
+ {_INCLUDE header.html}
+<style>
+/*订单管理*/
+.order-header{background: rgba(0,0,0,0.1);padding: 8px 0;margin-bottom: 10px;}
+.order-header ul{padding: 0; margin: 0;}
+.order-header ul li{float: left;text-align: center;background: rgba(0,0,0,0.1);padding: 8px 0;color: white;cursor: pointer;}
+.order-header ul li.active{background: rgba(0,0,0,0.2);}
+.order-btn{margin-top: 10px;}
+</style>
+<!--我的商品库-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">{_category_name} 列表</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">活动管理</a>
+			</li>
+			<li class="active">活动商品列表</a>
+			</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box" >
+				  <div class="col-md-12 order-header">
+					<div class="col-md-6 col-xs-4 order-box">
+						<ul class="clearfix">
+							<li class="col-md-2 col-xs-6 active" onclick="location.href='{_getGoodsActivityList}&category_id={_category_id}'">出售中</li>
+							<li class="col-md-2 col-xs-6" onclick="location.href='{_getGoodsSelectList}&category_id={_category_id}'">当前已选</li>
+						</ul>
+					</div>
+					<div class="col-md-6 col-xs-8 text-right" style="padding-left: 0">
+						<div class="col-xs-6 col-md-6">
+							<input type="text" class="form-control form-input" name='lastname' value="{_search_name}" id="goodsName" placeholder="请输入商品名称" />
+						</div>
+						<div class="col-md-2 col-xs-2">
+							<button type="submit" class="btn btn-primary btn-sm" id="search">搜索</button>
+						</div>
+						<div class="col-md-2 col-xs-2">
+							<button type="submit" id="save_goods" class="btn btn-primary btn-sm" >保存</button>
+						</div>			
+						<div class="col-md-2 col-xs-2">
+							<button type="submit" class="btn btn-primary btn-sm"  id="return_back">返回</button>
+						</div>
+					</div>
+				</div>
+										            
+				
+
+				<div class="order-tab">
+					<!-- /.2 -->
+					<div class="box-body">
+						<div class="box-auto">
+							<table id="mygood-tab2" class="table table-bordered table-striped">
+							<!--<thead>-->
+								<tr>
+									<th>商品id</th>
+									<th>商品型号</th>
+									<th>商品名称</th>
+									<th>价格</th>
+									<th>会员价格</th>
+									<th>库存</th>
+									<th>总销量</th>
+									<th>访问量</th>
+									<td>上架时间</td>
+									<th>排序</th>
+									<th>状态</th>
+								</tr>
+							<!--</thead>
+							<tbody>-->
+								{_FOREACH dt}
+								<tr >
+									<td><input type="checkbox" name="goods-tb2" value="{_product_id}" data-value="{_name}" class="order-check"><span class="order-number">{_product_id} <img src="{_image}?x-oss-process=image/resize,w_80,limit_0" width="80" > </span></td>
+									<td>{_model}</td>
+									<td>{_name}</td>
+									<td>{_price}</td>
+									<td>{_proxyprice}</td>
+									<td>{_quantity}</td>
+									<td>{_sales}</td>
+									<td>{_points}</td>
+									<td>{_date_added}</td>
+									<td>{_sort_order}&nbsp;
+										<span data-value="{_product_id}" class="add_sort"> <a href="#">↑</a></span>&nbsp; {_IF sort_order=0}
+										<span><a href="#">—</a></span>&nbsp; {ELSE}
+										<span data-value="{_product_id}" class="reduce_sort"> <a href="#">↓</a></span>&nbsp; {ENDIF}
+									</td>
+									<td>{_IF status}上架{ELSE} 下架 {ENDIF}</td>
+
+								</tr>
+								{ENDFOR}
+							<!--</tbody>-->
+						</table>
+						<input type="button" value="全选" class="btn" id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="取消" class="btn" id="selectNone">
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-md-5">
+								<div class="dataTables_info" id="consumer-tab1_info" role="status" aria-live="polite">共5页</div>
+							</div>
+							<!--分页-->
+							<div class="col-sm-7 text-right">
+								<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+									<ul class="pagination">
+									  <li class="paginate_button previous " id="consumer-tab1_previous">
+				                      	<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">首页</a>
+				                      </li>
+
+				                      <li class="paginate_button previous " id="consumer-tab1_previous">
+				                      	<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+				                      </li>
+
+										{_FOREACH pages}
+										<li class="paginate_button {_IF active}active {ENDIF}">
+											<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+										</li>
+										{ENDFOR}
+
+										{_IF is_end_page=1}
+										<li class="paginate_button next" id="consumer-tab1_next">
+											<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+										</li>
+									{ENDIF}
+				                      <li class="paginate_button next" id="consumer-tab1_end">
+										<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">尾页</a>
+									 </li>
+
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</section>
+	</div>
+
+	{_INCLUDE footer.html}
+
+	<!-- 点击全选和反选 -->
+	<script type="text/javascript">
+		
+		$("#selectAll").click(function () {
+		   $(":checkbox").prop("checked", true);  
+		});
+		$("#selectNone").click(function () {
+		   $(":checkbox").prop("checked", false);  
+		});
+	</script>
+
+	<!-- 点击上升，排序上升 -->
+	<script type="text/javascript">
+		$(".add_sort").click(function() {
+			var product_id = $(this).attr("data-value");
+			var data = { product_id: product_id, type: "add" }
+			var url = "{_updateGoodsSort}";
+			var url1 = "{_getGoodsActivityList}";
+			$.post(url, data, function(msg) {
+				if(msg == "yes") {
+					alert("排序更改成功");
+				}
+				location.href = url1 + "&category_id=" + {_category_id};
+			});
+
+		});
+	</script>
+
+	<script type="text/javascript">
+
+		$("#return_back").click(function(){
+			location.href ="xindex.php?m=activity&act=index";
+		})
+	</script>
+
+	<!-- 点击下降，排序下降 -->
+	<script type="text/javascript">
+		$(".reduce_sort").click(function() {
+			var product_id = $(this).attr("data-value");
+			var data = { product_id: product_id, type: "reduce" }
+			var url = "{_updateGoodsSort}";
+			var url1 = "{_getGoodsActivityList}";
+			$.post(url, data, function(msg) {
+				if(msg == "yes") {
+					alert("排序更改成功");
+				}
+				location.href = url1 + "&category_id=" + {_category_id};
+			});
+
+		});
+	</script>
+
+	<!-- 商品搜索 -->
+	<script type="text/javascript">
+		$('#search').click(function(msg) {
+			var url = "{_getGoodsActivityList}";
+			var lastname = $('#goodsName').val();
+			location.href = url + "&name=" + lastname + "&category_id=" + {_category_id};
+		});
+	</script>
+
+	<!-- 商品保存跳转 -->
+	<script type="text/javascript">
+		$('#save_goods').click(function(msg) {
+			var url = "{_editGoodsToActivity}";
+			var url1 = "{_getGoodsSelectList}";
+			var obj = document.getElementsByName('goods-tb2');
+			var s = '';
+			for(var i = 0; i < obj.length; i++) {
+				if(obj[i].checked) {
+					s += obj[i].value + ','; //如果选中，将value添加到变量s中			
+				}
+			}
+			ss = s.split(",");
+			if(ss.length == 1) {
+				alert("请先选择一个产品");
+				return;
+			}
+			//alert(ss);
+			var data = { shangpin: ss, category_id: {_category_id} };
+			$.get(url, data, function(msg) {
+				alert(msg);
+				//location.href=url1+"&category_id="+{_category_id};
+			});
+
+		});
+	</script>
+
+	<script>
+		//弹框添加库存
+		$(function() {
+			$(".kc-input1 ").click(function() {
+				var kc_td = $("#kc-td").text();
+				$(".old-kc").val(kc_td);
+			})
+
+		})
+
+		//添加上架只能是正整数
+		$(function() {
+			var inp = $('.numbe-tj-kc');
+			inp.blur(function() {
+				var inpVal = inp.val();
+				console.log(11);
+				if(!isNaN(inpVal) && inpVal > 0) {
+
+				} else {
+					alert('请输入正整数')
+				}
+			})
+		})
+
+		//1.出售中 全选删除
+		$(function() {
+
+			$(".goods-btn1-delect").click(function() {
+
+				$("input[name='goods-tb1']:checked").each(function() { // 遍历选中的checkbox
+					n = $(this).parents("tr").index() + 1; // 获取checkbox所在行的顺序
+
+					$("#mygood-tab1").find("tr:eq(" + n + ")").remove();
+
+				});
+			})
+		})
+
+		$(function() {
+			$(".goods-check1").click(function() {
+				if(this.checked) {
+					$("input[name='goods-tb1']").each(function() {
+
+						$(this).prop("checked", true);
+						$(this).attr("checked", true);
+
+					});
+
+				} else {
+					$("input[name='goods-tb1']").each(function() {
+
+						$(this).removeAttr("checked", false);
+
+					});
+
+				}
+			});
+		})
+
+		//2.已售罄 全选删除
+		$(function() {
+
+			$(".goods-btn2-delect").click(function() {
+
+				$("input[name='goods-tb2']:checked").each(function() { // 遍历选中的checkbox
+					n = $(this).parents("tr").index() + 1; // 获取checkbox所在行的顺序
+					$("#mygood-tab2").find("tr:eq(" + n + ")").remove();
+
+				});
+			})
+		})
+
+		$(function() {
+			$(".goods-check2").click(function() {
+				if(this.checked) {
+					$("input[name='goods-tb2']").each(function() {
+
+						$(this).prop("checked", true);
+						$(this).attr("checked", true);
+
+					});
+
+				} else {
+					$("input[name='goods-tb2']").each(function() {
+
+						$(this).removeAttr("checked", false);
+
+					});
+
+				}
+			});
+		})
+
+		//3.仓库中 全选删除
+		$(function() {
+
+			$(".goods-btn3-delect").click(function() {
+
+				$("input[name='goods-tb3']:checked").each(function() { // 遍历选中的checkbox
+					n = $(this).parents("tr").index() + 1; // 获取checkbox所在行的顺序
+					$("#mygood-tab3").find("tr:eq(" + n + ")").remove();
+
+				});
+			})
+		})
+
+		$(function() {
+			$(".goods-check3").click(function() {
+				if(this.checked) {
+					$("input[name='goods-tb3']").each(function() {
+
+						$(this).prop("checked", true);
+						$(this).attr("checked", true);
+
+					});
+
+				} else {
+					$("input[name='goods-tb3']").each(function() {
+
+						$(this).removeAttr("checked", false);
+
+					});
+
+				}
+			});
+		})
+	</script>

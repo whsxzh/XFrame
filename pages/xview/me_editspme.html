@@ -1,0 +1,158 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		color: white;
+		cursor: pointer;
+	}
+	
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	
+	.order-btn {
+		margin-top: 10px;
+	}
+</style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">商品库</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">我的板块</a>
+			</li>
+			<li class="active">商品库</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="box" style="border: none;">
+			<!--中心内容-->            
+            <div class="col-md-12 order-header">
+				<div class="col-md-10 col-xs-12 order-box">
+					<ul class="clearfix">
+						<li class="col-md-2 col-xs-6">活动商品(123)</li>
+						<li class="col-md-2 col-xs-6">商品库</li>
+						<li class="col-md-2 col-xs-6 active">我的商品</li>
+					</ul>
+				</div>
+				<div class="col-md-2 col-xs-12" style="padding-left: 0">
+					<div class="col-md-6">
+						<button type="submit" class="btn btn-main btn-sm">上传商品</button>
+					</div>
+					<div class="col-md-6">
+						<button type="submit" class="btn btn-main btn-sm" onclick="history.go(-1)">返回</button>
+					</div>
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+					<div class="row">
+						<div class="col-sm-12">
+							<table id="order-tab1" class="table table-bordered table-striped">
+									<tr role="row">
+										<!--<th>全选</th>-->
+										<th>图片</th>
+										<th>商品名称</th>
+										<th>价格</th>
+										<th>会员价格</th>
+										<th>编号</th>
+										<th>库存</th>
+										<th>总销量</th>
+										<th>商品状态</th>
+										<th>操作</th>
+									</tr>
+									<tr role="row" class="odd">
+										<!--<td><input type="checkbox" name="chk"/></td>-->
+										<td><img src="./view/stylesheet/img/a1.jpg" style="width: 50px;height: 50px;"/></td>
+										<td>Gecko</td>
+										<td>Firefox 1.0</td>
+										<td>Win 98+ / OSX.2+</td>
+										<td>1.7</td>
+										<td>A</td>
+										<td>Firefox 1.0</td>
+										<td>下架</td>
+										<td>
+											<button class="btn btn-main btn-xs">编辑</button>
+											<button class="btn btn-main btn-xs">补充库存</button>
+											<button class="btn btn-main btn-xs">禁用</button>
+											<button class="btn btn-main btn-xs">删除</button>
+										</td>
+									</tr>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+								<ul class="pagination">
+									<li class="paginate_button previous disabled" id="example2_previous">
+										<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">上一页</a>
+									</li>
+									<li class="paginate_button active">
+										<a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0">1</a>
+									</li>
+									<li class="paginate_button">
+										<a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0">2</a>
+									</li>
+									<li class="paginate_button">
+										<a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0">3</a>
+									</li>
+									<li class="paginate_button">
+										<a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0">4</a>
+									</li>
+									<li class="paginate_button">
+										<a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0">5</a>
+									</li>
+									<li class="paginate_button">
+										<a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0">6</a>
+									</li>
+									<li class="paginate_button next" id="example2_next">
+										<a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0">下一页</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+			</div>
+			<!-- /.box-body -->
+		</div>
+	</section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+</div>
+<script type="text/javascript">
+	$(function(){
+		//全选
+		$('#chkall').on('click',function(){
+		    if(this.checked){   
+		        $("input[name='chk']:checkbox").prop("checked", true);  
+		    }else{   
+			$("input[name='chk']:checkbox").prop("checked", false);
+		    }   
+		});
+	
+	});
+</script>
+</body>
+
+</html>

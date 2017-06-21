@@ -1,0 +1,73 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+ 	.row{margin-right: 0;}
+ 	.order-header{background: rgba(0,0,0,0.1);padding: 8px 0;margin-bottom: 10px;}
+ 	.pagination>.disabled>a, .pagination>.disabled>a:focus, .pagination>.disabled>a:hover, .pagination>.disabled>span, .pagination>.disabled>span:focus, .pagination>.disabled>span:hover{background: none;border-color: #1c7dfa;}
+ </style>
+<div class="content-wrapper">
+	<!--头部str-->
+	<section class="content-header">
+		<span style="font-size: 25px;">活动用户列表</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">运营管理</a>
+			</li>
+			<li class="active">大转盘&翻牌子管理</li>
+		</ol>
+	</section>
+	<!--头部end-->
+	<!--中心内容str-->
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="col-md-12 order-header block-no">
+					<div class="col-md-9 col-xs-9" style="color: white;line-height: 30px;">商户名称：{_luckDrawInfo.commit}</div>
+					<div class="col-xs-3 col-md-3 text-right">
+						<a href="{_backUrl}" class="btn btn-main btn-sm">返回</a>
+					</div>
+				</div>
+				<div class="box-body">
+					<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+						<table id="invitecode-tab" class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>姓名</th>
+									<th>手机号</th>
+									<th>所属邀请码</th>
+									<th>是否中奖</th>
+								</tr>
+							</thead>
+							<tbody>
+							{_IF luckDrawUserList}
+							{_FOREACH luckDrawUserList}
+								<tr>
+									<td>{_lastname}</td>
+									<td>{_telephone}</td>
+									<td>{_inviteCode}</td>
+									<td>{_isWin}</td>
+								</tr>
+							{ENDFOR}
+							{ELSE}
+
+							{ENDIF}
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--中心内容end-->
+
+</div>
+
+{_INCLUDE footer.html}
+<script>
+$(function(){ 
+    $("#invitecode-tab").DataTable();
+})
+</script>

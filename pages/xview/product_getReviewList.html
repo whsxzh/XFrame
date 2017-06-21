@@ -1,0 +1,202 @@
+    {_INCLUDE header.html}
+<style type="text/css">
+    .comment-img{width: 50px;height: 50px;}
+    .order-header{background: rgba(0,0,0,0.1);padding:8px 0;margin-bottom: 10px;}
+	.order-header ul{padding: 0; margin: 0;}
+	.order-header ul li{float: left;text-align: center;background: rgba(0,0,0,0.1);padding: 8px 0;color: white;cursor: pointer;}
+	.order-header ul li.active{background: rgba(0,0,0,0.2);}
+	.order-btn{margin-top: 10px;}
+</style>
+<!--内容-->
+<div class="content-wrapper">
+    <section class="content-header">
+        <span style="font-size: 25px;">查看评论</span>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+            </li>
+            <li>
+                <a href="#">我的板块</a>
+            </li>
+            <li class="active">查看评论</li>
+        </ol>
+    </section>
+    <section class="content">
+       <div class="row">
+       	 <div class="box" style="border: none;">
+            <!--中心内容-->
+            <!--<div class="nav-tabs-custom" style="position: relative;">
+                <ul class="nav nav-tabs">
+                    <li {_IF get.status=0}class="active"{ENDIF}><a href="{_url}&status=0">全部评论</a></li>
+                    <li {_IF get.status=1}class="active"{ENDIF}><a href="{_url}&status=1">好评（5星）</a></li>
+                    <li {_IF get.status=2}class="active"{ENDIF}><a href="{_url}&status=2">中评（2-4星）</a></li>
+                    <li {_IF get.status=3}class="active"{ENDIF}><a href="{_url}&status=3">差评（0-1星）</a></li>
+                </ul>
+                <div class="input-group col-md-2" style="position: absolute;right: 90px;top: 8px;">
+                    <input type="text" name="search" class="form-control" placeholder="Search" style="height: 30px;">
+                    <div class="input-group-btn">
+                        <button type="submit" name="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <a class="btn btn-primary btn-sm" href="{_getList_url}" style="position: absolute;right: 10px;top:8px;">返回</a>
+            </div>-->
+            
+             <div class="col-md-12 order-header">
+				<div class="col-md-10 col-xs-12 order-box">
+					<ul class="clearfix">
+						<li class="col-md-2 col-xs-6 {_IF get.status=0}order-ul active{ENDIF}" onclick="location.href='{_url}&status=0'">全部评论</li>
+						<li class="col-md-2 col-xs-6 {_IF get.status=1}order-ul active{ENDIF}" onclick="location.href='{_url}&status=1'">好评（5星）</li>
+						<li class="col-md-2 col-xs-6 {_IF get.status=2}order-ul active{ENDIF}" onclick="location.href='{_url}&status=2'">中评（2-4星）</li>
+						<li class="col-md-2 col-xs-6 {_IF get.status=3}order-ul active{ENDIF}" onclick="location.href='{_url}&status=3'">差评（0-1星）</li>
+					</ul>
+				</div>
+				<!--header new end-->
+			
+				<!--search new -->
+				<div class="col-md-2 col-xs-12" style="padding-left: 0;">
+					<div class="col-xs-10  col-md-2" style="width:200px;display: none;">
+						<input type="text" class="form-control form-input" placeholder="Search" class="">
+					</div>
+					<div class="col-md-2" style="width:50px;">
+						<button type="submit" class="btn btn-primary btn-sm" style="display: none;">搜索</button>
+						<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{_getList_url}'">返回</button>
+						
+					</div>
+				</div>
+			</div>
+            	
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="dataTables_wrapper form-inline dt-bootstrap">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered" role="grid" aria-describedby="example2_info">
+                                <tr role="row">
+                                    <th>用户</th>
+                                    <th>用户评价</th>
+                                    <th>评价图片</th>
+                                    <th>评价时间</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                {_FOREACH review}
+                                <tr role="row" class="odd">
+                                    <td>{_firstname}
+
+                                        {_IF rating=1}
+                                        <div style="color: gold">★</div>
+                                        {ENDIF}
+                                        {_IF rating=2}
+                                        <div style="color: gold">★★</div>
+                                        {ENDIF}
+                                        {_IF rating=3}
+                                         <div style="color: gold">★★★</div>
+                                        {ENDIF}
+                                        {_IF rating=4}
+                                        <div style="color: gold">★★★★</div>
+                                        {ENDIF}
+                                        {_IF rating=5}
+                                        <div style="color: gold">★★★★★</div>
+                                        {ENDIF}
+                                    </td>
+                                    <td style="max-width: 200px;">
+                                        <div>
+                                            {_IF isadditional=1}
+                                            <span style="color: red;">追加评论：</span>
+                                            {ENDIF}
+                                            {_text}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {_FOREACH image}
+                                        <img src="{_image}" class="comment-img"/>
+                                        {ENDFOR}
+                                    </td>
+                                    <td>{_date_added}</td>
+                                    <td>
+                                        {_IF status=1}
+                                        通过
+                                        {ELSE}
+                                        屏蔽
+                                        {ENDIF}
+                                    </td>
+                                    <td>
+                                        {_IF status=1}
+                                        <button class="btn btn-primary btn-sm btn-click" data-id="{_review_id}" data-type="0">屏蔽</button>
+                                        {ELSE}
+                                        <button class="btn btn-primary btn-sm btn-click" data-id="{_review_id}" data-type="1">通过</button>
+                                        {ENDIF}
+                                    </td>
+                                </tr>
+                                {ENDFOR}
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="dataTables_info" id="consumer-tab1_info" role="status" aria-live="polite">共5页</div>
+                        </div>
+                        <!--分页-->
+                        <div class="col-sm-7 text-right">
+                            <div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+                                <ul class="pagination">
+                                    <li class="paginate_button previous" id="consumer-tab1_previous">
+                                        <a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+                                    </li>
+                                    {_FOREACH pages}
+                                    <li class="paginate_button {_IF active}active {ENDIF}">
+                                        <a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+                                    </li>
+                                    {ENDFOR}
+
+                                    <li class="paginate_button next"id="consumer-tab1_next">
+                                        <a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+   
+       </div>
+    </section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+</div>
+<script type="text/javascript">
+    $(function(){
+//        //选项卡
+//        $('.nav-tabs li').on('click',function(){
+//            $(this).addClass('active').siblings().removeClass('active');
+//        });
+
+        $(".btn-click").click(function(){
+            var url = "{_delReview_url}";
+            var type = $(this).attr("data-type");
+            var id = $(this).attr('data-id');
+            $.ajax({
+               'url':url,
+                type:'post',
+                dataType:'json',
+                data:{'id':id,'type':type},
+                success: function(msg){
+                    if(msg == 0){
+                        alert('操作成功!');
+                        location.reload();
+                    }
+                }
+            });
+        });
+
+    });
+</script>
+</body>
+
+</html>

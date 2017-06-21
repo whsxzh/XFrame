@@ -1,0 +1,350 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+    #tent-tab1_filter label{display: none !important;}
+    .order-input1,.order-input2{width: 40%;border: none; border:1px solid #d2d6de;padding: 0 10px;line-height: 30px;}
+    .order-input2{margin-left: 5px;}
+    .daterangepicker{width: 32%;}
+	#spec-tab1_paginate{text-align: right;}
+	.order-header{background: rgba(0,0,0,0.1);padding: 8px 0;margin-bottom: 10px;}
+	.order-header ul{padding: 0; margin: 0;}
+	.order-header ul li{float: left;text-align: center;background: rgba(0,0,0,0.1);padding: 8px 0;color: white;cursor: pointer;}
+	.order-header ul li.active{background: rgba(0,0,0,0.2);}
+	.control-label{color: #000000;}
+  </style>
+<!--商户管理-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">活动管理</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">cms管理</a>
+			</li>
+			<li class="active">活动管理</li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="col-md-12 order-header block-no">
+					<div class="col-md-2">
+						<a id="tent-delect" data-toggle="modal" data-target="#add-active" class="btn btn-main btn-sm" id="chaxun">新增活动</a>
+					</div>
+				</div>
+				<div class="box-body">
+					<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+						<table id="tent-tab1" class="table table-bordered table-striped">
+							<!--<thead>-->
+							<tr>
+								<th class="block-no">活动ID</th>
+								<th>活动名称</th>
+								<th>活动商品数量</th>
+								<th>活动开始时间</th>
+								<th>活动结束时间</th>
+								<th>上架时间</th>
+								<th>状态</th>
+								<th class="block-no">操作</th>
+							</tr>
+							<!--</thead>
+							<tbody>-->
+							{_IF activity} {_FOREACH activity}
+							<tr>
+								<td class="block-no"><input type="checkbox" name="tent-check" value="" class="order-check"><span class="order-number">{_category_id}</span></td>
+								<td>{_name}</td>
+								<td>{_count}</td>
+								<td>{_date_start}</td>
+								<td>{_date_end}</td>
+								<td>{_date_added}</td>
+								<td>{_IF status=1} 启用 {ELSE} 禁用 {ENDIF}</td>
+								<td class="tent-btn block-no">
+									<a class="btn btn-main btn-xs edit-activity" data-toggle="modal" data-target="#tenant-infor" data-value="{_name}" value="{_category_id}">编辑</a>
+									<a class="btn btn-main btn-xs" href="xindex.php?m=activity&act=getGoodsActivityList&category_id={_category_id}">选择活动商品</a>
+									<a class="btn btn-main btn-xs oprate" data-value="{_category_id}">{_IF status=1} 禁用 {ELSE} 启用 {ENDIF}</a>
+								</td>
+							</tr>
+							{ENDFOR} {ELSE}
+							<tr>
+								<td colspan="11">没有数据</td>
+							</tr>
+							{ENDIF}
+							<!--</tbody>-->
+						</table>
+						<!--分页-->
+						<div class="col-md-12" style="margin-top: 15px;">
+							<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+								<ul class="pagination">
+									<li class="paginate_button previous" id="consumer-tab1_previous">
+										<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+									</li>
+									{_FOREACH pages}
+									<li class="paginate_button {_IF active}active {ENDIF}">
+										<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+									</li>
+									{ENDFOR}
+
+									<li class="paginate_button next" id="consumer-tab1_next">
+										<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /. -->
+
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+</div>
+
+<!--商户信息弹框 编辑-->
+<div class="modal fade" id="tenant-infor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">商户信息</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">活动ID :</label>&nbsp;&nbsp;
+						<label for="recipient-name" class="control-label" id="edit_id">11</label>
+					</div>
+
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">活动名称</label>
+						<input type="text" class="form-control" id="edit_name" data-value="">
+					</div>
+
+					<div class="form-group">
+						<label for="message-text" class="control-label">活动起止时间:</label>
+						<div>
+							<input type="text" class="order-input1" value="" name="filter_date_added" id="dpd1" placeholder="活动开始日期">
+							<img src="img/rl_icon.png" class="calendar-icon fl">
+							<input type="text" class="order-input2" value="" name="filter_date_modified" id="dpd2" placeholder="活动截止日期">
+						</div>
+					</div>
+
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-primary edit_name">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--商户信息弹框 添加-->
+<div class="modal fade" id="add-active" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">商户信息</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">活动名称</label>
+						<input type="text" class="form-control" id="add_name">
+					</div>
+
+					<div>
+						<input type="text" class="order-input1" value="" name="filter_date_added" id="dpd3" placeholder="活动开始日期">
+						<img src="img/rl_icon.png" class="calendar-icon fl">
+						<input type="text" class="order-input2" value="" name="filter_date_modified" id="dpd4" placeholder="活动截止日期">
+					</div>
+
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-primary add_name">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+<!--  编辑活动 -->
+<script type="text/javascript">
+	$(".edit-activity").click(function() {
+		var name = $(this).attr("data-value");
+		var id = $(this).attr("value");
+		//alert(id);return;
+		$('#edit_name').val(name);
+		$('#edit_id').html(id);
+	})
+</script>
+
+<!-- 活动修改保存 -->
+<script type="text/javascript">
+	$(".edit_name").click(function() {
+		var name = $('#edit_name').val();
+		var id = $('#edit_id').html();
+		var dpd1 = $("#dpd1").val();
+		var dpd2 = $("#dpd2").val();
+		// alert(dpd1+"|"+dpd2);return;
+		//alert(id);return;
+		//发送ajax请求,增加活动名称
+		if(name == '') {
+			alert("请填写活动名称");
+			return;
+		}
+		$.post("xindex.php?m=activity&act=editActivity", { name: name, category_id: id, date_start: dpd1, date_end: dpd2 }, function(msg) {
+			if(msg == 'success') {
+				//如果成功
+				alert("修改成功");
+				location.href = "xindex.php?m=activity&act=index";
+			} else {
+				alert(msg);
+			}
+		});
+
+	})
+</script>
+
+<script type="text/javascript">
+	//添加活动
+	$(".add_name").click(function() {
+		var name = $("#add_name").val();
+		var dpd3 = $("#dpd3").val();
+		var dpd4 = $("#dpd4").val();
+		//发送ajax请求,增加活动名称
+		if(name == '') {
+			alert("请填写活动名称");
+			return;
+		}
+		$.post("xindex.php?m=activity&act=addActivity", { name: name, date_start: dpd3, date_end: dpd4 }, function(msg) {
+			if(msg == 'success') {
+				//如果成功
+				alert("添加成功");
+				location.href = "xindex.php?m=activity&act=index";
+			} else {
+				alert(msg);
+			}
+		});
+	})
+</script>
+
+<script type="text/javascript">
+	$(".oprate").click(function() {
+		var category_id = $(this).attr("data-value");
+		//alert(category_id);
+		$.post("xindex.php?m=activity&act=updateStatus", { category_id: category_id }, function(msg) {
+			if(msg == "disable") {
+				msg = "禁用";
+			} else if(msg == 'enable') {
+				msg = "启用"
+			}
+			alert("状态已经" + msg + " ！");
+			location.href = "xindex.php?m=activity&act=index";
+		});
+	})
+</script>
+
+<!--销售记录-->
+<script>
+	$(function() {
+
+		$('#reservation').daterangepicker();
+		$('#reservation1').daterangepicker();
+
+		//		$("#tent-tab1").DataTable();
+
+		$("#tent-delect").click(function() {
+
+			$("input[name='tent-check']:checked").each(function() { // 遍历选中的checkbox
+				n = $(this).parents("tr").index() + 1; // 获取checkbox所在行的顺序
+
+				$("#tent-tab1").find("tr:eq(" + n + ")").remove();
+
+			});
+		})
+
+		//表格全选
+		$(function() {
+			$(".tent-all").click(function() {
+				if(this.checked) {
+					$("input[name='tent-check']").each(function() {
+
+						$(this).prop("checked", true);
+						$(this).attr("checked", true);
+					});
+
+				} else {
+					$("input[name='tent-check']").each(function() {
+
+						$(this).removeAttr("checked", false);
+					});
+
+				}
+			});
+		})
+	})
+</script>
+
+<script>
+	$(function() {
+		var nowTemp = new Date();
+		var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+		var checkin = $('#dpd1').fdatepicker({
+			onRender: function(date) {
+				return date.valueOf() > now.valueOf() ? 'disabled' : '';
+			}
+		}).on('changeDate', function(ev) {
+			if(ev.date.valueOf() > checkout.date.valueOf()) {
+				var newDate = new Date(ev.date)
+				newDate.setDate(newDate.getDate() + 1);
+				checkout.update(newDate);
+			}
+			checkin.hide();
+			$('#dpd2')[0].focus();
+		}).data('datepicker');
+		var checkout = $('#dpd2').fdatepicker({
+			onRender: function(date) {
+				return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+			}
+		}).on('changeDate', function(ev) {
+			checkout.hide();
+		}).data('datepicker');
+
+	})
+</script>
+
+<script>
+	$(function() {
+		var nowTemp = new Date();
+		var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+		var checkin = $('#dpd3').fdatepicker({
+			onRender: function(date) {
+				return date.valueOf() > now.valueOf() ? 'disabled' : '';
+			}
+		}).on('changeDate', function(ev) {
+			if(ev.date.valueOf() > checkout.date.valueOf()) {
+				var newDate = new Date(ev.date)
+				newDate.setDate(newDate.getDate() + 1);
+				checkout.update(newDate);
+			}
+			checkin.hide();
+			$('#dpd4')[0].focus();
+		}).data('datepicker');
+		var checkout = $('#dpd4').fdatepicker({
+			onRender: function(date) {
+				return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+			}
+		}).on('changeDate', function(ev) {
+			checkout.hide();
+		}).data('datepicker');
+
+	})
+</script>

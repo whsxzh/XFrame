@@ -1,0 +1,201 @@
+ {_INCLUDE header.html}
+<style>
+.order-header{background: rgba(0,0,0,0.1);padding: 8px 0;margin-bottom: 10px;}
+.order-header ul{padding: 0; margin: 0;}
+.order-header ul li{float: left;text-align: center;background: rgba(0,0,0,0.1);padding: 8px 0;color: white;cursor: pointer;}
+.order-header ul li.active{background: rgba(0,0,0,0.2);}
+.order-btn{margin-top: 10px;}
+</style>
+<!--提现管理-->
+<div class="content-wrapper" style="padding:0 15px;">
+	<section class="content-header">
+		<span style="font-size: 25px;">账户资金</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">资金管理</a>
+			</li>
+			<li class="active">账户资金</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="col-md-12 order-header">
+					<div class="col-md-6 col-xs-12 order-box order-margin">
+						<!-- <ul class="clearfix">
+							<li class="col-md-2 col-xs-3 {_IF status=0}order-ul active{ENDIF}" onclick="location.href='{_url}'">全部提现</li>
+							<li class="col-md-2 col-xs-3 {_IF status=1}order-ul active{ENDIF}" onclick="location.href='{_url}&status=1'">已申请</li>
+							<li class="col-md-2 col-xs-3 {_IF status=2}order-ul active{ENDIF}" onclick="location.href='{_url}&status=2'">提现成功</li>
+							<li class="col-md-2 col-xs-3 {_IF status=3}order-ul active{ENDIF}" onclick="location.href='{_url}&status=3'">提现失败</li>
+						</ul> -->
+					</div>
+					<!--header new end-->
+
+					<!--search new -->
+					<div class="col-md-6 col-xs-12  block-no" style="margin-top: 5px;;">
+						<div class="col-xs-4 col-md-4">
+							
+						</div>
+						<div class="col-xs-3 col-md-4">
+							
+						</div>
+						<div class="col-xs-3 col-md-3">
+							<input type="text" id="name" class="form-control form-input" placeholder="请输入用户名/真实姓名" value="{_name}"/>
+						</div>
+						<div class="col-xs-2  col-md-1">
+							<input type="text" value='{_order_id}' placeholder="根据订单编号搜素" id='ordername' class="" style="display: none;">
+							<button type="submit" class="btn btn-main btn-sm search_order">搜索</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="box-body">
+				 	<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+						<form action="{_alipay_trade}" method="post" target="_blank" id="form_sub">
+							<table id="cash-tab4" class="table table-bordered table-striped">
+								<input type="hidden" name="WIDbatch_num" id="count" value="" />
+								<input type="hidden" name="WIDbatch_fee" id="free" value="" />
+								<input type="hidden" name="WIDdetail_data" id="detail" value="" />
+								<input type="hidden" name="order_num" id="order_num" value="" />
+								<thead>
+								<tr>
+									<th class="block-no">选择</th>
+									<th>昵称</th>
+									<th>真实姓名</th>
+									<th>账户余额</th>
+									<th>可提现金额</th>
+									<th>注册时间</th>
+									<th>操作</th>
+								</tr>
+								</thead>
+								<tbody>
+								{_FOREACH customer}
+								<tr>
+									<td class="block-no">
+									<!-- <input type="checkbox" name="ids[]" value="{_id}" class="order-check"> -->
+									<span class="order-number">{_customer_id}</span>
+									</td>
+									<td>{_firstname}</td>
+									<td>{_lastname}</td>
+									<td style="color: #e4dc71;">{_balance}</td>
+									<td style="color: #2080ff;">{_availabe_balance}</td>
+									<td >{_date_added}</td>
+									<td><a class="btn btn-main btn-xs" href="xindex.php?m=report&act=detail&id={_customer_id}" >资金流水</a></td>
+								</tr>
+								{ENDFOR}
+								</tbody>
+							</table>
+
+						</form>
+						<div class="row">
+							<div class="col-md-12" style="padding-right: 0;">
+								<div class="col-md-8">
+									<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+										<ul class="pagination">
+						                     <li class="paginate_button previous " id="consumer-tab1_previous">
+						                      	<a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">首页</a>
+						                      </li>
+
+						                      <li class="paginate_button previous " id="consumer-tab1_previous">
+						                      	<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+						                      </li>
+						                      
+						                      {_FOREACH pages}
+						                      <li class="paginate_button {_IF active}active {ENDIF}">
+						                      	<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+						                      </li>
+						                      {ENDFOR}
+						                      
+						                     {_IF is_end_page=1}
+												<li class="paginate_button next" id="consumer-tab1_next">
+													<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+												</li>
+											{ENDIF}
+						                      <li class="paginate_button next" id="consumer-tab1_end">
+												<a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">尾页</a>
+											 </li>
+		                   				 </ul>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</section>
+</div>
+
+<!-- 底部 -->
+{_INCLUDE footer.html}
+
+<!--提现管理-->
+<script>
+	$(function() {
+		$("#pl-delect").click(function() {
+			$("#form_sub").submit();
+		});
+
+		$('.order-check').on('click', function() {
+			//jquery获取复选框值 
+			var spCodesTemp = "";
+			$(".order-check").each(function() {
+				if($(this).is(':checked')) {
+					spCodesTemp += $(this).val() + ",";
+				}
+			});
+			spCodesTemp = spCodesTemp.substring(0, spCodesTemp.length - 1);
+			send(spCodesTemp);
+		});
+
+		
+
+		//			$("#cash-tab4").DataTable();
+
+		$("#cash-header li").click(function() {
+			var index = $(this).index();
+			$("#cash-header li").eq(index).addClass("order-ul").siblings().removeClass("order-ul");
+			$(".cash-tab .box-body").eq(index).show();
+			$(".cash-tab .box-body").eq(index).siblings().hide();
+		})
+
+		//表格全选
+		$(function() {
+			$(".sale-all").click(function() {
+				if(this.checked) {
+					$(".order-check").each(function() {
+						$(this).prop("checked", true);
+						$(this).attr("checked", true);
+					});
+					var spCodesTemp = "";
+					$(".order-check").each(function() {
+						if($(this).is(':checked')) {
+							spCodesTemp += $(this).val() + ",";
+						}
+					});
+					spCodesTemp = spCodesTemp.substring(0, spCodesTemp.length - 1);
+					send(spCodesTemp);
+				} else {
+					$(".order-check").each(function() {
+						$(this).removeAttr("checked", false);
+					});
+				}
+			});
+		})
+
+	})
+</script>
+
+<script type="text/javascript">
+	$(".search_order").click(function(){
+		var name=$("#name").val();
+		location.href="{_send_money}"+"&name="+name;
+	})
+</script>

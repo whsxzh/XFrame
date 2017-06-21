@@ -1,0 +1,162 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+ 	td{line-height: 30px;}
+ 	.comment-img{width: 50px;height: 50px;}
+</style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<h1>查看评论</h1>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">我的板块</a>
+			</li>
+			<li class="active">查看评论</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="box" style="border: none;">
+			<!--中心内容-->
+			<div class="nav-tabs-custom" style="position: relative;">
+				<ul class="nav nav-tabs">
+	              <li class="active"><a href="#">全部评论</a></li>
+	              <li class=""><a href="#">好评（5星）</a></li>
+	              <li class=""><a href="#">中评（2-4星）</a></li>
+	              <li class=""><a href="#">差评（0-1星）</a></li>
+	            </ul>
+            	<div class="input-group col-md-2" style="position: absolute;right: 90px;top: 8px;">
+	              <input type="text" name="search" class="form-control" placeholder="Search" style="height: 30px;">
+	              <div class="input-group-btn">
+	                <button type="submit" name="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>
+	                </button>
+	              </div>
+	            </div>
+            	<button class="btn btn-primary btn-sm" style="position: absolute;right: 10px;top:8px;">返回</button>
+            </div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="dataTables_wrapper form-inline dt-bootstrap">
+					<div class="row">
+						<div class="col-sm-12">
+							<table class="table table-bordered table-hover" role="grid" aria-describedby="example2_info">
+								<thead>
+									<tr role="row">
+										<th>用户</th>
+										<th>用户评价</th>
+										<th>评价图片</th>
+										<th>评价时间</th>
+										<th>状态</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr role="row" class="odd">
+										<td>Gecko</td>
+										<td style="max-width: 200px;">
+											<div>
+												循规蹈矩中带有那么一丝的叛逆和低调式的骄傲，这也是小猪的英文名字SHOW而延伸出来的，
+											如果非要说明中文字意“世界透明舞台”应该最适合，每个人不论工作成就、身份高低、年龄大小，你在人生及工作的舞台都是自己的主角，
+											都要全力付出，就像罗志祥(小猪)跟STAGE团队也找到了自己的舞台一样。
+											</div>
+										</td>
+										<td>
+											<img src="./view/stylesheet/img/a1.jpg" class="comment-img"/>
+											<img src="./view/stylesheet/img/a1.jpg" class="comment-img"/>
+											<img src="./view/stylesheet/img/a1.jpg" class="comment-img"/>
+										</td>
+										<td>Win 98+ / OSX.2+</td>
+										<td>通过</td>
+										<td>
+											<button class="btn btn-primary btn-sm">屏蔽</button>
+											<button class="btn btn-primary btn-sm">回复</button>
+										</td>
+									</tr>
+									<tr role="row" class="odd">
+										<td>Gecko</td>
+										<td style="max-width: 200px;">
+											<div>
+												<span style="color: red;">追加评论：</span>循规蹈矩中带有那么一丝的叛逆和低调式的骄傲，这也是小猪的英文名字SHOW而延伸出来的，
+											如果非要说明中文字意“世界透明舞台”应该最适合，每个人不论工作成就、身份高低、年龄大小，你在人生及工作的舞台都是自己的主角，
+											都要全力付出，就像罗志祥(小猪)跟STAGE团队也找到了自己的舞台一样。
+											</div>
+										</td>
+										<td>
+											<img src="./view/stylesheet/img/a1.jpg" class="comment-img"/>
+											<img src="./view/stylesheet/img/a1.jpg" class="comment-img"/>
+											<img src="./view/stylesheet/img/a1.jpg" class="comment-img"/>
+										</td>
+										<td>Win 98+ / OSX.2+</td>
+										<td>通过</td>
+										<td>
+											<button class="btn btn-primary btn-sm">屏蔽</button>
+											<button class="btn btn-primary btn-sm">回复</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+								<ul class="pagination">
+									<li class="paginate_button previous disabled" id="example2_previous">
+										<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">上一页</a>
+									</li>
+									<li class="paginate_button active">
+										<a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0">1</a>
+									</li>
+									<li class="paginate_button">
+										<a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0">2</a>
+									</li>
+									<li class="paginate_button">
+										<a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0">3</a>
+									</li>
+									<li class="paginate_button">
+										<a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0">4</a>
+									</li>
+									<li class="paginate_button">
+										<a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0">5</a>
+									</li>
+									<li class="paginate_button">
+										<a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0">6</a>
+									</li>
+									<li class="paginate_button next" id="example2_next">
+										<a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0">下一页</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.box-body -->
+		</div>
+	</section>
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+</div>
+<script type="text/javascript">
+	$(function(){
+		//全选
+		$('#chkall').on('click',function(){
+		    if(this.checked){   
+		        $("input[name='chk']:checkbox").prop("checked", true);  
+		    }else{   
+			$("input[name='chk']:checkbox").prop("checked", false);
+		    }   
+		});
+		//选项卡
+		$('.nav-tabs li').on('click',function(){
+			$(this).addClass('active').siblings().removeClass('active');
+		});
+	});
+</script>
+</body>
+
+</html>

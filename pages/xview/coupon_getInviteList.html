@@ -1,0 +1,124 @@
+  {_INCLUDE header.html}
+  <div class="content-wrapper">
+  	<!--头部str-->
+    <section class="content-header">
+    <span style="font-size: 25px;">客户范围列表</span>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+      </li>
+      <li>
+        <a href="#">优惠券管理</a>
+      </li>
+      <li class="active">客户范围列表</li>
+    </ol>
+  </section>
+    <!--头部end-->
+    
+    <!--中心内容str-->
+    <section class="content">
+      <div class="row">
+        
+        <div class="col-xs-12">
+          <div class="box box-primary">
+            <div class="box-body">
+
+                <table id="invitecode-tab" class="table table-bordered table-striped">
+                  <thead>
+	                  <tr>
+                      <th class="block-no" style="width:5%;">选择</th>
+	                    <th>邀请码</th>
+	                    <th>所属人</th>
+                      <th>使用人数</th>
+	                  </tr>
+                  </thead>
+                  
+                  <tbody>
+                  {_FOREACH data}
+                  <tr>
+                    <td class="block-no"><input type="checkbox" name="invitecode_id" value="{_invitecode_id}"/></td>
+                    <td>{_invitecode}</td>
+                    <td>{_lastname}({_telephone})</td>   
+                    <td>{_times}</td>                   
+                  </tr>
+                  {ENDFOR}
+                 </tbody>                 
+                </table>    
+
+                <div class="col-md-12">
+                  <div class="col-md-3 block-no">
+                    <input type="checkbox" value="" id="chkall" class="goods-check1">
+                    <label for="chkall" style="margin-left: 15px;color: white;">全选</label>
+                    <label for="comfirm" style="margin-left: 15px;color: white;cursor:pointer;" id="invitecode_comfirm" class="btn btn-main btn-sm">确认</label>
+                    <label for="cancel" style="margin-left: 15px;color: white;cursor:pointer;" id="invitecode_cancel" class="btn btn-main btn-sm">取消</label>
+                  </div>
+                </div>      
+              </div>
+
+          </div>
+   
+        </div>
+        
+      </div>
+    </section>
+    <!--中心内容end-->
+    
+  </div>
+
+ {_INCLUDE footer.html}
+  
+<!--邀请码管理-->
+<script>
+    $(function(){
+      
+    $("#invitecode-tab").DataTable();
+
+})
+</script>
+
+<script type="text/javascript">
+  $(function() {
+    //全选
+    $('#chkall').on('click', function() {
+      if(this.checked) {
+        $("input[name='invitecode_id']:checkbox").prop("checked", true);
+      } else {
+        $("input[name='invitecode_id']:checkbox").prop("checked", false);
+      }
+    });
+
+    // 确定自选的用户
+    $("#invitecode_comfirm").click(function(){
+      var invitecode_id_array = [];
+      $("input[name='invitecode_id']:checked").each(function() {
+        invitecode_id_array.push($(this).val());
+      });
+      var invitecodes_str = invitecode_id_array.join(',');
+      var sub_type="{_types}";
+      console.log(invitecodes_str);
+      if(invitecode_id_array.length < 1){
+        alert("请选择具体哪些邀请码！");
+        location.reload();
+      }else{
+        if(sub_type == 'add'){
+             window.location = "{_couponAddUrl}&customer_ids_str="+invitecodes_str+"&customer_counts="+invitecode_id_array.length+"&send_flag=3";
+        }else if(sub_type == 'edit'){
+             window.location = "{_couponEditUrl}&customer_ids_str="+invitecodes_str+"&customer_counts="+invitecode_id_array.length+"&send_flag=3&coupon_id="+{_coupon_id};
+        }else{
+           window.location = "{_releaseCouponUrl}&ids_str="+invitecodes_str+"&counts="+invitecode_id_array.length+"&send_flag=invite&coupon_id={_coupon_id}";
+        }
+       
+      }
+    })
+
+    // 取消
+    $("#invitecode_cancel").click(function(){
+      $("#chkall").prop("checked", false);
+      $("input[name='invitecode_id']:checkbox").prop("checked", false);
+      history.back();// 返回上一页     
+    })
+
+  });
+</script>
+
+

@@ -1,0 +1,225 @@
+ {_INCLUDE header.html}
+ <link rel="stylesheet" type="text/css" href="./view/assets/css/bootstrap-datetimepicker.min.css"/>
+<style>
+/*提示*/
+.save-modal-body{width: 200px;text-align: center;font-size: 14px;height: 80px;background: #FFFFFF;z-index: 11111;position: absolute;top: 30%;left: 50%;
+line-height: 80px;}
+.save-modal-content{position: fixed;top: 0;right: 0;bottom: 0;left: 0;z-index: 1050;overflow: hidden; -webkit-overflow-scrolling: touch;outline: 0;
+background: rgba(0,0,0,0.3);display: none;}  
+.control-label{color: white;}           
+.input-group .input-group-addon{background-color: rgba(0,0,0,0);color: white;}
+</style>
+<!--内容-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<!--<h1>团购商品-添加</h1>-->
+		<span style="font-size: 25px;">团购商品-添加</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="#"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="#">CMS管理</a>
+			</li>
+			<li class="active">团购管理</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="row">
+			<div class="col-xs-12" style="padding: 0;">
+				<div class="box">
+					<!--中心内容-->
+					<div class="row">
+						<div class="col-md-12">
+							<div class="box-body" id="box-body" style="margin:0;">
+								<a class="btn btn-main btn-xs right" id="save" style="margin-right: 20px;">保存</a>
+								<a onclick="javascript:history.go(-1);" class="btn btn-main btn-xs right" style="margin-right: 20px;">返回</a>
+							</div>
+							<div class="modal-body" style="margin-top:10px;">
+								<form>
+									<div class="form-group">
+										<label for="ktrs" style="color: red;" class="control-label">提示：该商品的团购价格不能高于{_price}</label>
+									</div>
+									<div class="form-group">
+										<label for="ktrs" class="control-label">开团人数：</label>
+										<input type="number" class="form-control form-input" id="ktrs" min="1">
+									</div>
+									<div class="form-group">
+										<label for="ktjg" class="control-label">开团价格(系统自动保留小数点后两位)：</label>
+										<input type="number" class="form-control form-input" id="ktjg" min="1">
+									</div>
+									<div class="form-group">
+										<label class="control-label">商品开团型号：</label>
+										<select name="" class="form-control form-select" id="select">
+											{_IF product_item} {_FOREACH product_item}
+											<option value="{_product_item_id}">{_product_options}</option>
+											{ENDFOR} {ELSE}
+											<option value="0">暂无规格</option>
+											{ENDIF}
+										</select>
+									</div>									
+									 <div class="form-group">
+									 	<label class="control-label">开团时间:</label>
+							            <div class='input-group date' id='datetimepicker6'>
+							                <input type='text' class="form-control form-input" id="groupby-start" placeholder="请选择开团时间"/>
+							                <span class="input-group-addon">
+							                    <span class="glyphicon glyphicon-calendar" style="background: none;"></span>
+							                </span>
+							            </div>
+							        </div>
+									
+									<div class="form-group">
+										<label class="control-label">结束时间:</label>
+							            <div class='input-group date' id='datetimepicker7'>
+							                <input type='text' class="form-control form-input" id="groupby-end"  placeholder="请选择结束时间"/>
+							                <span class="input-group-addon">
+							                    <span class="glyphicon glyphicon-calendar"></span>
+							                </span>
+							            </div>
+							        </div>
+									
+									<div class="form-group tg-state">
+										<label class="control-label">状态:</label>
+										<input type="radio" name="radio" id="kaiqi" checked value="1" /><label for="kaiqi" style="color: white;">开启</label>
+										<input type="radio" name="radio" id="guanbi" value="3" style="margin-left: 30px;" /><label for="guanbi" style="color: white;">关闭</label>
+									</div>
+									<div class="form-group tg-state">
+										<label class="control-label">是否团长免单:</label>
+										<input type="radio" name="is_open_free" id="yes"  value="1" /><label for="kaiqi" style="color: white;">是</label>
+										<input type="radio" name="is_open_free" id="no" checked value="0" style="margin-left: 30px;" /><label for="guanbi" style="color: white;">否</label>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	</div>
+	<!-- 保存提示 modal -->
+	<div class="save-modal-content" style="display: none;">
+		<div class="save-modal-body" style="text-align: center;"></div>
+	</div>
+
+	<!--底部-->
+	{_INCLUDE footer.html}
+	
+	<script src="./view/assets/js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript">
+	    $(function () {
+	        $('#datetimepicker6').datetimepicker();
+	        $('#datetimepicker7').datetimepicker({
+	            useCurrent: false //Important! See issue #1075
+	        });
+	        $("#datetimepicker6").on("dp.change", function (e) {
+	            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+	        });
+	        $("#datetimepicker7").on("dp.change", function (e) {
+	            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+	        });
+	    });
+	</script>
+	
+	<script>
+		$(function() {
+			{_IF none=1}
+			$(".save-modal-content").show();
+			$(".save-modal-body").html("该商品不存在或已下架");
+			setTimeout(function() {
+				$('.save-modal-content').hide();
+				history.back();
+			}, 2000);
+			{ENDIF}
+			//时间插件
+//			$('#datepicker').datepicker({
+//				autoclose: true
+//			});
+//			$('#datepicker1').datepicker({
+//				autoclose: true
+//			});
+		});
+	</script>
+	<script type="text/javascript">
+		$(function() {
+			//开始时间--结束时间
+			$('#save').on('click', function() {
+				var ktrs = $('#ktrs').val();
+				var ktjg = $('#ktjg').val();
+				 var kstime=$('#groupby-start').val();
+				 var jstime=$('#groupby-end').val();
+				var val = $('#reservationtime').val();
+//				var arr = val.split('-');
+//				var kstime = $.trim(arr[0]);
+//				var jstime = $.trim(arr[1]);
+				var product_id = {_product_id};
+				var name = "{_name}";
+				var image = "{_image}";
+				var url = "{_saveGroupMessage}";
+				var url1 = "{_getList}";
+				var select = $("#select").val();
+				var radio = $("input[name='radio']:checked").val();
+				if(radio == undefined) {
+					show("请选择团购活动的状态");
+					return;
+				}
+				//alert(radio);return;
+				if(ktrs == "" || !(/(^[1-9]\d*$)/.test(ktrs))) {
+					show("请正确填写开团人数！");
+					return false;
+				} else if(ktjg == "" || !(/(^[1-9]\d*$)/.test(ktrs))) {
+					show("请正确填写开团价格！");
+					return false;
+				} else if(jstime == "") {
+					show("请正确选择结束时间！");
+					return false;
+				}
+				var is_open_free=$("input[name='is_open_free']:checked").val();
+				var data = { ktrs: ktrs, ktjg: ktjg, kstime: kstime, jstime: jstime, product_id: product_id, name: name, image: image, select: select, radio: radio,is_open_free:is_open_free };
+
+				//发送ajax请求
+				$.ajax({
+					url: url,
+					type: 'post',
+					data: data,
+					dataType: 'json',
+					success: function(data) {
+						$(".save-modal-content").show();
+						$(".save-modal-body").html(data.msg);
+						if(data.retcode == 0) {
+							setTimeout(function() {
+								location.href = url1;
+							}, 2000);
+						} else {
+							setTimeout(function() {
+								$(".save-modal-content").hide();
+							}, 2000);
+						}
+					},
+					error: function() {
+						$(".save-modal-body").html("请求失败");
+						timeout();
+					}
+				});
+
+				function show(msg) {
+					$(".save-modal-content").show();
+					$(".save-modal-body").html(msg);
+					setTimeout(function() {
+						$('.save-modal-content').hide();
+						$(".save-modal-body").html('');
+					}, 2000);
+				}
+				//隐藏提示
+				function timeout() {
+					setTimeout(function() {
+						$('.save-modal-content').hide();
+						location.reload();
+					}, 2000);
+				}
+			});
+		});
+	</script>
+	</body>
+
+	</html>

@@ -1,0 +1,115 @@
+ {_INCLUDE header.html}
+ <style type="text/css">
+  .box-footer{background: none;border: none;}
+ </style>
+<!--发行优惠券-->
+<div class="content-wrapper">
+  <section class="content-header">
+    <span style="font-size: 25px;">发送优惠券</span>
+    <ol class="breadcrumb">
+      <li>
+        <a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+      </li>
+      <li>
+        <a href="#">优惠券管理</a>
+      </li>
+      <li class="">
+        <a href="#">发送优惠券</a>
+      </li>
+    </ol>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="box">
+        <div class="box-body">
+          <form class="form-horizontal" method="post" action="" enctype="multipart/form-data" onsubmit="return check()">
+            <div class="box-body">
+              
+<!--               </div>
+              <div class="form-group">
+                <label for="inputEmail3" class="col-md-1 control-label">选择优惠券</label>
+                <div class="col-md-3">
+                  <select name="coupon_id" class="form-control form-select" id="coupon_id">
+                    <option value='0'>请选择优惠券</option>
+                    {_FOREACH coupons}
+                    <option value='{_coupon_id}' {_IF is_selected=1} selected {ENDIF}>{_name}</option>
+                    {ENDFOR}
+                  </select>
+                </div>                
+              </div> -->
+              <input type='hidden' value={_coupon_id} name='coupon_id'>
+              <div class="form-group">
+                <label for="inputEmail3" class="col-md-1 control-label">客户范围</label>
+                <div class="col-md-3">
+                  <select name="send_flag" class="form-control form-select" onchange="select_coupon_sendflag(this.value)" id="coupon_send_flag">
+                    <option value="0" selected>请选择用户范围</option>
+                    <option value="all">全部用户</option>
+                    <option value="customer">会员用户</option>
+                    <option value="un_customer">非会员用户</option>
+                    <option value="invite" {_IF invite=1}selected{ENDIF}>渠道用户</option>
+                    <option value="user_defined" {_IF user_defined=1}selected{ENDIF}>自选用户</option>
+                  </select>
+                </div>
+                {_IF user_defined=1}<label>您自选了（{_counts}）个用户</label>{ENDIF}
+                 {_IF invite=1}<label>您自选了（{_counts}）个渠道</label>{ENDIF}
+              </div>
+
+            </div>
+    
+            <div class="box-footer">
+              <div style="float:right;">
+                <button type="submit" class="btn btn-main btn-xs coupon-save">发送</button>
+                <a class="btn btn-main btn-xs coupon-cancel" style="margin-left:15px;">取消</a>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!--底部-->
+{_INCLUDE footer.html}
+</body>
+
+<script type="text/javascript">
+/**
+ * @description   处理优惠券发送范围
+ * @param         string sendflag
+ *                枚举类型：all 全部用户，
+                            customer 会员用户，
+                            un_customer 非会员用户，
+                            invite 渠道用户，
+                            user_defined 自选用户
+ * @return        none
+ * @author        godloveevin@yeah.net
+ * @d/t           2017-04-05
+ */
+function select_coupon_sendflag(sendflag){
+  // 用户范围
+  var sendflag = sendflag;
+  var coupon_id = {_coupon_id};
+
+  // 自选用户
+  if('user_defined' == sendflag){
+    window.location = "{_getMemberListUrl}&coupon_id="+coupon_id+"&send_flag="+sendflag;
+  }
+  // 渠道用户
+  if('invite' == sendflag){
+    window.location = "{_getInviteListUrl}&coupon_id="+coupon_id+"&send_flag="+sendflag;
+  }
+}
+
+$(function(){
+  // 取消
+  $(".coupon-cancel").click(function(){
+    window.location = "{_indexUrl}";
+  })
+})
+</script>
+
+</html>

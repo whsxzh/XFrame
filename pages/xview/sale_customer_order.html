@@ -1,0 +1,714 @@
+  {_INCLUDE header.html}
+  <link rel="stylesheet" href="view/assets/AdminLTE/css/foundation-datepicker.min.css">
+   <link rel="stylesheet" href="view/assets/AdminLTE/plugins/select2/select2.min.css">
+<style>
+/*订单管理*/
+.order-state a{color: white;}
+.order-header{background: rgba(0,0,0,0.1);padding: 0;padding-top: 8px;margin-bottom: 10px;}
+.order-header ul{padding: 0; margin: 0;}
+.order-header ul li{float: left;text-align: center;background: rgba(0,0,0,0.1);padding: 8px 0;color: white;cursor: pointer;}
+.order-header ul li.active{background: rgba(0,0,0,0.2);}
+.order-btn{margin-top: 10px;}
+.payway{margin-right: 0px!important;}
+.weixin-inp{margin-left: 20px}
+.zfb-inp,.weixin-inp{position: relative;}
+.zfb-inp input,.weixin-inp input{position: absolute;top: -1px;}
+.zfb-inp i,.weixin-inp i{padding-left: 20px;}
+.save-modal-body{width: 200px;text-align: center;font-size: 14px;height: 80px;background: #FFFFFF;z-index: 11111;position: absolute;top: 30%;left: 50%; line-height: 80px;}
+.save-modal-content{position: fixed;top: 0;right: 0;bottom: 0;left: 0;z-index: 1050;overflow: hidden; -webkit-overflow-scrolling: touch;outline: 0;
+background: rgba(0,0,0,0.3);display: none;}             
+</style>
+  <div class="content-wrapper">
+    <section class="content-header">
+      <span style="font-size: 25px;">固定利益订单</span>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">销售管理</a></li>
+        <li class="active">固定利益订单</li>
+      </ol>
+    </section>
+    <section class="content">
+      <div class="row">
+          <div class="box box-primary">          
+          <!--new -->
+            <div class="col-md-12 order-header">
+							<div class="col-md-5 col-xs-6 order-box order-margin">
+								<ul class="clearfix">
+									<li class=" col-md-2 col-xs-4 {_IF status=0}order-ul active{ENDIF}" onclick="location.href='{_order_url}'" >全部订单({_all_order_num})</li>
+	             		<li class=" col-md-1 col-xs-3 {_IF status=4}order-ul active{ENDIF}" onclick="location.href='{_order_url}&status_id=4'">已完成</li>
+	              	<li class=" col-md-1 col-xs-3 {_IF status=3}order-ul active{ENDIF}" onclick="location.href='{_order_url}&status_id=3'">待收货</li>
+	              	<li class=" col-md-1 col-xs-2 {_IF status=5}order-ul active{ENDIF}" onclick="location.href='{_order_url}&status_id=5'">退款</li>
+								</ul>
+							</div>
+							<div class="col-md-7 col-xs-6 block-no">
+								<div class="col-xs-6 col-md-3">
+									<input type="text" class="form-control form-input" value='{_order_id}' placeholder="根据订单编号搜素" id='ordername' class=""></input>
+								</div>
+								<div class="col-xs-5 col-md-7">
+									<div class="form-group">
+										<!--<div class="input-group form-select">
+											<div class="input-group-addon" style="background: none;border: none;">
+												<i class="fa fa-calendar" style="margin-right: 10px;color: white;"></i>
+											</div>
+											<input type="text" class="form-control pull-right" id="reservation" style="background: none;border: none;color: white;">
+										</div>-->
+										<input type="text" class="order-input1 form-input" value="" name="filter_date_added" id="dpd1" placeholder="活动开始日期" style="height: 30px;padding-left: 2%;">
+										<img src="img/rl_icon.png" class="calendar-icon fl">
+										<input type="text" class="order-input2 form-input" value="" name="filter_date_modified" id="dpd2" placeholder="活动截止日期" style="margin-left: 2%;height: 30px;padding-left: 2%;">
+									</div>
+								</div>
+								<div class="col-xs-1 col-md-2">
+									<input type="text" value='{_order_id}' placeholder="根据订单编号搜素" id='ordername' class="" style="display: none;">
+									<button type="submit" class="btn btn-primary btn-sm search_order">搜索</button>
+								</div>
+							</div>
+					</div>
+
+           <!--new end-->
+            
+          <div class="box-body">
+						<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+	              <table id="order-tab1" class="table table-bordered table-striped">
+	                <!--<thead>-->
+	                <tr>
+	                  <th>订单号</th>
+	                  <th>商品名称</th>
+	                  <th>数量</th>
+                    <!-- <th>订单类型</th> -->
+	                  <!-- <th>交易场景</th> -->
+	                  <th>购买价</th>
+                    <th>会员价</th>
+	                  <!-- <th>购买人</th> -->
+                    <th>固定利益</th>
+	                  <th>所属代理</th>
+	                  <th>下单时间</th>
+	                  {_IF status=5}<th>退款时间</th>{ENDIF}
+	                  <!-- <th>订单状态</th> -->
+	                </tr>
+	                <!--</thead>
+	                <tbody>-->
+	                {_FOREACH order}
+	                <tr>
+	                  <td><input type="checkbox" name="order-tb" value="{_order_id}" class="order-check"><span class="order-number">{_order_id}</span></td>
+	                  <td><a href="javascript:;" style="color: white;" title="{_name}">{_name}</a></td>
+	                  <td style="color: #2080ff;">{_quantity}</td>
+                    <!-- <td>{_order_type_info}</td> -->
+	                  <!-- <td>{_pay}</td>  -->                   
+	                  <td>${_total}</td>
+                    <td>${_proxyprice}</td>
+	                  <!-- <td>{_firstname}</td> -->
+                    <td style="color: #e4dc71;">${_return_add_money}</td>
+	                  <td>{_parent}</td>
+	                  <td>{_date_added}</td>
+                   </tr>
+					{ENDFOR}
+
+	               <!--</tbody>-->
+	              </table>
+	              
+	                <div class="row ">
+		            	<div class="col-md-4 col-xs-6 order-btn block-no">
+		            	    <span>
+			            	  <input type="checkbox" value="" id="" class="order-all">&nbsp;&nbsp;
+			            	  <button class="btn  btn-primary export" data-value="{_status}">导出所选订单</button>
+			            	</span> 
+
+			            	 <span>
+			            	    &nbsp;&nbsp;
+					            <button class="btn  btn-primary exportall" onclick="location.href='{_orderExport}&status={_IF status=0}2{ELSE}{_status}{ENDIF}'" data-value="{_IF status=0}2{ELSE}{_status}{ENDIF}">导出全部{_IF status=1}未付款{ENDIF}
+					            {_IF status=2}待发货{ENDIF}
+					            {_IF status=3}待收货{ENDIF}
+					            {_IF status=4}已完成{ENDIF}
+					            {_IF status=5}退款{ENDIF}
+					            {_IF status=0}待发货{ENDIF}订单</button>
+			            	</span>   
+				        </div>
+						<!--分页-->
+		                <div class="col-md-8 col-xs-6" style="margin-top: 10px;">
+		                  <div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+		                    <ul class="pagination">
+		                      <li class="paginate_button previous" id="consumer-tab1_previous">
+                            <a href="{_pageurl}&page=1" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="首页">|<</a>
+                          </li>
+                          <li class="paginate_button previous" id="consumer-tab1_previous">
+                            {_IF curpage=1}
+                            <a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+                            {ELSE}
+                            <a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="上一页"><</a>
+                            {ENDIF}
+                          </li>
+                          {_FOREACH pages}
+                          <li class="paginate_button {_IF active}active {ENDIF}">
+                            <a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+                          </li>
+                          {ENDFOR}
+                          <li class="paginate_button next" id="consumer-tab1_next">
+                            {_IF lastPage=1}
+                            <a style="cursor:wait;" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+                            {ELSE}
+                            <a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0" title="下一页">></a>
+                            {ENDIF}                 
+                          </li>
+                          <li class="paginate_button previous" id="consumer-tab1_previous">
+                            <a href="{_pageurl}&page={_totlepage}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0" title="尾页">>|</a>
+                          </li>
+		                    </ul>
+		                  </div>
+		                </div>
+	               </div>
+
+	            </div>
+	           
+	            
+            </div>
+         
+        </div>
+      </div>
+    </section>
+  </div>
+	<!--处理退款-->
+<div class="modal fade" id="Modal-classify1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">处理退款</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">申请人:</label>
+            <input type="text" class="form-control"  readonly="readonly" id="return_person">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="control-label">退款理由:</label>
+            <input type="text" class="form-control" readonly="readonly"  id="return_reason">
+          </div>
+          <div class="form-group">
+            <textarea class="form-control" rows="3" id="reply" placeholder="请输入你的回复..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-value="1" class="btn btn-primary agree">同意退款</button>
+        <button type="button" data-value="2" class="btn btn-primary agree">拒绝退款</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--收到货款-->
+<div class="modal fade" id="Modal-classify2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">收到货款</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+          	 <div class="form-group">
+	            <label for="recipient-name" class="control-label">收货人信息:</label>
+	            <input type="text" class="form-control accept_msg" readonly="readonly" >
+	          </div>
+
+            <span class="zfb-inp"><input type="radio" name="r1" checked class="payway" value="1" id="zfb"><i>支付宝</i></span>
+
+            <span class="weixin-inp"><input type="radio" name="r1" class="payway" value="2" id="weixin"><i>微信</i></span>
+
+          </div>
+          <div class="form-group order_pay_code" >
+            <input type="text" class="form-control" placeholder="请输入支付宝的交易单号" id="pay_code">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" data-id="" class="btn btn-primary sure_accept_money">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--立即发货-->
+<div class="modal fade" id="Modal-classify3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">立即发货</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+           <div class="form-group">
+            <label for="recipient-name" class="control-label">收货人信息:</label>
+            <input type="text" class="form-control accept_msg" readonly="readonly">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">快递公司:</label>
+           <select class="form-control select2" name="ship_company" id="ship" style="width: 100%;">
+              <option selected="selected">请选择..</option>
+              {_FOREACH ship_company}
+				<option value="{_id}">{_com}</option>
+              {ENDFOR}
+            </select>
+            
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="control-label">快递单号:</label>
+            <input type="number" min="0" class="form-control" id="ship_code">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" data-id="" class="btn btn-primary sendsomegoods">发货</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--确认收货-->
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="Modal-classify4">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content" style="text-align: center;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">提示</h4>
+      </div>
+      
+      <div class="modal-body">
+        <p style="font-size: 14px;">确认商品已经收到？</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-id="" class="btn btn-primary sure_accept">确定</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!--确认出库-->
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="Modal-classify5">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content" style="text-align: center;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">提示</h4>
+      </div>
+      
+      <div class="modal-body">
+        <p style="font-size: 14px;">确认商品出库？</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-id="" class="btn btn-primary sure_send_goods">确定</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!--编辑物流信息-->
+<div class="modal fade" id="Modal-classify6" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">物流编辑</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+           <div class="form-group">
+            <label for="recipient-name" class="control-label">快递公司:</label>
+           <select class="form-control select2 shipcompany" name="ship_company" id="ship1" style="width: 100%;">
+              <option value="0" >请选择..</option>
+              {_FOREACH ship_company}
+				<option value="{_id}">{_com}</option>
+              {ENDFOR}
+            </select>
+            
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="control-label">快递单号:</label>
+            <input type="number" min="0" class="form-control" id="shipping_code">
+          </div>
+          
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" data-id="" class="btn btn-primary sure_edit_wuliu">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 保存提示 modal -->
+<div class="save-modal-content">
+	<div class="save-modal-body" style="text-align: center;"></div> 
+</div>
+
+  <!-- 底部 -->
+  {_INCLUDE footer.html}
+
+<script src="view/assets/AdminLTE/plugins/select2/select2.full.min.js"></script>
+<script src="view/assets/AdminLTE/js/foundation-datepicker.min.js"></script>
+  <script>
+  	
+	$(function(){
+		//时间
+		$('#reservation').daterangepicker();
+    //团购搜索
+    $(".group_search").change(function(){
+      var url='{_href_url}';
+      url=url.replace("&amp;","&");
+      location.href=url+'&order_type_status='+$(this).val();
+    });
+
+		function change(index){
+		    document.getElementById("ship1")[index].selected=true;
+		}
+		$(".sure_edit_wuliu").click(function(){
+			var url="{_editWuliu}";
+			$.ajax({
+		        url: url,
+		        type: 'post',
+		        data: {order: $(this).attr("data-id"),shippingcode:$("#shipping_code").val(),shipcompany:$("#ship1").val()},
+		        dataType: 'json',
+		        success: function (data) {
+	          		displaynone(6);
+			        $(".save-modal-body").html(data.msg);
+			        timeout();
+		        },
+		        error:function(){
+		          displaynone(6);
+		          $(".save-modal-body").html("请求失败");
+		          timeout();
+		        }
+		    });
+		});
+
+		//编辑物流
+		$(".edit_wuliu").click(function(){
+			$(".sure_edit_wuliu").attr("data-id",$(this).attr("data-id"));
+			var wuliu_id=$(this).attr("data-wuliu-id");
+			var wuliu_no=$(this).attr("data-wuliu-value");
+			$("#shipping_code").val(wuliu_no);
+			$(".shipcompany option").each(function(){
+				if(wuliu_id==$(this).val()){
+					$("#ship1").val(wuliu_id);
+					var a=$(this).index();
+					change(a);//$("#ship1 option[text='"+wuliu_id+"']").attr("selected", true);
+				}
+			});
+
+		});
+		
+
+		//表格单选
+		$(".order-check").click(function(){
+			if(this.checked) {
+			    $(this).prop("checked", true);
+			    $(this).attr("checked", true);
+			} else {
+			    $(this).removeAttr("checked",false);
+			}
+		});
+		//导出所选订单
+		$(".export").click(function(){
+			var id=$(this).attr("data-value");
+			var str="";
+			$("[name='order-tb'][checked]").each(function(){  
+				str+=$(this).val()+",";
+			});
+			var str=str.substring(0,str.length-1);
+			var order=str;
+			if(order==""){
+				alert('你未选中,订单信息有误');
+				return;
+			}
+			var url="{_orderExport}";
+			location.href=url+"&order="+order+"&status="+id;
+		});
+
+		$(".order_type").change(function(){
+			var val="";
+			if($(this).val()==1){
+				val ="根据订单编号搜素";
+			}else if($(this).val()==2){
+				val ="根据商品名称搜素";
+			}else if($(this).val()==3){
+				val ="根据购买人搜素";
+			}
+			$("#ordername").attr("placeholder",val);
+		});
+		//搜索 
+		$(".search_order").click(function(){
+			var start=$(".order-input1").val();
+			var end=$(".order-input2").val();
+			var order=$("#ordername").val();
+			var url='{_href_url}';
+			url=url.replace("&amp;","&");
+			var type=$(".order_type").val();
+			location.href=url+"&start="+start+"&end="+end+"&order="+order+"&type="+type;
+		});
+
+		//同意或者拒绝
+		$(".agree").click(function(){
+			var url="{_deal_return}";
+			$.ajax({
+		        url: url,
+		        type: 'post',
+		        data: {order: $(this).attr("data-id"),status:$(this).attr("data-value"),reply:$("#reply").val()},
+		        dataType: 'json',
+		        success: function (data) {
+	          		displaynone(1);
+			        $(".save-modal-body").html(data.msg);
+			        timeout();
+		        },
+		        error:function(){
+		          displaynone(1);
+		          $(".save-modal-body").html("请求失败");
+		          timeout();
+		        }
+		    });
+		});
+
+		//去处理退款
+		$(".deal_return").click(function(){
+			var url="{_return_detail}";
+			$(".agree").attr("data-id",$(this).attr("data-id"));
+			$.ajax({
+		        url: url,
+		        type: 'post',
+		        data: {order: $(this).attr("data-id")},
+		        dataType: 'json',
+		        success: function (data) {
+	          		if(data.msg){
+	          			displaynone(1);
+				        $(".save-modal-body").html(data.msg);
+				        timeout();	
+	          		}else{
+	          			$("#return_person").val(data.name);
+	          			$("#return_reason").val(data.reason);
+	          		}
+		        },
+		        error:function(){
+		          displaynone(1);
+		          $(".save-modal-body").html("请求失败");
+		          timeout();
+		        }
+		    });
+		});
+
+		$("#zfb").click(function(){
+			 $(".order_pay_code").show();
+		})
+		$("#weixin").click(function(){
+			 $(".order_pay_code").hide();
+		})
+		//确认收到货款
+		$(".sure_accept_money").click(function(){
+			var order=$(this).attr("data-id");
+			var payway=$('input:radio[name="r1"]:checked').val();
+			if(payway==1){
+				if($("#pay_code").val()==""){
+					displaynone(2);
+					$(".save-modal-body").html("支付单号不能为空");
+				    timeout();
+					return;
+				}
+			}
+			var url="{_accept_money}";
+			$.ajax({
+		        url: url,
+		        type: 'post',
+		        data: {order: order,payway:payway,pay_code:$("#pay_code").val()},
+		        dataType: 'json',
+		        success: function (data) {
+	          		displaynone(2);
+			        $(".save-modal-body").html(data.msg);
+			        timeout();
+		        },
+		        error:function(){
+		          displaynone(2);
+		          $(".save-modal-body").html("请求失败");
+		          timeout();
+		        }
+		    });
+		});
+
+		//收货地址
+		function accept_address(order){
+			var url="{_accept_address}";
+			$.ajax({
+		        url: url,
+		        type: 'post',
+		        data: {order: order},
+		        dataType: 'json',
+		        success: function (data) {
+		          if(data.msg){
+		          		displaynone(3);
+				        $(".save-modal-body").html(data.msg);
+				        timeout();
+		          }else{
+		          	$(".accept_msg").val(data.buyer+"   "+data.phone+"    "+data.address);
+		          }
+		        },
+		        error:function(){
+		          displaynone(3);
+		          $(".save-modal-body").html("请求失败");
+		          timeout();
+		        }
+		    });
+		}
+		//收到货款
+		$(".accept_money").click(function(){
+			$(".sure_accept_money").attr("data-id",$(this).attr("data-id"));
+			accept_address($(this).attr("data-id"));
+		});
+		//立即发货
+		$(".sendgoodsnows").click(function(){
+			$(".sendsomegoods").attr("data-id",$(this).attr("data-id"));
+			accept_address($(this).attr("data-id"));
+		});
+		$(".sendsomegoods").click(function(){
+			var shipid=$("#ship").val();
+			var shipcode=$("#ship_code").val();
+			if(shipid=="" || shipcode==""){
+			  displaynone(3);
+	          $(".save-modal-body").html("不能为空");
+	          timeout();
+			  return;
+			}
+			//去发货
+			var url="{_now_send_goods_by_time}";
+			$.ajax({
+		        url: url,
+		        type: 'post',
+		        data: {order: $(this).attr("data-id"),shipid:shipid,shipcode:shipcode},
+		        dataType: 'json',
+		        success: function (data) {
+		          displaynone(3);
+		          $(".save-modal-body").html(data.msg);
+		          timeout();
+		        },
+		        error:function(){
+		          displaynone(3);
+		          $(".save-modal-body").html("请求失败");
+		          timeout();
+		        }
+		    });
+		});
+
+		$(".send_now_goods").click(function(){
+			$(".sure_send_goods").attr("data-id",$(this).attr("data-id"));
+		});
+		$(".sure_send_goods").click(function(){
+			//去出库
+			var url="{_now_send_goods}";
+			$.ajax({
+		        url: url,
+		        type: 'post',
+		        data: {order: $(this).attr("data-id")},
+		        dataType: 'json',
+		        success: function (data) {
+		          displaynone(5);
+		          $(".save-modal-body").html(data.msg);
+		          timeout();
+		        },
+		        error:function(){
+		          displaynone(5);
+		          $(".save-modal-body").html("请求失败");
+		          timeout();
+		        }
+		    });
+		});
+
+		$(".confirm_accept_goods").click(function(){
+			$(".sure_accept").attr("data-id",$(this).attr("data-id"));
+		});
+		$(".sure_accept").click(function(){
+			confirm_goods($(this).attr("data-id"));
+		});
+
+		//确认收货
+		function confirm_goods(order){
+			var url="{_confirm_goods}";
+			$.ajax({
+		        url: url,
+		        type: 'post',
+		        data: {order: order},
+		        dataType: 'json',
+		        success: function (data) {
+		          displaynone(4);
+		          $(".save-modal-body").html(data.msg);
+		          timeout();
+		        },
+		        error:function(){
+		          displaynone(4);
+		          $(".save-modal-body").html("请求失败");
+		          timeout();
+		        }
+		    });
+		}
+		function displaynone($num){
+			$(".save-modal-content").show()
+          	$("#modal-backdrop").hide();
+          	$("#Modal-classify"+$num+"").hide();
+		}
+		//隐藏提示
+		function timeout(){
+			 setTimeout(function(){
+	            $('.save-modal-content').hide();
+	            $(".fade").hide();
+	            location.reload();
+	          },2000);
+		}
+	    $(".select2").select2();
+	})
+	
+	
+  //表格全选
+	$(function() {
+		$(".order-all").click(function() {
+			if(this.checked) {
+				$("input[name='order-tb']").each(function() {
+			        $(this).prop("checked", true);
+			        $(this).attr("checked", true);
+				});
+			} else {
+				$("input[name='order-tb']").each(function() {
+			     	$(this).removeAttr("checked",false);  
+				});
+			}
+		});
+	})
+	
+</script>
+
+<script>
+	$(function(){
+	var nowTemp = new Date();
+		var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+		var checkin = $('#dpd1').fdatepicker({
+			onRender: function (date) {
+				return date.valueOf() > now.valueOf() ? 'disabled' : '';
+			}
+		}).on('changeDate', function (ev) {
+			if (ev.date.valueOf() > checkout.date.valueOf()) {
+				var newDate = new Date(ev.date)
+				newDate.setDate(newDate.getDate() + 1);
+				checkout.update(newDate);
+			}
+			checkin.hide();
+			$('#dpd2')[0].focus();
+		}).data('datepicker');
+		var checkout = $('#dpd2').fdatepicker({
+			onRender: function (date) {
+				return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+			}
+		}).on('changeDate', function (ev) {
+			checkout.hide();
+		}).data('datepicker');
+		
+})
+</script>

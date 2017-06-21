@@ -1,0 +1,83 @@
+  {_INCLUDE header.html}
+  <div class="content-wrapper">
+  	<!--头部str-->
+    <section class="content-header">
+      <h1>邀请码管理</h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">系统管理</a></li>
+        <li class="active">邀请码管理</li>
+      </ol>
+    </section>
+    <!--头部end-->
+    
+    <!--中心内容str-->
+    <section class="content">
+      <div class="row">
+        
+        <div class="col-xs-12">
+          <div class="box box-primary">
+          	
+            <div class="box-header">
+              <a href="{_editurl}">增加邀请码</a>
+            </div>
+            
+            <div class="box-body">
+                <table id="invitecode-tab" class="table table-bordered table-striped">
+                  <thead>
+	                  <tr>
+	                    <th>邀请码</th>
+	                    <th>所属人</th>
+	                    <th>使用人数</th>
+	                    <th>添加时间</th>
+	                    <th>失效时间</th>
+	                    <th>使用弹出网址</th>
+	                    <th>状态</th>
+	                    <th>操作</th>
+	                  </tr>
+                  </thead>
+                  
+                  <tbody>
+                  {_FOREACH data}
+                  <tr>
+                      <td>{_invitecode}</td>
+                      <td>{_lastname}({_telephone})</td>
+                      <td>{_times}</td>
+                       <td>{_date_added}</td>
+                      <td>{_end_date}</td>
+                      <td>{_url}</td>
+                       <td>{_IF status=1}失效 {ELSE} 有效 {ENDIF}</td>
+                      <td> <a href="xindex.php?m=invite&act=edit&id={_invitecode_id}">编辑</a>
+                      	<a href="xindex.php?m=invite&act=disable&id={_invitecode_id}&status={_status}">禁用</a>
+                      </td>
+                      </tr>
+                  {ENDFOR}
+                 </tbody>
+                 
+                </table>          
+              </div>
+
+          </div>
+   
+        </div>
+        
+      </div>
+    </section>
+    <!--中心内容end-->
+    
+  </div>
+
+ {_INCLUDE footer.html}
+  
+<!--邀请码管理-->
+<script>
+    $(function(){
+      
+    $("#invitecode-tab").DataTable();
+
+})
+</script>
+
+
+
+

@@ -1,0 +1,156 @@
+ {_INCLUDE header.html}
+<!--商户管理-->
+<div class="content-wrapper">
+	<section class="content-header">
+		<span style="font-size: 25px;">商品列表</span>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="{_qiye_url}">我的板块</a>
+			</li>
+			<li class="active">商品列表</li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="row">
+			<div class="box">
+				<div class="row block-no">
+					<div class="col-md-12" style="margin: 0 15px; padding: 8px;" id="box-body">
+						<!--搜索-->
+						<form action="#" method="get">
+							<div class="col-xs-2  col-md-2">
+								<input type="text" class="form-control form-input" name='merchant_name' value="" placeholder="请输入商品名称">
+							</div>
+							<div class="col-xs-2  col-md-2">
+								<button type="submit" class="btn btn-primary btn-sm" id="tent-delect">搜索</button>
+							</div>
+						</form>
+						<!--搜索 end-->
+					</div>
+					<sapn class="btn btn-primary btn-sm" id="add" style="position: absolute;right:20px;top: 8px;" onclick="history.go(-1);">返回</span>
+				</div>
+
+				<!-- 内容 -->
+				<div class="box-body">
+						<div class="dataTables_wrapper form-inline dt-bootstrap box-auto">
+							<table id="tent-tab1" class="table table-bordered table-striped">
+								<tr>
+									<th>图片</th>
+									<th>商品名称</th>
+									<th>编号</th>
+									<th>库存</th>
+									<th>销量</th>
+									<th>价格</th>
+									<th>会员价格</th>
+									<th>商品状态</th>
+									<th>操作</th>
+								</tr>
+								{_FOREACH myProducts}
+								<tr role="row" class="odd">
+									<td><img src="{_image}" style="width: 50px;height: 50px;" /></td>
+									<td>{_name}</td>
+									<td>{_model}</td>
+									<td>{_quantity}</td>
+									<td>{_sales}</td>
+									<td>{_price}</td>
+									<td>{_proxyprice}</td>
+									<td>{_IF status=0}下架{ENDIF} {_IF status=1}上架{ENDIF}</td>
+									<td class="block-no">
+										{_IF status=0}
+										<a class="btn btn-main btn-xs" title="启用商品" onclick="javascript:return enabledMeProduct({_product_id})">启用</a>{ENDIF} {_IF status=1}
+										<a class="btn btn-main btn-xs" title="禁用商品" onclick="javascript:return forbiddenMeProduct({_product_id})">禁用</a>{ENDIF}
+									</td>
+								</tr>
+								{ENDFOR} {_IF myProducts=0}
+								<tr role="row" class="odd">
+									<td colspan="9"><span>抱歉，没有您的记录</span></td>
+								</tr>
+								{ENDIF}
+							</table>
+
+							<!--分页-->
+							<div class="col-md-12" style="margin-top: 20px;">
+								<div class="dataTables_paginate paging_simple_numbers" id="consumer-tab1_paginate">
+									<ul class="pagination">
+										<li class="paginate_button previous" id="consumer-tab1_previous">
+										<a href="{_pageurl}&page={_curpage-1}" aria-controls="consumer-tab1" data-dt-idx="0" tabindex="0">上一页</a>
+										</li>
+										{_FOREACH pages}
+										<li class="paginate_button {_IF active}active {ENDIF}">
+											<a href="{_url}" aria-controls="consumer-tab1" data-dt-idx="1" tabindex="0">{_text}</a>
+										</li>
+										{ENDFOR}
+
+										<li class="paginate_button next" id="consumer-tab1_next">
+											<a href="{_pageurl}&page={_curpage+1}" aria-controls="consumer-tab1" data-dt-idx="3" tabindex="0">下一页</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<!--分页-->
+						</div>
+						<!-- /. -->
+					</div>
+
+			</div>
+		</div>
+	</section>
+</div>
+
+<script type="text/javascript">
+
+	// 启用我的某个商品（即上架）
+	function enabledMeProduct(product_id) {
+		var enabledMeProductUrl = "{_enabledMeProductUrl}";
+		if(confirm("确认启用？") == true) {
+			$.ajax({
+				url: enabledMeProductUrl,
+				type: 'post',
+				data: { product_id: product_id },
+				dataType: 'json',
+				success: function(data) {
+					console.log(data.msg);
+					location.reload(true);
+				},
+				error: function() {
+					alert("请求失败");
+				}
+			});
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// 禁用我的某个商品（即上架）
+	function forbiddenMeProduct(product_id) {
+		var forbiddenMeProductUrl = "{_forbiddenMeProductUrl}";
+		if(confirm("确认禁用？") == true) {
+			$.ajax({
+				url: forbiddenMeProductUrl,
+				type: 'post',
+				data: { product_id: product_id },
+				dataType: 'json',
+				success: function(data) {
+					console.log(data.msg);
+					location.reload(true);
+				},
+				error: function() {
+					alert("请求失败");
+				}
+			});
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+</script>
+
+<!--底部-->
+{_INCLUDE footer.html}
+
+

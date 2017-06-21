@@ -1,0 +1,410 @@
+ {_INCLUDE header.html}
+<style type="text/css">
+	.order-header {
+		background: rgba(0, 0, 0, 0.1);
+		padding: 0;
+		padding-top: 8px;
+		margin-bottom: 10px;
+	}
+	
+	.order-header ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	.order-header ul li {
+		float: left;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.1);
+		padding: 8px 0;
+		color: white;
+		cursor: pointer;
+	}
+	
+	.order-header ul li.active {
+		background: rgba(0, 0, 0, 0.2);
+	}
+	
+	.order-btn {
+		margin-top: 10px;
+	}
+	
+	.ni-label {
+		color: white;
+		margin-bottom: 0;
+	}
+</style>
+<style type="text/css">
+	/*新添加用户*/
+	
+	.number-save {
+		margin: 10px;
+		float: right;
+	}
+	
+	.file {
+		position: relative;
+		display: inline-block;
+		background: #367fa9;
+		border: 1px solid #99D3F5;
+		border-radius: 4px;
+		padding: 4px 12px;
+		overflow: hidden;
+		color: #ffffff;
+		text-decoration: none;
+		text-indent: 0;
+		line-height: 20px;
+	}
+	
+	.file input {
+		position: absolute;
+		font-size: 100px;
+		right: 0;
+		top: 0;
+		opacity: 0;
+	}
+	
+	#click {
+		width: 80px;
+		height: 80px;
+		border: 1px solid #d2d6de
+	}
+</style>
+<!--中心内容-->
+<div class="content-wrapper">
+	<!--头部str-->
+	<section class="content-header">
+		<h1>刷单</h1>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{_home_url}"><i class="fa fa-dashboard"></i> Home</a>
+			</li>
+			<li>
+				<a href="{_goods_url}">刷单</a>
+			</li>
+			<li class="active">用户</li>
+		</ol>
+	</section>
+	<!--头部end-->
+	<section class="content">
+		<div class="row">
+			<div class="box box-primary">
+				<div class="col-md-12 order-header">
+					<!--header new-->
+					<div class="col-md-10 col-xs-10 order-box" style="padding-bottom:10px ;">
+						<ul>
+							<li class="col-md-1 col-xs-6" onclick="location.href='{_goods_url}'">商品</li>
+							<li class="col-md-1 col-xs-6 active" onclick="location.href='{_shudan_user_url}'">用户</li>
+							<div style="clear: both;"></div>
+						</ul>
+					</div>
+					<!--header new end-->
+
+					<!--search new -->
+					<form action="{_goods_url}" method="get" id="form03">
+						<div class="col-md-2 col-xs-2 block-no" style="text-align: right;">
+							<a href="javascript:;" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add-user">添加用户</a>
+						</div>
+					</form>
+					<!--search new end-->
+				</div>
+
+				<!-- /.表格1 -->
+				<div class="box-body">
+					<table id="farming-tab1" class="table table-bordered table-striped">
+						<!--<thead>-->
+						<tr>
+							<th>用户ID</th>
+							<th>用户头像</th>
+							<th>用户昵称</th>
+							<th>评论数</th>
+							<th>状态</th>
+							<th class="block-no">操作</th>
+						</tr>
+						<!--</thead>
+	            <tbody>-->
+						{_FOREACH data}
+						<tr id="sd-tr">
+							<td>{_customer_id}</td>
+							<td><img src="{_headurl}" width="50px" height="50px" class="m_{_customer_id}"></td>
+							<td class="f_{_customer_id}">{_firstname}</td>
+							<td>{_remark_num}</td>
+							<td>{_status}</td>
+							<td class="block-no">
+								<a href="javascript:;" class="btn btn-main btn-xs" data-toggle="modal" data-target="#edit-user" onclick="edit({_customer_id})">编辑</a>
+								<a href="{_dis_url}" class="btn btn-main btn-xs">{_status_other}</a>
+								<a href="{_yichu_url}" class="btn btn-main btn-xs">移除</a>
+							</td>
+						</tr>
+						{ENDFOR}
+
+						<!--</tbody>-->
+					</table>
+
+					<div class="col-md-12 text-right">{_pagestr}</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</div>
+<!--/中心内容-->
+<!--添加信息弹框-->
+<div class="modal fade" id="add-user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">添加用户信息</h4>
+			</div>
+			<div class="modal-body">
+				<form action="{_add_user_url}" method="post" id="form01">
+					<section class="content">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="box box-primary">
+
+									<div class="box-body" style="background: white;">
+										<div class="form-group">
+											<label>用户昵称</label>
+											<input type="text" name="firstname" class="colo-md-1 form-control" id="farming-name">
+										</div>
+										<div class="form-group">
+											<label>用户头像</label>
+											<span> 
+                                <div id="click" data-url="{_upimg_url}"><img src='' /></div>
+                                <a href="javascript:;" class="file">选择文件
+                                  <input type="file"  id="photo"  >
+                                </a>
+                            </span>
+											<input type="hidden" name="headurl" id="returnImg" />
+										</div>
+									</div>
+								</div>
+							</div>
+					</section>
+				</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-primary" id="sub1">保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--编辑信息弹框-->
+	<div class="modal fade" id="edit-user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">编辑用户信息</h4>
+			</div>
+			<div class="modal-body">
+				<form action="{_edit_url}" method="post" id="form02">
+					<section class="content">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="box box-primary">
+									<div class="box-body" style="background: white;">
+										<div class="form-group">
+											<label>用户昵称</label>
+											<input type="text" name="firstname" class="colo-md-1 form-control" id="farming-name2">
+										</div>
+										<div class="form-group">
+											<label>用户头像</label>
+											<span> 
+					                          <div id="click2"><img src="" style="width:80px;height:80px"></div>
+					                          <a href="javascript:;" class="file">选择文件
+					                            <input type="file"  id="photo2" name="" >
+					                          </a>
+					                      </span>
+											<input type="hidden" name="customer_id" class="cid" />
+											<input type="hidden" name="headurl" id="returnImg2" />
+										</div>
+									</div>
+								</div>
+							</div>
+					</section>
+				</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-primary" id="sub2">保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+		<!--底部-->
+		<footer class="main-footer">
+			<div class="pull-right hidden-xs"><b>Version</b> 2.3.7</div>
+			<strong>Copyright &copy; 2016 <a href="http://iwant-u.com" target="_blank">杭州盛世东方网络科技有限公司</a>.</strong> All rights reserved.
+		</footer>
+
+	</div>
+
+	</body>
+
+	</html>
+
+	<script src="view/assets/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<script src="view/assets/AdminLTE/bootstrap/js/bootstrap.min.js"></script>
+	<script src="view/assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+	<script src="view/assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js"></script>
+	<script src="view/assets/AdminLTE/dist/js/app.min.js"></script>
+	<script src="view/assets/AdminLTE/dist/js/demo.js"></script>
+
+	<script>
+		// $(function(){
+		// 	$("#farming-tab1").DataTable();
+		// })
+	</script>
+
+	<script>
+		//验证
+		$(function() {
+			$("#sub1").click(function() {
+				var farming_name = $("#farming-name").val();
+				var farming_flie = $('#click').children('img').attr('src');
+				if(farming_name == '') {
+					alert("用户名称不能为空!");
+					return false;
+				} else if(farming_flie == '') {
+					alert("还没有上传头像!");
+					return false;
+				} else {
+					$('#form01').submit();
+					$('#returnImg').val('');
+					$('#farming-name').val('');
+				}
+			})
+			// return false;
+		})
+	</script>
+
+	<!--用户头像上传插件-->
+	<script>
+		document.getElementById('photo').addEventListener('change', function(e) {
+			var files = this.files;
+			var formdata = new FormData();
+			var sum1 = this.files.length;
+			var url = $('#click').attr('data-url');
+			for(var i = 0; i < sum1; i++) {
+				formdata.append("Filedata[]", files[i]);
+			}
+			if(sum1 == 1) {
+				$.ajax({
+					type: "post",
+					url: url,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					// dataType:"json",
+					success: function(msg) {
+						console.log(msg);
+						if(msg == 5) {
+							alert("上传失败！");
+						} else {
+							$('#returnImg').val(msg);
+						}
+					}
+				})
+			}
+			var img = new Image();
+			var reader = new FileReader();
+			reader.readAsDataURL(files[0]);
+			reader.onload = function(e) {
+				var mb = (e.total / 1024) / 1024;
+				if(mb >= 2) {
+					alert('文件大小大于2M');
+					return;
+				}
+				img.src = this.result;
+				img.style.width = "100%";
+				document.getElementById('click').style.width = "80px";
+				document.getElementById('click').style.height = "80px";
+				document.getElementById('click').innerHTML = '';
+				document.getElementById('click').appendChild(img);
+			}
+		});
+	</script>
+	<!--用户头像上传插件-->
+	<script>
+		//验证
+		$(function() {
+			$("#sub2").click(function() {
+				var farming_name = $("#farming-name2").val();
+				var farming_flie = $('#click2').children('img').attr('src');
+				if(farming_name == '') {
+					alert("用户昵称不能为空!");
+					return false;
+				} else if(farming_flie == '') {
+					alert("还没有上传头像!");
+					return false;
+				} else {
+					$('#form02').submit();
+				}
+			})
+
+		})
+	</script>
+
+	<!--用户修改头像上传插件-->
+	<script>
+		document.getElementById('photo2').addEventListener('change', function(e) {
+			var files = this.files;
+			var formdata = new FormData();
+			var sum1 = this.files.length;
+			var url = $('#click').attr('data-url');
+			for(var i = 0; i < sum1; i++) {
+				formdata.append("Filedata[]", files[i]);
+			}
+			if(sum1 == 1) {
+				$.ajax({
+					type: "post",
+					url: url,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					// dataType:"json",
+					success: function(msg) {
+						console.log(msg);
+						if(msg == 5) {
+							alert("上传失败！");
+						} else {
+							$('#returnImg2').val(msg);
+						}
+					}
+				})
+			}
+			var img = new Image();
+			var reader = new FileReader();
+			reader.readAsDataURL(files[0]);
+			reader.onload = function(e) {
+				var mb = (e.total / 1024) / 1024;
+				if(mb >= 2) {
+					alert('文件大小大于2M');
+					return;
+				}
+				img.src = this.result;
+				img.style.width = "100%";
+				document.getElementById('click2').style.width = "80px";
+				document.getElementById('click2').style.height = "80px";
+				document.getElementById('click2').innerHTML = '';
+				document.getElementById('click2').appendChild(img);
+			}
+		});
+	</script>
+
+	<!--用户修改头像上传插件-->
+	<!--点击编辑-->
+	<script type="text/javascript">
+		function edit(id) {
+			var name = $('.f_' + id).html();
+			var imgurl = $('.m_' + id).attr('src');
+			$('#farming-name2').val(name);
+			$('#click2').children('img').attr('src', imgurl);
+			$('#returnImg2').val(imgurl);
+			$('.cid').val(id);
+		}
+	</script>
