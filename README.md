@@ -1,4 +1,4 @@
-# XPHP order name is xFrame
+# XPHP old name is xFrame
 
 Xphp is a data-oriented programming, very easy to learn php framework, features as follows
 1. easy to learn to get started 
