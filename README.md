@@ -1,6 +1,6 @@
-# XFrame
+# XPHP order name is xFrame
 
-XFrame is a data-oriented programming, very easy to learn php framework, features as follows
+Xphp is a data-oriented programming, very easy to learn php framework, features as follows
 1. easy to learn to get started 
 2. powerful 
 3. object-oriented
@@ -13,7 +13,7 @@ XFrame is a data-oriented programming, very easy to learn php framework, feature
 
 Author: Gordon Xi Email: zuoruanjian@qq.com please feel free to communicate with me, I am willing to support you free access to this framework
  
-XFrame 是一个面向数据编程的、非常容易学习的php框架，特点如下
+Xphp 是一个面向数据编程的、非常容易学习的php框架，特点如下,旧名叫xframe
 1.容易学习上手
 2.功能强大
 3.面向对象
